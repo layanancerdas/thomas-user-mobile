@@ -17,7 +17,6 @@ import 'package:tomas/screens/introduction/introduction.dart';
 import 'package:tomas/screens/landing/landing.dart';
 import 'package:tomas/screens/lifecycle_manager/lifecycle_manager.dart';
 import 'package:uni_links/uni_links.dart';
-
 import 'redux/app_state.dart';
 import 'redux/store.dart';
 import 'routes.dart';

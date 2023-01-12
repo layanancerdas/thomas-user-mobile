@@ -81,21 +81,21 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     }
   }
 
-  Future<void> checkBE(context) async {
-    try {
-      final result = await InternetAddress.lookup('geekco.id');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        // print('connected');
-        toggleMaintenance(false);
-      }
-    } on SocketException catch (e) {
-      // print(e);
-      toggleMaintenance(true);
-      Utils.onErrorConnection("fullpage_maintenance", context: context);
-    } catch (e) {
-      // print(e);
-    }
-  }
+  // Future<void> checkBE(context) async {
+  //   try {
+  //     final result = await InternetAddress.lookup('geekco.id');
+  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //       // print('connected');
+  //       toggleMaintenance(false);
+  //     }
+  //   } on SocketException catch (e) {
+  //     // print(e);
+  //     toggleMaintenance(true);
+  //     Utils.onErrorConnection("fullpage_maintenance", context: context);
+  //   } catch (e) {
+  //     // print(e);
+  //   }
+  // }
 
   Future<void> initConnectivity() async {
     ConnectivityResult result = ConnectivityResult.none;
@@ -130,8 +130,9 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
       } else if (res.data['message'].contains('user') ||
           !res.data.containsKey('data')) {
         prefs.remove('jwtToken');
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/Landing', (route) => false);
+
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, '/Landing', (route) => false);
       }
     } catch (e) {
       print("user detail");
@@ -428,9 +429,9 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
   Future<void> initPeriodic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwtToken = prefs.getString("jwtToken");
-    if (!maintenance) {
-      checkBE(context);
-    }
+    // if (!maintenance) {
+    //   checkBE(context);
+    // }
 
     if (jwtToken != null && !noInternet && !maintenance) {
       getUserDetail();
@@ -448,7 +449,7 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwtToken = prefs.getString("jwtToken");
     if (!maintenance) {
-      checkBE(context);
+      // checkBE(context);
     }
 
     if (jwtToken != null && !noInternet && !maintenance) {
@@ -461,7 +462,7 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     super.initState();
     initConnectivity();
     checkInternet(context);
-    checkBE(context);
+    // checkBE(context);
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
@@ -469,7 +470,7 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     // Timer.periodic(Duration(seconds: 3), (_) => initPerSecond());
     Timer.periodic(Duration(seconds: 1), (_) {
       checkInternet(context);
-      checkBE(context);
+      // checkBE(context);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

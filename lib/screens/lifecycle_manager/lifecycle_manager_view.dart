@@ -7,6 +7,7 @@ class LifecycleManagerView extends LifecycleManagerViewModel {
     return
         // Stack(
         //   children: [
+
         widget.child;
     //     isLoading
     //         ? Container(
