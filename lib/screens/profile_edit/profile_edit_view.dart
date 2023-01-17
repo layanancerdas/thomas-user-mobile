@@ -143,10 +143,28 @@ class ProfileEditView extends ProfileEditViewModel {
                             ],
                           ),
                         ),
+                        errorNip != "" && nipController.text.length <= 0
+                            ? ErrorForm(error: errorNip)
+                            : SizedBox(height: 0),
+                        verifiedWidget(
+                            context,
+                            FormText(
+                              hint: "NIP",
+                              controller: nipController,
+                              onChange: clearError,
+                              readOnly: true,
+                              errorMessage:
+                                  nipController.text.length > 0 ? errorNip : "",
+                              idError: "nip",
+                            ),
+                            true,
+                            'NIP'),
                         errorFullname != "" &&
                                 fullnameController.text.length <= 0
                             ? ErrorForm(error: errorFullname)
-                            : SizedBox(),
+                            : SizedBox(
+                                height: 33,
+                              ),
                         FormText(
                           hint:
                               "${AppTranslations.of(context).text("full_name")}",

@@ -42,13 +42,11 @@ class CustomButton extends StatelessWidget {
       child: flat
           ? TextButton(
               style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: borderRadius ?? BorderRadius.circular(16)),
-                padding: padding,
-              ),
-
+                  shape: RoundedRectangleBorder(
+                      borderRadius: borderRadius ?? BorderRadius.circular(16)),
+                  padding: padding,
+                  backgroundColor: bgColor),
               onPressed: onPressed,
-              // color: bgColor,
               child: Center(
                 child: isLoading
                     ? SizedBox(
@@ -70,7 +68,8 @@ class CustomButton extends StatelessWidget {
             )
           : ElevatedButton(
               style: ElevatedButton.styleFrom(
-                //   color: bgColor,
+                backgroundColor: bgColor,
+                // color: bgColor,
                 // disabledColor: bgColor,
                 elevation: 1,
                 shape: RoundedRectangleBorder(

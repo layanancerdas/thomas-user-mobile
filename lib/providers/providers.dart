@@ -40,13 +40,18 @@ class Providers {
   }
 
   static Future signUp(
-      {String name, String email, String divisionId, String mobileNo}) async {
+      {String name,
+      String email,
+      String divisionId,
+      String mobileNo,
+      String nip}) async {
     return Dio().post('$BASE_API/users',
         data: {
           "name": name,
           "email": email,
           "division_id": divisionId,
-          "phone_number": mobileNo
+          "phone_number": mobileNo,
+          "nip": nip
         },
         options: Options(
             headers: {'authorization': basicAuth},
@@ -115,12 +120,12 @@ class Providers {
             }));
   }
 
-  static Future updateUser({String name, String photo}) async {
+  static Future updateUser({String name, String photo, String nip}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwtToken = prefs.getString("jwtToken");
 
     return Dio().put('$BASE_API/users',
-        data: {"name": name, 'photo': photo},
+        data: {"name": name, 'photo': photo, 'nip': nip},
         options: Options(
             headers: {'authorization': basicAuth, 'token': jwtToken},
             followRedirects: false,

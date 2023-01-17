@@ -55,6 +55,18 @@ class SignUpView extends SignUpViewModel {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+                    errorNip != "" && nipController.text.length <= 0
+                        ? ErrorForm(error: errorNip)
+                        : SizedBox(height: 33),
+                    FormText(
+                      hint: "NIP",
+                      controller: nipController,
+                      errorMessage:
+                          nipController.text.length > 0 ? errorNip : "",
+                      capitalize: true,
+                      onChange: clearError,
+                      idError: "nip",
+                    ),
                     errorFullname != "" && fullnameController.text.length <= 0
                         ? ErrorForm(error: errorFullname)
                         : SizedBox(height: 33),

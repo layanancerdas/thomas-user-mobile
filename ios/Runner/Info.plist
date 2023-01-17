@@ -26,7 +26,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>mobility-admin.geekco.id</string>
+			<string>mobility-admin.</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>customscheme</string>

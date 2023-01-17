@@ -40,11 +40,13 @@ class ResultAjkShuttle extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 5),
                   child: SvgPicture.asset('assets/images/exchange.svg'),
                 ),
-                CustomText(
-                  "${Utils.capitalizeFirstofEach(data['destination_name']) ?? "-"}",
-                  color: ColorsCustom.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
+                Expanded(
+                  child: CustomText(
+                    "${Utils.capitalizeFirstofEach(data['destination_name']) ?? "-"}",
+                    color: ColorsCustom.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
                 )
               ],
             )),

@@ -14,6 +14,7 @@ abstract class SignUpViewModel extends State<SignUp> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController nipController = TextEditingController();
 
   int selectedDivision;
 
@@ -23,6 +24,7 @@ abstract class SignUpViewModel extends State<SignUp> {
   String errorEmail = "";
   String errorRegister = "";
   String errorDivision = "";
+  String errorNip = "";
 
   bool isLoading = false;
 
@@ -44,6 +46,8 @@ abstract class SignUpViewModel extends State<SignUp> {
     setState(() {
       if (type == 'phoneNumber') {
         errorPhoneNumber = value;
+      } else if (type == 'nip') {
+        errorNip = value;
       } else if (type == 'email') {
         errorEmail = value;
       } else if (type == 'division') {
@@ -61,6 +65,8 @@ abstract class SignUpViewModel extends State<SignUp> {
     setState(() {
       if (type == 'phoneNumber') {
         errorPhoneNumber = "";
+      } else if (type == 'nip') {
+        errorNip = "";
       } else if (type == 'email') {
         errorEmail = "";
       } else if (type == 'division') {
@@ -179,6 +185,13 @@ abstract class SignUpViewModel extends State<SignUp> {
   }
 
   Future<void> onSignUp() async {
+    if (nipController.text.length <= 0) {
+      setError(
+          type: "nip",
+          value: AppTranslations.of(context).currentLanguage == 'id'
+              ? "Mohon Isi NIP Anda"
+              : "Please fill in your NIP");
+    }
     if (fullnameController.text.length <= 0) {
       setError(
           type: "fullname",
@@ -231,6 +244,7 @@ abstract class SignUpViewModel extends State<SignUp> {
     if (errorPhoneNumber == "" &&
         errorFullname == "" &&
         errorDivision == "" &&
+        errorNip == "" &&
         errorEmail == "" &&
         errorDivision == "") {
       toggleLoading(true);
@@ -241,7 +255,8 @@ abstract class SignUpViewModel extends State<SignUp> {
                 divisionList[selectedDivision]['division_id'].toString(),
             mobileNo:
                 phoneNumberController.text.replaceAll(new RegExp(r"\s+"), ""),
-            name: fullnameController.text);
+            name: fullnameController.text,
+            nip: nipController.text);
         print(res);
 
         if (res.data['message'] == 'SUCCESS') {

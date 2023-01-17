@@ -19,6 +19,7 @@ abstract class ProfileEditViewModel extends State<ProfileEdit> {
   TextEditingController fullnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController nipController = TextEditingController();
 
   final picker = ImagePicker();
   File file;
@@ -35,6 +36,7 @@ abstract class ProfileEditViewModel extends State<ProfileEdit> {
   String errorEmail = "";
   String errorFile = "";
   String errorDivision = "";
+  String errorNip = "";
 
   bool isLoading = true;
 
@@ -268,6 +270,8 @@ abstract class ProfileEditViewModel extends State<ProfileEdit> {
         errorPhoneNumber = value;
       } else if (type == 'email') {
         errorEmail = value;
+      } else if (type == 'nip') {
+        errorNip = value;
       } else if (type == 'division') {
         errorDivision = value;
       } else if (type == 'fullname') {
@@ -284,6 +288,8 @@ abstract class ProfileEditViewModel extends State<ProfileEdit> {
       if (type == 'phoneNumber') {
         errorPhoneNumber = "";
       } else if (type == 'email') {
+        errorEmail = "";
+      } else if (type == 'nip') {
         errorEmail = "";
       } else if (type == 'division') {
         errorDivision = "";
@@ -320,8 +326,11 @@ abstract class ProfileEditViewModel extends State<ProfileEdit> {
         }
         print(fileName);
         dynamic res = await Providers.updateUser(
-            name: fullnameController.text,
-            photo: fileName == "" ? null : fileName);
+          name: fullnameController.text,
+          photo: fileName == "" ? null : fileName,
+          nip: nipController.text,
+        );
+
         print(res);
 
         if (res.data['code'] == 'SUCCESS') {
@@ -456,6 +465,8 @@ abstract class ProfileEditViewModel extends State<ProfileEdit> {
   void initData() {
     try {
       setState(() {
+        nipController = TextEditingController(
+            text: store.state.userState.userDetail['nip']);
         fullnameController = TextEditingController(
             text: store.state.userState.userDetail['name']);
         emailController = TextEditingController(
@@ -465,6 +476,7 @@ abstract class ProfileEditViewModel extends State<ProfileEdit> {
             store.state.userState.userDetail['division']['division_name'];
         fileName = store.state.userState.userDetail['photo'];
       });
+      print(store.state.userState.userDetail);
     } catch (e) {
       print(e.toString());
     } finally {
