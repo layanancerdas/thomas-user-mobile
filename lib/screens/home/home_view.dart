@@ -213,6 +213,7 @@ class HomeView extends HomeViewModel {
                                     padding: const EdgeInsets.only(bottom: 35),
                                     child: TextButton(
                                         style: TextButton.styleFrom(
+                                          backgroundColor: Colors.white,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20),
@@ -333,6 +334,7 @@ class HomeView extends HomeViewModel {
                                                       name: "Multimoda",
                                                       color: ColorsCustom
                                                           .primaryBlueVeryLow,
+                                                        
                                                       onClick: () =>
                                                           showDialogComingSoon(),
                                                     ),

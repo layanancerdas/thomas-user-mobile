@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:redux/redux.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/helpers/utils.dart';
@@ -10,6 +11,7 @@ import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/general_action.dart';
 import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
+import 'package:tomas/screens/before_mytrip/screen/before_mytrip.dart';
 import 'package:tomas/screens/lifecycle_manager/lifecycle_manager.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/localization/app_translations.dart';
@@ -43,7 +45,7 @@ class _CardTripsState extends State<CardTrips> {
   List tripHistory = [];
 
   String status = "";
-
+  String responseStatus = '';
   bool isLoading = true;
 
   void toggleIsLoading(bool value) {
@@ -131,6 +133,8 @@ class _CardTripsState extends State<CardTrips> {
     try {
       print(widget.id);
       dynamic res = await Providers.getBookingByBookingId(bookingId: widget.id);
+      responseStatus = res.data['message'];
+      print(res.data);
       store.dispatch(SetSelectedMyTrip(
           selectedMyTrip: res.data['data'],
           getSelectedTrip: [res.data['data']]));
@@ -139,73 +143,19 @@ class _CardTripsState extends State<CardTrips> {
     }
   }
 
-  // Future<void> getTripOrderId() async {
-  //   if (widget.data['details'] != null) {
-  //     try {
-  //       dynamic res = await Providers.getTripOrderById(
-  //           tripOrderId: widget.data['details']['trip_order_id']);
-  //       List _temp = res.data['data']['trip_histories'] as List;
-
-  //       setState(() {
-  //         tripHistory = _temp
-  //             .where((element) =>
-  //                 element['pickup_point_id'] ==
-  //                 widget.data['pickup_point']['pickup_point_id'])
-  //             .toList();
-  //       });
-  //       // print(tripOrder);
-  //     } catch (e) {
-  //       print(e);
-  //     } finally {
-  //       getStatusText();
-  //     }
-  //   } else {
-  //     getStatusText();
-  //   }
-  // }
-
-  // Future<List> getTripOrderId() async {
-  //   // print(widget.data);
-  //   if (widget.data['details'] != null) {
-  //     try {
-  //       // print(widget.id);
-  //       dynamic res = await Providers.getTripOrderById(
-  //           tripOrderId: widget.data['details']['trip_order_id']);
-  //       List _temp = res.data['data']['trip_histories'];
-
-  //       return _temp
-  //           .where((element) =>
-  //               element['pickup_point_id'] ==
-  //               widget.data['pickup_point']['pickup_point_id'])
-  //           .toList();
-  //     } catch (e) {
-  //       print(e);
-  //       return [];
-  //     }
-  //   } else {
-  //     return [];
-  //   }
-  // }
-
-  // Future<void> setToStore() async {
-  //   List _tripHistories = await getTripOrderId();
-
-  // }
-
   Future<void> onClick() async {
     store.dispatch(SetIsLoading(isLoading: true));
     await getBookingByGroupId();
-    Navigator.pushNamed(context, "/DetailTrip");
+    if (responseStatus == 'SUCCESS') {
+      Navigator.pushNamed(context, "/DetailTrip");
+    } else {}
+
     store.dispatch(SetIsLoading(isLoading: false));
   }
 
   @override
   void initState() {
     super.initState();
-    // Timer.periodic(Duration(seconds: 3), (_) {
-    //   getTripOrderId();
-    // });
-    // getStatusText();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
@@ -246,7 +196,9 @@ class _CardTripsState extends State<CardTrips> {
           // highlightColor: ColorsCustom.black.withOpacity(0.01),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
-        onPressed: () => onClick(),
+        onPressed: () =>
+            //  onClick(),
+            Get.to(BeforeMyTrip()),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

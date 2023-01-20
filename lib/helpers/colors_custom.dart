@@ -25,4 +25,6 @@ class ColorsCustom {
   static Color disable = Color(0xFFA1A4A8);
   static Color border = Color(0xFFE8E8E8);
   static Color blueSystem = Color(0xFF007AFF);
+  static Color newGreen = Color(0xFF0C8B61);
+  static Color newGreenLight = Color(0xFF10B981);
 }

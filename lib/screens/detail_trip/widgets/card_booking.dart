@@ -73,7 +73,7 @@ class CardBooking extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomText(
-                "${AppTranslations.of(context).text("booking_code")}",
+                      "${AppTranslations.of(context).text("booking_code")}",
                       color: ColorsCustom.generalText,
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
@@ -255,7 +255,7 @@ class CardBooking extends StatelessWidget {
                                         ),
                                     fullscreenDialog: true)),
                             child: CustomText(
-                            "${AppTranslations.of(context).text("view_on_map")}",
+                              "${AppTranslations.of(context).text("view_on_map")}",
                               fontWeight: FontWeight.w400,
                               color: ColorsCustom.primary,
                               fontSize: 12,
@@ -291,7 +291,7 @@ class CardBooking extends StatelessWidget {
                                         ),
                                     fullscreenDialog: true)),
                             child: CustomText(
-                            "${AppTranslations.of(context).text("view_on_map")}",
+                              "${AppTranslations.of(context).text("view_on_map")}",
                               fontWeight: FontWeight.w400,
                               color: ColorsCustom.primary,
                               fontSize: 12,

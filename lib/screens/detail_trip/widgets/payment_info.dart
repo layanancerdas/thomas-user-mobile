@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:redux/redux.dart';
 import 'package:tomas/configs/config.dart';
 import 'package:tomas/helpers/colors_custom.dart';
@@ -122,9 +123,11 @@ class _PaymentInfoState extends State<PaymentInfo> {
                       dataPaymentMethod != null
                           ? SizedBox(
                               height: 20,
-                              child: Image.network(
-                                "$BASE_API/files/${dataPaymentMethod['logo']}",
-                              ))
+                              child:
+                                  SvgPicture.asset('assets/images/coupon.svg'))
+                          // Image.network(
+                          //   "$BASE_API/files/${dataPaymentMethod['logo']}",
+                          // ))
                           : SizedBox(),
                     ],
                   ),

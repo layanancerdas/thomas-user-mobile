@@ -40,10 +40,9 @@ class UpcomingTrip extends StatelessWidget {
                             child: TextButton(
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,
-                              // highlightColor:
-                              //     ColorsCustom.black.withOpacity(0.05),
+                                // highlightColor:
+                                //     ColorsCustom.black.withOpacity(0.05),
                               ),
-                              
                               onPressed: () => Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -64,7 +63,7 @@ class UpcomingTrip extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        height: screenSize.width / 1.88,
+                        height: screenSize.width / 1.58,
                         width: double.infinity,
                         child: ListView.builder(
                           padding: EdgeInsets.only(left: 8),

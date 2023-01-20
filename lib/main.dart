@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:redux/redux.dart';
@@ -12,6 +13,11 @@ import 'package:tomas/helpers/deeplinks.dart';
 import 'package:tomas/helpers/push_notification_service.dart';
 import 'package:tomas/localization/app_translations_delegate.dart';
 import 'package:tomas/localization/application.dart';
+import 'package:tomas/providers/providers.dart';
+import 'package:tomas/redux/actions/ajk_action.dart';
+import 'package:tomas/redux/actions/general_action.dart';
+import 'package:tomas/redux/actions/transaction_action.dart';
+import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/screens/home/home.dart';
 import 'package:tomas/screens/introduction/introduction.dart';
 import 'package:tomas/screens/landing/landing.dart';
@@ -51,7 +57,7 @@ class _MainAppState extends State<MainApp> {
   StreamSubscription _linkSubscription;
   SharedPreferences prefs;
   AppTranslationsDelegate _newLocaleDelegate;
-
+  Store<AppState> store;
   bool isLogin = false;
   bool introduction = false;
 
@@ -145,7 +151,7 @@ class _MainAppState extends State<MainApp> {
     return OverlaySupport(
         child: StoreProvider<AppState>(
             store: widget.store,
-            child: LifecycleManager(MaterialApp(
+            child: LifecycleManager(GetMaterialApp(
               navigatorKey: navigatorKey,
               title: 'Tomas',
               debugShowCheckedModeBanner: false,
@@ -165,6 +171,7 @@ class _MainAppState extends State<MainApp> {
                 _newLocaleDelegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
               ],
               supportedLocales: <Locale>[
                 const Locale('en', ''),

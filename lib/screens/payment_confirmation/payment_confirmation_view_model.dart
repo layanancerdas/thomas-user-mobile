@@ -288,6 +288,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
 
   Future<void> getPaymentMethods() async {
     try {
+      print(store.state.transactionState.paymentMethod.length);
       if (store.state.transactionState.paymentMethod.length <= 0) {
         dynamic res = await Providers.getPaymentMethods();
         store.dispatch(SetPaymentMethod(paymentMethod: res.data['data']));
@@ -301,6 +302,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
   Future<void> initData() async {
     toggleLoading(true);
     await LifecycleManager.of(context).getVouchers();
+    print('object');
     await getPaymentMethods();
     if (store.state.ajkState.selectedPickUpPoint['price'] > 0) {
       await store.dispatch(SetSelectedPaymentMethod(

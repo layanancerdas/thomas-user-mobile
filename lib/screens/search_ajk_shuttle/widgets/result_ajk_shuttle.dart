@@ -29,11 +29,13 @@ class ResultAjkShuttle extends StatelessWidget {
                   child: SvgPicture.asset('assets/images/school_bus.svg'),
                 ),
                 SizedBox(width: 16),
-                CustomText(
-                  "${Utils.capitalizeFirstofEach(data['pickup_points'][0]['name']) ?? "-"}",
-                  color: ColorsCustom.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
+                Expanded(
+                  child: CustomText(
+                    "${Utils.capitalizeFirstofEach(data['pickup_points'][0]['name']) ?? "-"}",
+                    color: ColorsCustom.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
                 ),
                 Container(
                   width: 30,

@@ -121,6 +121,7 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       dynamic res = await Providers.getUserDetail();
       // print(res);
+      print(res.data);
       if (res.data['code'].toString() == 'SUCCESS') {
         store.dispatch(SetUserDetail(userDetail: res.data['data']));
         if (res.data['data']['permitted_ajk'] &&
@@ -408,14 +409,15 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
       String jwtToken = prefs.getString("jwtToken");
 
       if (jwtToken != null && !noInternet && !maintenance) {
-        await getUserDetail();
-        await getResolveDate();
-        await getPaymentMethods();
-        await getBookingData();
-        await getVouchers();
-        await getUserBalance();
-        await getNotifications();
-        automaticCanceled();
+        // await getUserDetail();
+        // await getResolveDate();
+        // await getPaymentMethods();
+        // await getBookingData();
+        // await getVouchers();
+        // await getUserBalance();
+        // await getNotifications();
+        // print('object');
+        // automaticCanceled();
       } else {
         await getUserDetail();
       }
@@ -434,12 +436,13 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     // }
 
     if (jwtToken != null && !noInternet && !maintenance) {
-      getUserDetail();
-      getBookingData();
-      getVouchers();
-      getUserBalance();
-      getPaymentMethods();
-      getNotifications();
+      // getUserDetail();
+      // getBookingData();
+      // getVouchers();
+      // getUserBalance();
+      // getPaymentMethods();
+      // getNotifications();
+      // print('object');
     } else {
       await getUserDetail();
     }
@@ -462,11 +465,12 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     super.initState();
     initConnectivity();
     checkInternet(context);
+    print('object2');
     // checkBE(context);
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
-    Timer.periodic(Duration(seconds: 3), (_) => automaticCanceled());
+    // Timer.periodic(Duration(seconds: 3), (_) => automaticCanceled());
     // Timer.periodic(Duration(seconds: 3), (_) => initPerSecond());
     Timer.periodic(Duration(seconds: 1), (_) {
       checkInternet(context);
@@ -476,7 +480,8 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
       initialize();
-      initData();
+      // initData();
+      print('object');
     });
   }
 

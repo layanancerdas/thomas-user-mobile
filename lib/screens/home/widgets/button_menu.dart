@@ -25,6 +25,7 @@ class ButtonMenu extends StatelessWidget {
         ]),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
             padding: EdgeInsets.only(bottom: 10),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),

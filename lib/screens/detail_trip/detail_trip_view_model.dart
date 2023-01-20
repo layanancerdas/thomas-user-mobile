@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:tomas/localization/app_translations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,14 +28,17 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
   NumberFormat timeFormat = new NumberFormat("00");
-
   bool onBottom = false;
   Map dataPayment = {};
 
   List tripHistory = [];
 
   bool isLoading = false;
-
+  double latPickUp = 0;
+  double longPickUp = 0;
+  double latNow = 0;
+  double longNow = 0;
+  double distance = 0;
   String status = "";
   String countdown = "00:00:00";
 
@@ -177,14 +182,19 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       dynamic res = await Providers.getBookingByBookingId(
           bookingId: store.state.userState.selectedMyTrip['booking_id']);
       print('booking id');
-      print(res.data['data']);
-      store.dispatch(SetSelectedMyTrip(
-          selectedMyTrip: res.data['data'],
-          getSelectedTrip: [res.data['data']]));
-      store.dispatch(SetSelectedPickUpPoint(
-          selectedPickUpPoint: res.data['data']['pickup_point']));
-      store.dispatch(SetSelectedTrip(
-          selectedTrip: res.data['data']['trip']['trip_group']));
+      //pickup lat lung
+      // print(res.data['data']['pickup_point']);
+      latPickUp = res.data['data']['pickup_point']['latitude'];
+      longPickUp = res.data['data']['pickup_point']['longitude'];
+      //dest lat lung
+      // print(res.data['data']['trip']['trip_group']['route']);
+      // store.dispatch(SetSelectedMyTrip(
+      //     selectedMyTrip: res.data['data'],
+      //     getSelectedTrip: [res.data['data']]));
+      // store.dispatch(SetSelectedPickUpPoint(
+      //     selectedPickUpPoint: res.data['data']['pickup_point']));
+      // store.dispatch(SetSelectedTrip(
+      //     selectedTrip: res.data['data']['trip']['trip_group']));
     } catch (e) {
       print('booking id');
       print(e);
@@ -359,6 +369,23 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
     return false;
   }
 
+  Future<void> getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      List<Placemark> _placemark =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      latNow = position.latitude;
+      longNow = position.longitude;
+      // print(_placemark);
+      // print(Geolocator.distanceBetween(
+      //     position.latitude, position.longitude, -6.894450, 107.640229));
+
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> initData() async {
     // await getTripOrderId();
     getStatusText();
@@ -377,6 +404,16 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
     }
   }
 
+  Future<void> getBookingFromBookingId() async {
+    try {
+      dynamic res = await Providers.getBookingByBookingId(
+          bookingId: widget.dataNotif['booking_id']);
+      print(res.data['data']);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -384,6 +421,16 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       if (mounted) {
         getCountdown();
         getStatusText();
+      }
+    });
+    Timer.periodic(Duration(seconds: 2), (_) {
+      if (mounted) {
+        getCurrentLocation();
+        distance =
+            Geolocator.distanceBetween(latPickUp, longPickUp, latNow, longNow);
+        // print(
+        //     Geolocator.distanceBetween(latPickUp, longPickUp, latNow, longNow));
+        // print(distance);
       }
     });
 
@@ -400,9 +447,11 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
       getCountdown();
-      // getBookingByGroupId();
+
+      getBookingByGroupId();
       // getTripOrderId();
       getStatusText();
+      // getBookingFromBookingId();
       LifecycleManager.of(context).getBookingData();
       initData();
       if (widget.dataNotif != null) {

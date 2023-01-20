@@ -41,6 +41,7 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
       body: StoreConnector<AppState, AppState>(
           converter: (store) => store.state,
           builder: (context, state) {
+            print(state.transactionState.useBalance);
             return Stack(
               children: [
                 ListView(
