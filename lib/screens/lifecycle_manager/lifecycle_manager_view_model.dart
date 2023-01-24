@@ -465,7 +465,6 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
     super.initState();
     initConnectivity();
     checkInternet(context);
-    print('object2');
     // checkBE(context);
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
@@ -481,7 +480,6 @@ abstract class LifecycleManagerViewModel extends State<LifecycleManager> {
       store = StoreProvider.of<AppState>(context);
       initialize();
       // initData();
-      print('object');
     });
   }
 

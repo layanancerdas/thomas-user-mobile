@@ -5,8 +5,9 @@ class ColorsCustom {
   static Color primaryLow = Color(0xFFFFA0A0);
   static Color primaryHigh = Color(0xFFBB1010);
   static Color primary = Color(0xFFCC0000);
+  static Color primaryDark = Color(0xFFB72F47);
   static Color black = Color(0xFF26282B);
-  static Color generalText = Color(0xFF53575B);
+  static Color generalText = Color(0xFF53555B);
   static Color softGrey = Color(0xFFE8E8E8);
   static Color milk = Color(0xFFf1f2f6);
   static Color yellow = Color(0xFFFF9F33);

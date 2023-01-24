@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:tomas/widgets/card_trips2.dart';
+import 'package:tomas/widgets/card_list.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/widgets/detail_card_trips2.dart';
 
@@ -14,7 +14,7 @@ class BeforeMyTrip extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: ListView(children: [
-        CardTrips2(
+        CardList(
           title: 'Test',
           type: 'Type test',
           pointA: 'terminal',
