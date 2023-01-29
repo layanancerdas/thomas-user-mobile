@@ -4,24 +4,13 @@ import 'package:get/get.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/localization/app_translations.dart';
-import 'package:tomas/widgets/detail_card_list.dart';
+import 'package:tomas/screens/detail_subscription/screen/detail_subscription.dart';
 
 class CardList extends StatefulWidget {
-  final String id, title, type, pointA, pointB;
-  final DateTime dateA, dateB;
-  final bool home;
-  final Map data;
-
+  final String pointA, pointB;
   CardList({
-    this.title,
-    this.type,
     this.pointA,
     this.pointB,
-    this.dateA,
-    this.dateB,
-    this.home: false,
-    this.id,
-    this.data,
   });
 
   @override
@@ -49,12 +38,10 @@ class _CardListState extends State<CardList> {
     final screenSize = MediaQuery.of(context).size;
     return Container(
       width: screenSize.width - 32,
-      margin: widget.home
-          ? EdgeInsets.only(left: 8, right: 4)
-          : EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
                 blurRadius: 24, offset: Offset(0, 4), color: Colors.black12)
@@ -65,7 +52,7 @@ class _CardListState extends State<CardList> {
             // highlightColor: ColorsCustom.black.withOpacity(0.01),
             padding: EdgeInsets.all(0)),
         onPressed: () => {
-          Get.to(DetailCardList(
+          Get.to(DetailSubscription(
             pointA: 'terminal',
             pointB: 'kantor',
           ))
@@ -77,8 +64,8 @@ class _CardListState extends State<CardList> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24)),
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
                 color: ColorsCustom.primaryDark,
               ),
               padding: EdgeInsets.all(12),

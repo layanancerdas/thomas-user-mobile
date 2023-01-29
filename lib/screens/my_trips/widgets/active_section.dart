@@ -7,10 +7,13 @@ import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/redux/modules/user_state.dart';
+import 'package:tomas/widgets/card_active.dart';
+import 'package:tomas/widgets/card_active_checkin.dart';
 import 'package:tomas/widgets/card_trips.dart';
 import 'package:tomas/widgets/custom_button.dart';
 import 'package:tomas/widgets/no_trips.dart';
 import 'package:tomas/localization/app_translations.dart';
+
 class ActiveSection extends StatefulWidget {
   @override
   _ActiveSectionState createState() => _ActiveSectionState();
@@ -74,105 +77,117 @@ class _ActiveSectionState extends State<ActiveSection> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    return StoreConnector<AppState, UserState>(
-        converter: (store) => store.state.userState,
-        builder: (context, state) {
-          return SmartRefresher(
-              controller: refreshController,
-              enablePullUp: state.activeTrip.length > 0 ?? false,
-              enablePullDown: true,
-              onLoading: onLoading,
-              onRefresh: onRefresh,
-              header: ClassicHeader(),
-              footer: ClassicFooter(
-                loadStyle: LoadStyle.ShowWhenLoading,
-              ),
-              child: state.activeTrip.length > 0
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(top: 16, bottom: 16),
-                      itemCount: state.activeTrip.length,
-                      itemBuilder: (ctx, i) {
-                        return CardTrips(
-                          dateA: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                              ? DateTime.fromMillisecondsSinceEpoch(
-                                  state.activeTrip[i]['trip']['departure_time'])
-                              : DateTime.fromMillisecondsSinceEpoch(state
-                                  .activeTrip[i]['trip']['departure_time']),
-                          dateB: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                              ? DateTime.fromMillisecondsSinceEpoch(state
+    return
+        // ListView(
+        //   padding: EdgeInsets.all(12),
+        //   children: [
+        //     CardActiveCheckIn(), CardActive(), CardActive()],
+        // );
+        StoreConnector<AppState, UserState>(
+            converter: (store) => store.state.userState,
+            builder: (context, state) {
+              return SmartRefresher(
+                  controller: refreshController,
+                  enablePullUp: state.activeTrip.length > 0 ?? false,
+                  enablePullDown: true,
+                  onLoading: onLoading,
+                  onRefresh: onRefresh,
+                  header: ClassicHeader(),
+                  footer: ClassicFooter(
+                    loadStyle: LoadStyle.ShowWhenLoading,
+                  ),
+                  child: state.activeTrip.length > 0
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(top: 16, bottom: 16),
+                          itemCount: state.activeTrip.length,
+                          itemBuilder: (ctx, i) {
+                            return CardTrips(
+                              dateA: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? DateTime.fromMillisecondsSinceEpoch(state
                                       .activeTrip[i]['trip']['departure_time'])
-                                  .add(Duration(
-                                      minutes: state.activeTrip[i]
-                                          ['pickup_point']['time_to_dest']))
-                              : DateTime.fromMillisecondsSinceEpoch(
-                                      state.activeTrip[i]['trip']['departure_time'])
-                                  .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
-                          timeB: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                              ? DateTime.parse(state.activeTrip[i]['trip']['trip_group']['start_date'] + " " + state.activeTrip[i]['trip']['trip_group']['return_time'])
-                                  .add(Duration(
-                                      minutes: state.activeTrip[i]
-                                          ['pickup_point']['time_to_dest']))
-                              : DateTime.parse(state.activeTrip[i]['trip']
+                                  : DateTime.fromMillisecondsSinceEpoch(state
+                                      .activeTrip[i]['trip']['departure_time']),
+                              dateB: state.activeTrip[i]['trip']['type'] == 'RETURN'
+                                  ? DateTime.fromMillisecondsSinceEpoch(
+                                          state.activeTrip[i]['trip']
+                                              ['departure_time'])
+                                      .add(Duration(
+                                          minutes: state.activeTrip[i]
+                                              ['pickup_point']['time_to_dest']))
+                                  : DateTime.fromMillisecondsSinceEpoch(
+                                          state.activeTrip[i]['trip']['departure_time'])
+                                      .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
+                              timeB: state.activeTrip[i]['trip']['type'] == 'RETURN'
+                                  ? DateTime.parse(state.activeTrip[i]['trip']['trip_group']['start_date'] + " " + state.activeTrip[i]['trip']['trip_group']['return_time'])
+                                      .add(Duration(
+                                          minutes: state.activeTrip[i]
+                                              ['pickup_point']['time_to_dest']))
+                                  : DateTime.parse(state.activeTrip[i]['trip']
+                                              ['trip_group']['start_date'] +
+                                          " " +
+                                          state.activeTrip[i]['trip']
+                                              ['trip_group']['departure_time'])
+                                      .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
+                              timeA: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? DateTime.parse(state.activeTrip[i]['trip']
                                           ['trip_group']['start_date'] +
                                       " " +
                                       state.activeTrip[i]['trip']['trip_group']
-                                          ['departure_time'])
-                                  .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
-                          timeA: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                              ? DateTime.parse(state.activeTrip[i]['trip']
-                                      ['trip_group']['start_date'] +
-                                  " " +
-                                  state.activeTrip[i]['trip']['trip_group']
-                                      ['return_time'])
-                              : DateTime.parse(state.activeTrip[i]['trip']
-                                      ['trip_group']['start_date'] +
-                                  " " +
-                                  state.activeTrip[i]['trip']['trip_group']
-                                      ['departure_time']),
-                          title: "AJK " +
-                              (state.activeTrip[i]['trip']['type'] == 'RETURN'
-                                  ? "Return"
-                                  : "Departure"),
-                          pointA:
-                              state.activeTrip[i]['trip']['type'] == 'RETURN'
+                                          ['return_time'])
+                                  : DateTime.parse(state.activeTrip[i]['trip']
+                                          ['trip_group']['start_date'] +
+                                      " " +
+                                      state.activeTrip[i]['trip']['trip_group']
+                                          ['departure_time']),
+                              title: "AJK " +
+                                  (state.activeTrip[i]['trip']['type'] ==
+                                          'RETURN'
+                                      ? "Return"
+                                      : "Departure"),
+                              pointA: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
                                   ? state.activeTrip[i]['trip']['trip_group']
                                       ['route']['destination_name']
                                   : state.activeTrip[i]['pickup_point']['name'],
-                          pointB:
-                              state.activeTrip[i]['trip']['type'] == 'RETURN'
+                              pointB: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
                                   ? state.activeTrip[i]['pickup_point']['name']
                                   : state.activeTrip[i]['trip']['trip_group']
                                       ['route']['destination_name'],
-                          type: state.activeTrip[i]['details'] != null &&
-                                  state.activeTrip[i]['details']['status'] ==
-                                      'ONGOING'
-                              ? 'Ongoing'
-                              : "Booking Confirmed",
-                          data: state.activeTrip[i],
-                          id: state.activeTrip[i]['booking_id'],
-                          differenceAB:
-                              "${state.activeTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.activeTrip[i]['pickup_point']['time_to_dest'] % 60}m",
-                        );
-                      },
-                    )
-                  : NoTrips(
-                      text:
-                          "${AppTranslations.of(context).text("no_active_trip")}",
-                      button: CustomButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, '/SearchAjkShuttle'),
-                        bgColor: ColorsCustom.primary,
-                        textColor: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        text: "${AppTranslations.of(context).text("create_trip")}",
-                        width: screenSize.width / 2,
-                        borderRadius: BorderRadius.circular(30),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 13, horizontal: 30),
-                      ),
-                    ));
-        });
+                              type: state.activeTrip[i]['details'] != null &&
+                                      state.activeTrip[i]['details']
+                                              ['status'] ==
+                                          'ONGOING'
+                                  ? 'Ongoing'
+                                  : "Booking Confirmed",
+                              data: state.activeTrip[i],
+                              id: state.activeTrip[i]['booking_id'],
+                              differenceAB:
+                                  "${state.activeTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.activeTrip[i]['pickup_point']['time_to_dest'] % 60}m",
+                            );
+                          },
+                        )
+                      : NoTrips(
+                          text:
+                              "${AppTranslations.of(context).text("no_active_trip")}",
+                          button: CustomButton(
+                            onPressed: () => Navigator.pushNamed(
+                                context, '/SearchAjkShuttle'),
+                            bgColor: ColorsCustom.primary,
+                            textColor: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            text:
+                                "${AppTranslations.of(context).text("create_trip")}",
+                            width: screenSize.width / 2,
+                            borderRadius: BorderRadius.circular(30),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 13, horizontal: 30),
+                          ),
+                        ));
+            });
   }
 }

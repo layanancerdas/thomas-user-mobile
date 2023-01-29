@@ -28,4 +28,5 @@ class ColorsCustom {
   static Color blueSystem = Color(0xFF007AFF);
   static Color newGreen = Color(0xFF0C8B61);
   static Color newGreenLight = Color(0xFF10B981);
+  static Color newGrey = Color(0xFFD2D3D8);
 }

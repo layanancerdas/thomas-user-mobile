@@ -196,9 +196,9 @@ class _CardTripsState extends State<CardTrips> {
           // highlightColor: ColorsCustom.black.withOpacity(0.01),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
-        onPressed: () =>
-            //  onClick(),
-            Get.to(BeforeMyTrip()),
+        onPressed: () => onClick(),
+        // Get.to(BeforeMyTrip()
+        // ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

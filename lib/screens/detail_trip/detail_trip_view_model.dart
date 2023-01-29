@@ -373,8 +373,8 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
-      List<Placemark> _placemark =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
+      // List<Placemark> _placemark =
+      //     await placemarkFromCoordinates(position.latitude, position.longitude);
       latNow = position.latitude;
       longNow = position.longitude;
       // print(_placemark);

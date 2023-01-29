@@ -6,9 +6,11 @@ import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/redux/modules/user_state.dart';
+import 'package:tomas/widgets/card_complete.dart';
 import 'package:tomas/widgets/card_trips.dart';
 import 'package:tomas/widgets/no_trips.dart';
 import 'package:tomas/localization/app_translations.dart';
+
 class CompletedSection extends StatefulWidget {
   @override
   _CompletedSectionState createState() => _CompletedSectionState();
@@ -84,81 +86,87 @@ class _CompletedSectionState extends State<CompletedSection> {
               footer: ClassicFooter(
                 loadStyle: LoadStyle.ShowWhenLoading,
               ),
-              child: state.completedTrip.length > 0
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(top: 16, bottom: 16),
-                      itemCount: state.completedTrip.length,
-                      itemBuilder: (ctx, i) {
-                        return CardTrips(
-                          dateA:
-                              state.completedTrip[i]['trip']['type'] == 'RETURN'
-                                  ? DateTime.fromMillisecondsSinceEpoch(
-                                      state.completedTrip[i]['trip']
-                                          ['departure_time'])
-                                  : DateTime.fromMillisecondsSinceEpoch(
-                                      state.completedTrip[i]['trip']
-                                          ['departure_time']),
-                          dateB: state.completedTrip[i]['trip']['type'] ==
-                                  'RETURN'
-                              ? DateTime.fromMillisecondsSinceEpoch(
-                                      state.completedTrip[i]['trip']
-                                          ['departure_time'])
-                                  .add(Duration(
-                                      minutes: state.completedTrip[i]
-                                          ['pickup_point']['time_to_dest']))
-                              : DateTime.fromMillisecondsSinceEpoch(
-                                      state.completedTrip[i]['trip']['departure_time'])
-                                  .add(Duration(minutes: state.completedTrip[i]['pickup_point']['time_to_dest'])),
-                          timeB: state.completedTrip[i]['trip']['type'] == 'RETURN'
-                              ? DateTime.parse(state.completedTrip[i]['trip']['trip_group']['start_date'] + " " + state.completedTrip[i]['trip']['trip_group']['return_time'])
-                                  .add(Duration(
-                                      minutes: state.completedTrip[i]
-                                          ['pickup_point']['time_to_dest']))
-                              : DateTime.parse(state.completedTrip[i]['trip']
-                                          ['trip_group']['start_date'] +
-                                      " " +
-                                      state.completedTrip[i]['trip']
-                                          ['trip_group']['departure_time'])
-                                  .add(Duration(minutes: state.completedTrip[i]['pickup_point']['time_to_dest'])),
-                          timeA:
-                              state.completedTrip[i]['trip']['type'] == 'RETURN'
-                                  ? DateTime.parse(state.completedTrip[i]
-                                          ['trip']['trip_group']['start_date'] +
-                                      " " +
-                                      state.completedTrip[i]['trip']
-                                          ['trip_group']['return_time'])
-                                  : DateTime.parse(state.completedTrip[i]
-                                          ['trip']['trip_group']['start_date'] +
-                                      " " +
-                                      state.completedTrip[i]['trip']
-                                          ['trip_group']['departure_time']),
-                          title: "AJK " +
-                              (state.completedTrip[i]['trip']['type'] ==
-                                      'RETURN'
-                                  ? "Return"
-                                  : "Departure"),
-                          pointA: state.completedTrip[i]['trip']['type'] ==
-                                  'RETURN'
-                              ? state.completedTrip[i]['trip']['trip_group']
-                                  ['route']['destination_name']
-                              : state.completedTrip[i]['pickup_point']['name'],
-                          pointB: state.completedTrip[i]['trip']['type'] ==
-                                  'RETURN'
-                              ? state.completedTrip[i]['pickup_point']['name']
-                              : state.completedTrip[i]['trip']['trip_group']
-                                  ['route']['destination_name'],
-                          type: "Completed",
-                          data: state.completedTrip[i],
-                          id: state.completedTrip[i]['booking_id'],
-                          differenceAB:
-                              "${state.completedTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.completedTrip[i]['pickup_point']['time_to_dest'] % 60}m",
-                        );
-                      })
-                  : NoTrips(
-                      text:
-                          "${AppTranslations.of(context).text("no_completed_trip")}",
-                    ));
+              child: ListView(
+                padding: EdgeInsets.all(20),
+                children: [CardComplete(), CardComplete()],
+              )
+              // state.completedTrip.length > 0
+              //     ? ListView.builder(
+              //         shrinkWrap: true,
+              //         padding: EdgeInsets.only(top: 16, bottom: 16),
+              //         itemCount: state.completedTrip.length,
+              //         itemBuilder: (ctx, i) {
+              //           return CardTrips(
+              //             dateA:
+              //                 state.completedTrip[i]['trip']['type'] == 'RETURN'
+              //                     ? DateTime.fromMillisecondsSinceEpoch(
+              //                         state.completedTrip[i]['trip']
+              //                             ['departure_time'])
+              //                     : DateTime.fromMillisecondsSinceEpoch(
+              //                         state.completedTrip[i]['trip']
+              //                             ['departure_time']),
+              //             dateB: state.completedTrip[i]['trip']['type'] ==
+              //                     'RETURN'
+              //                 ? DateTime.fromMillisecondsSinceEpoch(
+              //                         state.completedTrip[i]['trip']
+              //                             ['departure_time'])
+              //                     .add(Duration(
+              //                         minutes: state.completedTrip[i]
+              //                             ['pickup_point']['time_to_dest']))
+              //                 : DateTime.fromMillisecondsSinceEpoch(
+              //                         state.completedTrip[i]['trip']['departure_time'])
+              //                     .add(Duration(minutes: state.completedTrip[i]['pickup_point']['time_to_dest'])),
+              //             timeB: state.completedTrip[i]['trip']['type'] == 'RETURN'
+              //                 ? DateTime.parse(state.completedTrip[i]['trip']['trip_group']['start_date'] + " " + state.completedTrip[i]['trip']['trip_group']['return_time'])
+              //                     .add(Duration(
+              //                         minutes: state.completedTrip[i]
+              //                             ['pickup_point']['time_to_dest']))
+              //                 : DateTime.parse(state.completedTrip[i]['trip']
+              //                             ['trip_group']['start_date'] +
+              //                         " " +
+              //                         state.completedTrip[i]['trip']
+              //                             ['trip_group']['departure_time'])
+              //                     .add(Duration(minutes: state.completedTrip[i]['pickup_point']['time_to_dest'])),
+              //             timeA:
+              //                 state.completedTrip[i]['trip']['type'] == 'RETURN'
+              //                     ? DateTime.parse(state.completedTrip[i]
+              //                             ['trip']['trip_group']['start_date'] +
+              //                         " " +
+              //                         state.completedTrip[i]['trip']
+              //                             ['trip_group']['return_time'])
+              //                     : DateTime.parse(state.completedTrip[i]
+              //                             ['trip']['trip_group']['start_date'] +
+              //                         " " +
+              //                         state.completedTrip[i]['trip']
+              //                             ['trip_group']['departure_time']),
+              //             title: "AJK " +
+              //                 (state.completedTrip[i]['trip']['type'] ==
+              //                         'RETURN'
+              //                     ? "Return"
+              //                     : "Departure"),
+              //             pointA: state.completedTrip[i]['trip']['type'] ==
+              //                     'RETURN'
+              //                 ? state.completedTrip[i]['trip']['trip_group']
+              //                     ['route']['destination_name']
+              //                 : state.completedTrip[i]['pickup_point']['name'],
+              //             pointB: state.completedTrip[i]['trip']['type'] ==
+              //                     'RETURN'
+              //                 ? state.completedTrip[i]['pickup_point']['name']
+              //                 : state.completedTrip[i]['trip']['trip_group']
+              //                     ['route']['destination_name'],
+              //             type: "Completed",
+              //             data: state.completedTrip[i],
+              //             id: state.completedTrip[i]['booking_id'],
+              //             differenceAB:
+              //                 "${state.completedTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.completedTrip[i]['pickup_point']['time_to_dest'] % 60}m",
+              //           );
+              //         })
+              //     : NoTrips(
+              //         text:
+              //             "${AppTranslations.of(context).text("no_completed_trip")}",
+              //       )
+
+              );
         });
   }
 }

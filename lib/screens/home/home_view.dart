@@ -50,8 +50,8 @@ class HomeView extends HomeViewModel {
                   selectedItemColor: ColorsCustom.black,
                   backgroundColor: Colors.white,
                   elevation: 10,
-                  unselectedFontSize: 12,
-                  selectedFontSize: 12,
+                  unselectedFontSize: 11,
+                  selectedFontSize: 11,
                   showUnselectedLabels: true,
                   unselectedItemColor: ColorsCustom.disable,
                   items: [
@@ -334,7 +334,6 @@ class HomeView extends HomeViewModel {
                                                       name: "Multimoda",
                                                       color: ColorsCustom
                                                           .primaryBlueVeryLow,
-                                                        
                                                       onClick: () =>
                                                           showDialogComingSoon(),
                                                     ),

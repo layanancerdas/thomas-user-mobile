@@ -9,6 +9,9 @@ import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/ajk_action.dart';
 import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
+import 'package:tomas/screens/choose_month/screen/choose_month.dart';
+import 'package:tomas/screens/detail_order/screen/detail_order.dart';
+import 'package:tomas/screens/detail_subscription/screen/detail_subscription.dart';
 import 'package:tomas/screens/shuttle_details/shuttle_details.dart';
 import './round_trip.dart';
 
@@ -31,7 +34,11 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
     // print(value);
     await store.dispatch(SetSelectedTrip(selectedTrip: value));
     Navigator.push(
-        context, MaterialPageRoute(builder: (_) => ShuttleDetails()));
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                // ShuttleDetails()
+                DetailOrder()));
   }
 
   Future<void> getAllTripById() async {

@@ -366,7 +366,7 @@ abstract class HomeViewModel extends State<Home> {
   }
 
   Future<void> initData() async {
-    toggleIsLoading(true);
+    // toggleIsLoading(true);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String jwtToken = prefs.getString("jwtToken");

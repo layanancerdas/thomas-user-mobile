@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:tomas/configs/config.dart';
 import 'package:tomas/helpers/colors_custom.dart';
@@ -22,8 +23,11 @@ class MapFullscreen extends StatefulWidget {
 
 class _MapFullscreenState extends State<MapFullscreen> {
   final Random _rnd = new Random();
-
+  double distance = 0;
+  double latNow = 0;
+  double longNow = 0;
   MapboxMapController _mapController;
+
   List<Marker> _markers = [];
   List<_MarkerState> _markerStates = [];
 
@@ -31,7 +35,20 @@ class _MapFullscreenState extends State<MapFullscreen> {
     _markerStates.add(markerState);
   }
 
-  void _onMapCreated(MapboxMapController controller) {
+  void _getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    setState(() {
+      latNow = position.latitude;
+      longNow = position.longitude;
+    });
+  }
+
+  void _onMapCreated(MapboxMapController controller) async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    distance = Geolocator.distanceBetween(widget.coordinates.latitude,
+        widget.coordinates.longitude, position.latitude, position.longitude);
     setState(() {
       _mapController = controller;
     });
@@ -40,10 +57,27 @@ class _MapFullscreenState extends State<MapFullscreen> {
         _updateMarkerPosition();
       }
     });
+
     _mapController.toScreenLocationBatch([widget.coordinates]).then((value) {
       var point = Point<double>(value[0].x, value[0].y);
       _addMarker(point, widget.coordinates);
     });
+    _mapController.toScreenLocationBatch(
+        [LatLng(position.latitude, position.longitude)]).then((value) {
+      var point = Point<double>(value[0].x, value[0].y);
+      _addMarker2(point, LatLng(position.latitude, position.longitude));
+    });
+
+    _mapController.addCircle(CircleOptions(
+      circleRadius: 30,
+      circleColor: '#CC0000',
+      circleOpacity: 0.1,
+      circleStrokeColor: '#CC0000',
+      circleStrokeOpacity: 1,
+      circleStrokeWidth: 1,
+      geometry: widget.coordinates,
+      draggable: false,
+    ));
   }
 
   // void moveNewCamera() {
@@ -88,17 +122,28 @@ class _MapFullscreenState extends State<MapFullscreen> {
   void _addMarker(Point<double> point, LatLng coordinates) {
     setState(() {
       _markers.add(Marker(_rnd.nextInt(100000).toString(), coordinates, point,
-          _addMarkerStates, widget.city, widget.address));
+          _addMarkerStates, widget.city, widget.address, 'PICKUP_POINT'));
+    });
+  }
+
+  void _addMarker2(Point<double> point, LatLng coordinates) {
+    setState(() {
+      _markers.add(Marker(
+          _rnd.nextInt(100000).toString(),
+          coordinates,
+          point,
+          _addMarkerStates,
+          'Your Location',
+          distance.toStringAsFixed(0) + ' Meters From Pickup Point',
+          'CURRENT_LOCATION'));
     });
   }
 
   // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     Future.delayed(Duration(seconds: 1), () => moveNewCamera());
-  //   });
-  // }
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,13 +152,14 @@ class _MapFullscreenState extends State<MapFullscreen> {
         MapboxMap(
           accessToken: ACCESS_TOKEN,
           trackCameraPosition: true,
+          // zoomGesturesEnabled: false,
           onMapCreated: _onMapCreated,
           // onMapLongClick: _onMapLongClickCallback,
           onCameraIdle: _onCameraIdleCallback,
           onStyleLoadedCallback: _onStyleLoadedCallback,
 
           initialCameraPosition: CameraPosition(
-              bearing: 0.0, target: widget.coordinates, tilt: 0.0, zoom: 16.2),
+              bearing: 0.0, target: widget.coordinates, tilt: 0.0, zoom: 15.2),
         ),
         IgnorePointer(
             ignoring: true,
@@ -135,6 +181,31 @@ class _MapFullscreenState extends State<MapFullscreen> {
                 onPressed: () => Navigator.pop(context),
 
                 child: CustomText("Close"),
+              ),
+            )),
+        Positioned(
+            bottom: 10,
+            right: 20,
+            child: SafeArea(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(20),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  // color: ColorsCustom.primary,
+                ),
+                //materialTapTargetSize: //materialTapTargetSize.shrinkWrap,
+
+                onPressed: () => _mapController.animateCamera(
+                  CameraUpdate.newLatLng(
+                    LatLng(
+                      latNow,
+                      longNow,
+                    ),
+                  ),
+                ),
+
+                child: Icon(Icons.location_on),
               ),
             ))
       ]),
@@ -196,20 +267,15 @@ class Marker extends StatefulWidget {
   final Point _initialPosition;
   final LatLng _coordinate;
   final void Function(_MarkerState) _addMarkerState;
-  final String _city, _address;
+  final String _city, _address, _type;
 
-  Marker(
-    String key,
-    this._coordinate,
-    this._initialPosition,
-    this._addMarkerState,
-    this._city,
-    this._address,
-  ) : super(key: Key(key));
+  Marker(String key, this._coordinate, this._initialPosition,
+      this._addMarkerState, this._city, this._address, this._type)
+      : super(key: Key(key));
 
   @override
   State<StatefulWidget> createState() {
-    final state = _MarkerState(_initialPosition, _city, _address);
+    final state = _MarkerState(_initialPosition, _city, _address, _type);
     _addMarkerState(state);
     return state;
   }
@@ -219,12 +285,12 @@ class _MarkerState extends State with TickerProviderStateMixin {
   final _iconSize = 220.0;
 
   Point _position;
-  String _city, _address;
+  String _city, _address, type;
 
   // AnimationController _controller;
   // Animation<double> _animation;
 
-  _MarkerState(this._position, this._city, this._address);
+  _MarkerState(this._position, this._city, this._address, this.type);
 
   @override
   void initState() {
@@ -281,7 +347,7 @@ class _MarkerState extends State with TickerProviderStateMixin {
                     ),
                     SizedBox(height: 5),
                     CustomText(
-                      "${_address.length > 26 ? _address.substring(0, 25) + "..." : _address}",
+                      "${_address}",
                       color: ColorsCustom.black,
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
@@ -291,10 +357,15 @@ class _MarkerState extends State with TickerProviderStateMixin {
               ),
             ],
           ),
-          SvgPicture.asset(
-            'assets/images/marker.svg',
-            height: 25,
-          ),
+          type == 'PICKUP_POINT'
+              ? SvgPicture.asset(
+                  'assets/images/marker.svg',
+                  height: 25,
+                )
+              : SvgPicture.asset(
+                  'assets/images/walk.svg',
+                  height: 40,
+                )
         ],
       ),
     );

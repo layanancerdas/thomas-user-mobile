@@ -144,44 +144,6 @@ abstract class LiveTrackingViewModel extends State<LiveTracking> {
     super.dispose();
   }
 
-  // // Platform messages are asynchronous, so we initialize in an async method.
-  // Future<void> initialize() async {
-  //   // If the widget was removed from the tree while the asynchronous platform
-  //   // message was in flight, we want to discard the reply rather than calling
-  //   // setState to update our non-existent appearance.
-  //   if (!mounted) return;
-
-  //   directions = MapBoxNavigation(onRouteEvent: onEmbeddedRouteEvent);
-  //   options = MapBoxOptions(
-  //       initialLatitude: -6.1753924,
-  //       initialLongitude: 106.8271528,
-  //       zoom: 12.0,
-  //       enableRefresh: true,
-  //       alternatives: true,
-  //       voiceInstructionsEnabled: true,
-  //       bannerInstructionsEnabled: true,
-  //       allowsUTurnAtWayPoints: true,
-  //       mode: MapBoxNavigationMode.drivingWithTraffic,
-  //       units: VoiceUnits.imperial,
-  //       simulateRoute: true,
-  //       animateBuildRoute: true,
-
-  //       // longPressDestinationEnabled: true,
-  //       language: "en");
-
-  //   String _platformVersion;
-  //   // Platform messages may fail, so we use a try/catch PlatformException.
-  //   try {
-  //     _platformVersion = await directions.platformVersion;
-  //   } on PlatformException {
-  //     _platformVersion = 'Failed to get platform version.';
-  //   }
-
-  //   setState(() {
-  //     platformVersion = _platformVersion;
-  //   });
-  // }
-
   Future<void> onInitDB(String type) async {
     print('READ DATA MASUK LOGIC');
     // var tripOrderId =

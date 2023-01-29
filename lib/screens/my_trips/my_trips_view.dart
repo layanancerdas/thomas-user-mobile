@@ -7,6 +7,7 @@ import 'package:tomas/helpers/custom_tab_indicator.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/redux/modules/general_state.dart';
 import 'package:tomas/screens/lifecycle_manager/lifecycle_manager.dart';
+import 'package:tomas/screens/my_trips/widgets/list_section.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/localization/app_translations.dart';
 import './my_trips_view_model.dart';
@@ -51,7 +52,8 @@ class MyTripsView extends MyTripsViewModel {
                     height: 3),
                 tabs: [
                   Tab(
-                    text: "${AppTranslations.of(context).text("pending")}",
+                    // text: "${AppTranslations.of(context).text("pending")}",
+                    text: "List",
                   ),
                   Tab(text: "${AppTranslations.of(context).text("active")}"),
                   Tab(
@@ -65,7 +67,8 @@ class MyTripsView extends MyTripsViewModel {
               children: [
                 TabBarView(
                   children: [
-                    PendingSection(),
+                    ListSection(),
+                    // PendingSection(),
                     ActiveSection(),
                     CompletedSection(),
                     CanceledSection()
