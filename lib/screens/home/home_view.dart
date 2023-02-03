@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:tomas/localization/app_translations.dart';
 import 'package:tomas/helpers/colors_custom.dart';
@@ -209,45 +210,46 @@ class HomeView extends HomeViewModel {
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 35),
-                                    child: TextButton(
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 10),
-                                          //     highlightColor:
-                                          //     Colors.black.withOpacity(0.01),
-                                          // color: Colors.white,
-                                        ),
-                                        onPressed: () => Navigator.pushNamed(
-                                            context, '/SearchTrip'),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CustomText(
-                                              "${AppTranslations.of(context).text("where_are_you_going")}?",
-                                              fontSize: 14,
-                                              color: Color(0xFFA1A4A8),
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            SizedBox(
-                                              height: 16,
-                                              width: 16,
-                                              child: Center(
-                                                child: SvgPicture.asset(
-                                                  "assets/images/search.svg",
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )),
-                                  ),
+                                  //search prodduct home
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(bottom: 35),
+                                  //   child: TextButton(
+                                  //       style: TextButton.styleFrom(
+                                  //         backgroundColor: Colors.white,
+                                  //         shape: RoundedRectangleBorder(
+                                  //           borderRadius:
+                                  //               BorderRadius.circular(20),
+                                  //         ),
+                                  //         padding: EdgeInsets.symmetric(
+                                  //             horizontal: 16, vertical: 10),
+                                  //         //     highlightColor:
+                                  //         //     Colors.black.withOpacity(0.01),
+                                  //         // color: Colors.white,
+                                  //       ),
+                                  //       onPressed: () => Navigator.pushNamed(
+                                  //           context, '/SearchTrip'),
+                                  //       child: Row(
+                                  //         mainAxisAlignment:
+                                  //             MainAxisAlignment.spaceBetween,
+                                  //         children: [
+                                  //           CustomText(
+                                  //             "${AppTranslations.of(context).text("where_are_you_going")}?",
+                                  //             fontSize: 14,
+                                  //             color: Color(0xFFA1A4A8),
+                                  //             fontWeight: FontWeight.w400,
+                                  //           ),
+                                  //           SizedBox(
+                                  //             height: 16,
+                                  //             width: 16,
+                                  //             child: Center(
+                                  //               child: SvgPicture.asset(
+                                  //                 "assets/images/search.svg",
+                                  //               ),
+                                  //             ),
+                                  //           )
+                                  //         ],
+                                  //       )),
+                                  // ),
                                 ],
                               ),
                             ),

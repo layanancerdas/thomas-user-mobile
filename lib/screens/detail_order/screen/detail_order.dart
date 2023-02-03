@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:loading/indicator/ball_spin_fade_loader_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/localization/app_translations.dart';
@@ -17,6 +18,7 @@ import 'package:tomas/screens/payment_confirmation/payment_confirmation.dart';
 import 'package:tomas/screens/payment_webview/screen/payment_webview.dart';
 import 'package:tomas/widgets/alert_permit.dart';
 import 'package:tomas/widgets/custom_text.dart';
+import 'package:uuid/uuid.dart';
 
 class DetailOrder extends StatefulWidget {
   const DetailOrder({Key key}) : super(key: key);
@@ -27,6 +29,13 @@ class DetailOrder extends StatefulWidget {
 
 class _DetailOrderState extends State<DetailOrder> {
   @override
+  void setOrderID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var uuid = Uuid();
+    var v4 = await uuid.v4();
+    prefs.setString('ORDER_ID', v4);
+  }
+
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AjkState>(
         converter: (store) => store.state.ajkState,
@@ -81,10 +90,7 @@ class _DetailOrderState extends State<DetailOrder> {
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
-                      ListSubscription(),
-                      ListSubscription(),
-                      ListSubscription(),
-                      ListSubscription(),
+                      ListSubscriptionOrder(),
                       SizedBox(
                         height: 140,
                       )
@@ -120,7 +126,7 @@ class _DetailOrderState extends State<DetailOrder> {
                                 height: 12,
                               ),
                               CustomText(
-                                "Rp. 215.000",
+                                "Rp. 20.000",
                                 color: ColorsCustom.primary,
                                 fontSize: 18,
                               ),
@@ -128,7 +134,8 @@ class _DetailOrderState extends State<DetailOrder> {
                                 height: 12,
                               ),
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
+                                  await setOrderID();
                                   Get.to(PaymentConfirmation());
                                 },
                                 child: Container(

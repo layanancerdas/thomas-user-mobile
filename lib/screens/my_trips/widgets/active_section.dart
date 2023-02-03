@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:redux/redux.dart';
 import 'package:tomas/helpers/colors_custom.dart';
+import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
@@ -97,28 +98,62 @@ class _ActiveSectionState extends State<ActiveSection> {
                     loadStyle: LoadStyle.ShowWhenLoading,
                   ),
                   child: state.activeTrip.length > 0
-                      ? ListView.builder(
+                      ?
+                      // ListView(
+                      //     children: [
+                      // CardActiveCheckIn(),
+                      // CardActive(),
+                      ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 16, bottom: 16),
-                          itemCount: state.activeTrip.length,
+                          itemCount: state.activeTrip.length - 1,
                           itemBuilder: (ctx, i) {
-                            return CardTrips(
+                            // print('ini i' +
+                            //     Utils.formatterDateWithYear
+                            //         .format(
+                            //             DateTime.fromMillisecondsSinceEpoch(
+                            //                 state.activeTrip[i]['trip']
+                            //                     ['departure_time']))
+                            //         .toString() +
+                            //     'ini i+1' +
+                            //     Utils.formatterDateWithYear
+                            //         .format(
+                            //             DateTime.fromMillisecondsSinceEpoch(
+                            //                 state.activeTrip[i + 1]['trip']
+                            //                     ['departure_time']))
+                            //         .toString());
+                            return
+                                // Utils.formatterDateWithYear
+                                //             .format(DateTime
+                                //                 .fromMillisecondsSinceEpoch(
+                                //                     state.activeTrip[i]['trip']
+                                //                         ['departure_time']))
+                                //             .toString() ==
+                                //         Utils.formatterDateWithYear
+                                //             .format(DateTime
+                                //                 .fromMillisecondsSinceEpoch(
+                                //                     state.activeTrip[i + 1]
+                                //                             ['trip']
+                                //                         ['departure_time']))
+                                //             .toString()
+                                //     ?
+                                CardTrips(
                               dateA: state.activeTrip[i]['trip']['type'] ==
                                       'RETURN'
                                   ? DateTime.fromMillisecondsSinceEpoch(state
                                       .activeTrip[i]['trip']['departure_time'])
                                   : DateTime.fromMillisecondsSinceEpoch(state
                                       .activeTrip[i]['trip']['departure_time']),
-                              dateB: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                                  ? DateTime.fromMillisecondsSinceEpoch(
-                                          state.activeTrip[i]['trip']
-                                              ['departure_time'])
-                                      .add(Duration(
-                                          minutes: state.activeTrip[i]
-                                              ['pickup_point']['time_to_dest']))
-                                  : DateTime.fromMillisecondsSinceEpoch(
-                                          state.activeTrip[i]['trip']['departure_time'])
-                                      .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
+                              // dateB: state.activeTrip[i]['trip']['type'] == 'RETURN'
+                              //     ? DateTime.fromMillisecondsSinceEpoch(
+                              //             state.activeTrip[i]['trip']
+                              //                 ['departure_time'])
+                              //         .add(Duration(
+                              //             minutes: state.activeTrip[i]
+                              //                 ['pickup_point']['time_to_dest']))
+                              //     : DateTime.fromMillisecondsSinceEpoch(
+                              //             state.activeTrip[i]['trip']['departure_time'])
+                              //         .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
                               timeB: state.activeTrip[i]['trip']['type'] == 'RETURN'
                                   ? DateTime.parse(state.activeTrip[i]['trip']['trip_group']['start_date'] + " " + state.activeTrip[i]['trip']['trip_group']['return_time'])
                                       .add(Duration(
@@ -168,8 +203,11 @@ class _ActiveSectionState extends State<ActiveSection> {
                               differenceAB:
                                   "${state.activeTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.activeTrip[i]['pickup_point']['time_to_dest'] % 60}m",
                             );
+                            // : Text('data');
                           },
                         )
+                      //   ],
+                      // )
                       : NoTrips(
                           text:
                               "${AppTranslations.of(context).text("no_active_trip")}",

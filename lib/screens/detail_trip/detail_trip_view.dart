@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tomas/configs/static_text_en.dart';
 import 'package:tomas/localization/app_translations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -21,8 +22,10 @@ import 'package:tomas/screens/lifecycle_manager/lifecycle_manager.dart';
 import 'package:tomas/screens/review/review.dart';
 import 'package:tomas/widgets/custom_button.dart';
 import 'package:tomas/widgets/custom_text.dart';
+import 'package:tomas/widgets/map_fullscreen.dart';
 import './detail_trip_view_model.dart';
 import 'widgets/bus_details.dart';
+import 'package:tomas/widgets/card_active_checkin.dart';
 
 class DetailTripView extends DetailTripViewModel {
   @override
@@ -66,6 +69,83 @@ class DetailTripView extends DetailTripViewModel {
                             padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
                             controller: scrollController,
                             children: [
+                              CardActiveCheckIn(
+                                status: status,
+                                color: getColorTypeText(),
+                                dateDeparture: Utils.formatterDate.format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        state.selectedMyTrip['trip']
+                                            ['departure_time'])),
+                                difference:
+                                    "${state.selectedMyTrip['pickup_point']['time_to_dest'] ~/ 60}h ${state.selectedMyTrip['pickup_point']['time_to_dest'] % 60}m",
+                                addressArrival: state.selectedMyTrip['trip']
+                                        ['trip_group']['route']
+                                    ['destination_address'],
+                                addressDeparture:
+                                    state.selectedMyTrip['pickup_point']
+                                            ['address'] ??
+                                        "-",
+                                placeArrival: state.selectedMyTrip['trip']
+                                    ['trip_group']['route']['destination_name'],
+                                placeDeparture: state
+                                    .selectedMyTrip['pickup_point']['name'],
+                                timeArrival: Utils.formatterTime.format(
+                                    DateTime.parse(state.selectedMyTrip['trip']
+                                                ['trip_group']['start_date'] +
+                                            " " +
+                                            state.selectedMyTrip['trip']
+                                                ['trip_group']['return_time'])
+                                        .add(Duration(
+                                            minutes: state
+                                                    .selectedMyTrip['pickup_point']
+                                                ['time_to_dest']))),
+                                timeDeparture: Utils.formatterTime.format(
+                                    DateTime.parse(state.selectedMyTrip['trip']
+                                            ['trip_group']['start_date'] +
+                                        " " +
+                                        state.selectedMyTrip['trip']
+                                            ['trip_group']['return_time'])),
+                                statusPayment: state.selectedMyTrip['status'],
+                                tapMapScreenDeparture: () {
+                                  Get.to(
+                                    MapFullscreen(
+                                      coordinates: LatLng(
+                                        state.selectedMyTrip['pickup_point']
+                                            ['latitude'],
+                                        state.selectedMyTrip['pickup_point']
+                                            ['longitude'],
+                                      ),
+                                      city:
+                                          "${Utils.capitalizeFirstofEach(state.selectedMyTrip['pickup_point']['name'])}",
+                                      address: "${Utils.capitalizeFirstofEach(
+                                        state.selectedMyTrip['pickup_point']
+                                                ['address'] ??
+                                            "-",
+                                      )}",
+                                    ),
+                                  );
+                                },
+                                tapMapScreenArrival: () {
+                                  Get.to(MapFullscreen(
+                                    coordinates: LatLng(
+                                        state.selectedMyTrip['trip']
+                                                ['trip_group']['route']
+                                            ['destination_latitude'],
+                                        state.selectedMyTrip['trip']
+                                                ['trip_group']['route']
+                                            ['destination_longitude']),
+                                    city:
+                                        "${Utils.capitalizeFirstofEach(state.selectedMyTrip['trip']['trip_group']['route']['destination_name'])}",
+                                    address: "${Utils.capitalizeFirstofEach(
+                                      state.selectedMyTrip['trip']['trip_group']
+                                                  ['route']
+                                              ['destination_address'] ??
+                                          "-",
+                                    )}",
+                                  ));
+                                },
+                                details: state.selectedMyTrip['details'],
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -515,109 +595,109 @@ class DetailTripView extends DetailTripViewModel {
                         ],
                       )),
                 ),
-                state.selectedMyTrip['status'] == "PENDING" ||
-                        (state.selectedMyTrip['status'] == "ACTIVE" &&
-                            state.selectedMyTrip['details'] != null &&
-                            state.selectedMyTrip['details']['status'] ==
-                                'ONGOING')
-                    ? Positioned(
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 100),
-                          height: onBottom &&
-                                  state.selectedMyTrip['status'] == "PENDING"
-                              ? 175
-                              : 110,
-                          padding: EdgeInsets.fromLTRB(0, 16, 0, 32),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                topRight: Radius.circular(16),
-                              ),
-                              boxShadow: onBottom &&
-                                      state.selectedMyTrip['status'] ==
-                                          "PENDING"
-                                  ? []
-                                  : [
-                                      BoxShadow(
-                                          offset: Offset(4, 0),
-                                          blurRadius: 12,
-                                          spreadRadius: 0,
-                                          color: Colors.black.withOpacity(0.15))
-                                    ]),
-                          child: Column(
-                            children: [
-                              onBottom &&
-                                      state.selectedMyTrip['status'] ==
-                                          "PENDING"
-                                  ? state.selectedMyTrip['status'] ==
-                                              "COMPLETED" ||
-                                          state.selectedMyTrip['status'] ==
-                                              "CANCELED" ||
-                                          state.selectedMyTrip['status'] ==
-                                              "MISSED"
-                                      ? SizedBox()
-                                      : Container(
-                                          width: double.infinity,
-                                          margin: EdgeInsets.only(top: 8),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 14),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          16)),
-                                              // borderSide: BorderSide(
-                                              //     color: ColorsCustom.primary),
-                                            ),
-                                            onPressed: () => onConfirmation(),
-                                            child: CustomText(
-                                              "${AppTranslations.of(context).text("canceled_this_booking")}",
-                                              color: ColorsCustom.primary,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        )
-                                  : SizedBox(),
-                              onBottom &&
-                                      state.selectedMyTrip['status'] ==
-                                          "PENDING"
-                                  ? state.selectedMyTrip['status'] ==
-                                              "COMPLETED" ||
-                                          state.selectedMyTrip['status'] ==
-                                              "CANCELED" ||
-                                          state.selectedMyTrip['status'] ==
-                                              "MISSED"
-                                      ? SizedBox(height: 5)
-                                      : SizedBox()
-                                  : SizedBox(),
-                              CustomButton(
-                                text: state.selectedMyTrip['status'] ==
-                                        "PENDING"
-                                    ? "${AppTranslations.of(context).text("pay")}"
-                                    : "${AppTranslations.of(context).text("live_tracking")}",
-                                textColor: Colors.white,
-                                bgColor: ColorsCustom.primary,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                                onPressed: () =>
-                                    state.selectedMyTrip['status'] == "PENDING"
-                                        ? onPaymentInstructionsClick()
-                                        : Navigator.pushNamed(
-                                            context, '/LiveTracking'),
-                              ),
-                            ],
-                          ),
-                        ))
-                    : SizedBox(),
+                // state.selectedMyTrip['status'] == "PENDING" ||
+                //         (state.selectedMyTrip['status'] == "ACTIVE" &&
+                //             state.selectedMyTrip['details'] != null &&
+                //             state.selectedMyTrip['details']['status'] ==
+                //                 'ONGOING')
+                //     ? Positioned(
+                //         bottom: 0,
+                //         right: 0,
+                //         left: 0,
+                //         child: AnimatedContainer(
+                //           duration: Duration(milliseconds: 100),
+                //           height: onBottom &&
+                //                   state.selectedMyTrip['status'] == "PENDING"
+                //               ? 175
+                //               : 110,
+                //           padding: EdgeInsets.fromLTRB(0, 16, 0, 32),
+                //           decoration: BoxDecoration(
+                //               color: Colors.white,
+                //               borderRadius: BorderRadius.only(
+                //                 topLeft: Radius.circular(16),
+                //                 topRight: Radius.circular(16),
+                //               ),
+                //               boxShadow: onBottom &&
+                //                       state.selectedMyTrip['status'] ==
+                //                           "PENDING"
+                //                   ? []
+                //                   : [
+                //                       BoxShadow(
+                //                           offset: Offset(4, 0),
+                //                           blurRadius: 12,
+                //                           spreadRadius: 0,
+                //                           color: Colors.black.withOpacity(0.15))
+                //                     ]),
+                //           child: Column(
+                //             children: [
+                //               onBottom &&
+                //                       state.selectedMyTrip['status'] ==
+                //                           "PENDING"
+                //                   ? state.selectedMyTrip['status'] ==
+                //                               "COMPLETED" ||
+                //                           state.selectedMyTrip['status'] ==
+                //                               "CANCELED" ||
+                //                           state.selectedMyTrip['status'] ==
+                //                               "MISSED"
+                //                       ? SizedBox()
+                //                       : Container(
+                //                           width: double.infinity,
+                //                           margin: EdgeInsets.only(top: 8),
+                //                           padding: EdgeInsets.symmetric(
+                //                               horizontal: 16),
+                //                           child: OutlinedButton(
+                //                             style: OutlinedButton.styleFrom(
+                //                               padding: EdgeInsets.symmetric(
+                //                                   vertical: 14),
+                //                               shape: RoundedRectangleBorder(
+                //                                   borderRadius:
+                //                                       BorderRadius.circular(
+                //                                           16)),
+                //                               // borderSide: BorderSide(
+                //                               //     color: ColorsCustom.primary),
+                //                             ),
+                //                             onPressed: () => onConfirmation(),
+                //                             child: CustomText(
+                //                               "${AppTranslations.of(context).text("canceled_this_booking")}",
+                //                               color: ColorsCustom.primary,
+                //                               fontWeight: FontWeight.w600,
+                //                               fontSize: 16,
+                //                             ),
+                //                           ),
+                //                         )
+                //                   : SizedBox(),
+                //               onBottom &&
+                //                       state.selectedMyTrip['status'] ==
+                //                           "PENDING"
+                //                   ? state.selectedMyTrip['status'] ==
+                //                               "COMPLETED" ||
+                //                           state.selectedMyTrip['status'] ==
+                //                               "CANCELED" ||
+                //                           state.selectedMyTrip['status'] ==
+                //                               "MISSED"
+                //                       ? SizedBox(height: 5)
+                //                       : SizedBox()
+                //                   : SizedBox(),
+                //               CustomButton(
+                //                 text: state.selectedMyTrip['status'] ==
+                //                         "PENDING"
+                //                     ? "${AppTranslations.of(context).text("pay")}"
+                //                     : "${AppTranslations.of(context).text("live_tracking")}",
+                //                 textColor: Colors.white,
+                //                 bgColor: ColorsCustom.primary,
+                //                 fontWeight: FontWeight.w600,
+                //                 fontSize: 16,
+                //                 padding: EdgeInsets.symmetric(vertical: 14),
+                //                 onPressed: () =>
+                //                     state.selectedMyTrip['status'] == "PENDING"
+                //                         ? onPaymentInstructionsClick()
+                //                         : Navigator.pushNamed(
+                //                             context, '/LiveTracking'),
+                //               ),
+                //             ],
+                //           ),
+                //         ))
+                //     : SizedBox(),
                 StoreConnector<AppState, GeneralState>(
                     converter: (store) => store.state.generalState,
                     builder: (context, stateGeneral) {

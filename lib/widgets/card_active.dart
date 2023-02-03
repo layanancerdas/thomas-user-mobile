@@ -59,13 +59,25 @@ class CardActive extends StatelessWidget {
                       color: ColorsCustom.black,
                       fontSize: 12,
                     ),
+                    SizedBox(
+                      height: 12,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(
-                          "00:00",
-                          color: ColorsCustom.black,
-                          fontSize: 12,
+                        Column(
+                          children: [
+                            CustomText(
+                              "00:00",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                            CustomText(
+                              "Terminal",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                          ],
                         ),
                         Column(
                           children: [
@@ -79,10 +91,19 @@ class CardActive extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CustomText(
-                          "00:00",
-                          color: ColorsCustom.black,
-                          fontSize: 12,
+                        Column(
+                          children: [
+                            CustomText(
+                              "00:00",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                            CustomText(
+                              "Kantor",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                          ],
                         ),
                       ],
                     )
@@ -110,13 +131,25 @@ class CardActive extends StatelessWidget {
                       color: ColorsCustom.black,
                       fontSize: 12,
                     ),
+                    SizedBox(
+                      height: 12,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(
-                          "00:00",
-                          color: ColorsCustom.black,
-                          fontSize: 12,
+                        Column(
+                          children: [
+                            CustomText(
+                              "00:00",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                            CustomText(
+                              "Kantor",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                          ],
                         ),
                         Column(
                           children: [
@@ -130,10 +163,19 @@ class CardActive extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CustomText(
-                          "00:00",
-                          color: ColorsCustom.black,
-                          fontSize: 12,
+                        Column(
+                          children: [
+                            CustomText(
+                              "00:00",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                            CustomText(
+                              "Terminal",
+                              color: ColorsCustom.black,
+                              fontSize: 12,
+                            ),
+                          ],
                         ),
                       ],
                     )

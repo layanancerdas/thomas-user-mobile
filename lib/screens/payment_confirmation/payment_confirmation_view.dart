@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading/indicator/ball_spin_fade_loader_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:tomas/configs/config.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/redux/app_state.dart';
@@ -11,17 +14,21 @@ import 'package:tomas/redux/modules/general_state.dart';
 import 'package:tomas/redux/modules/user_state.dart';
 import 'package:tomas/screens/payment_confirmation/widgets/card_balance.dart';
 import 'package:tomas/screens/payment_confirmation/widgets/card_coupon.dart';
+import 'package:tomas/screens/payment_confirmation/widgets/card_payment_method.dart';
 import 'package:tomas/screens/payment_confirmation/widgets/card_price_details.dart';
 import 'package:tomas/screens/payment_confirmation/widgets/card_wallet.dart';
 import 'package:tomas/screens/payment_confirmation/widgets/purchase_confirmation.dart';
+import 'package:tomas/screens/payment_method/screen/payment_method.dart';
 import 'package:tomas/screens/payment_webview/screen/payment_webview.dart';
 import 'package:tomas/widgets/custom_button.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import './payment_confirmation_view_model.dart';
 import 'package:tomas/localization/app_translations.dart';
+import 'package:crypto/crypto.dart';
 
 class PaymentConfirmationView extends PaymentConfirmationViewModel {
   @override
+  var data = Get.arguments;
   Widget build(BuildContext context) {
     return Scaffold(
       key: paymentConfirmationKey,
@@ -43,7 +50,14 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
       body: StoreConnector<AppState, AppState>(
           converter: (store) => store.state,
           builder: (context, state) {
-            print(state.transactionState.useBalance);
+            // var signature = md5
+            //     .convert(utf8.encode(BASE_MERCHANT_CODE +
+            //         order_id +
+            //         20000.toString() +
+            //         DUITKU_API_KEY))
+            //     .toString();
+            // print(signature);
+            print(data);
             return SafeArea(
               child: Stack(
                 children: [
@@ -51,12 +65,12 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                     padding: EdgeInsets.only(top: 16, left: 16, right: 16),
                     children: [
                       PurchaseConfirmation(),
-                      CardBalance(
-                        toggle: toggleUseBalance,
-                        useBalance: state.transactionState.useBalance,
-                        isZeroPrice:
-                            state.ajkState.selectedPickUpPoint['price'] <= 0,
-                      ),
+                      // CardBalance(
+                      //   toggle: toggleUseBalance,
+                      //   useBalance: state.transactionState.useBalance,
+                      //   isZeroPrice:
+                      //       state.ajkState.selectedPickUpPoint['price'] <= 0,
+                      // ),
                       state.ajkState.selectedPickUpPoint['price'] <= 0
                           ? SizedBox()
                           : SizedBox(height: 16),
@@ -68,9 +82,21 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                       // state.ajkState.selectedPickUpPoint['price'] <= 0
                       //     ? SizedBox()
                       //     : SizedBox(height: 16),
+
                       CardCoupon(
                         isZeroPrice:
                             state.ajkState.selectedPickUpPoint['price'] <= 0,
+                      ),
+                      SizedBox(height: 16),
+                      CardPaymentMethod(
+                        onTapMethod: () {
+                          Get.off(PaymentMethod(
+                            amount:
+                                state.ajkState.selectedPickUpPoint['price'] *
+                                    10,
+                          ));
+                        },
+                        payment: data != null ? data['paymentName'] : null,
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 24, bottom: 16),
@@ -141,7 +167,12 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                                 child: Container(
                                   width: 170,
                                   child: CustomButton(
-                                    onPressed: () => Get.to(PaymentWebView())
+                                    onPressed: () => onPayClick(
+                                        state.ajkState
+                                                .selectedPickUpPoint['price'] *
+                                            10,
+                                        data['paymentMethod'],
+                                        data['paymentName'])
                                     // onNext()
                                     ,
                                     bgColor: ColorsCustom.primary,

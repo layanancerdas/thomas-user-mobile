@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
 // import 'package:flutter_mapbox_navigation/library.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/general_action.dart';
@@ -21,7 +23,14 @@ abstract class LiveTrackingViewModel extends State<LiveTracking> {
   double duration = 0;
   String status;
   String subStatus;
-
+  Map<MarkerId, Marker> markers = {};
+  Map<CircleId, Circle> circles = {};
+  Map<PolylineId, Polyline> polylines = {};
+  GoogleMapController controller2;
+  final CameraPosition initialLocation = CameraPosition(
+    target: LatLng(-6.895160, 107.639285),
+    zoom: 12,
+  );
   void onViewETicket() {
     showDialog(
         context: context,
@@ -127,10 +136,12 @@ abstract class LiveTrackingViewModel extends State<LiveTracking> {
     super.initState();
     // initialize();
     Timer.periodic(Duration(seconds: 5), (timer) {
+      // getUserLocation();
       // if (mounted) getBookingByGroupId();
     });
     onInitDB("no");
     listenDB();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
       getStatusText();
@@ -142,6 +153,58 @@ abstract class LiveTrackingViewModel extends State<LiveTracking> {
   void dispose() {
     _streamDB?.cancel();
     super.dispose();
+  }
+
+  Future<Uint8List> getMarker(String url) async {
+    ByteData byteData = await DefaultAssetBundle.of(context).load(url);
+    return byteData.buffer.asUint8List();
+  }
+
+  Future<void> getUserLocation({bool initLocation: false}) async {
+    Uint8List iconUser = await getMarker("assets/images/bus.png");
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    if (initLocation) {
+      controller2.animateCamera(CameraUpdate.newCameraPosition(
+          new CameraPosition(
+              target: LatLng(position.latitude, position.longitude),
+              zoom: 17.00)));
+      // generateMarker();
+    }
+
+    // readData();
+
+    // if (isTripAvailable) {
+    //   updateData(position.latitude, position.longitude);
+    // } else {
+    //   createData(position.latitude, position.longitude);
+    // }
+    addMarker(
+        {LatLng position,
+        String id,
+        BitmapDescriptor descriptor,
+        Offset anchor}) {
+      MarkerId markerId = MarkerId(id);
+      Marker marker = Marker(
+          markerId: markerId,
+          icon: descriptor,
+          position: position,
+          flat: true,
+          anchor: anchor);
+      setState(() {
+        markers[markerId] = marker;
+      });
+    }
+
+    addMarker(
+        position: LatLng(position.latitude, position.longitude),
+        id: "pickupPointBus",
+        descriptor: BitmapDescriptor.fromBytes(iconUser),
+        anchor: Offset(0.5, 0.5));
+
+    // Map newData = {'lat': position.latitude, 'lng': position.longitude};
+    // getRouteMap(newData);
+    // generateMultiplePolylines(newData);
   }
 
   Future<void> onInitDB(String type) async {
@@ -200,7 +263,7 @@ abstract class LiveTrackingViewModel extends State<LiveTracking> {
       longitude: store.state.userState.selectedMyTrip['trip']['trip_group']
           ['route']['destination_longitude'],
     );
-
+    print(destination);
     List _tempPickupPoints = store.state.userState.selectedMyTrip['trip']
         ['trip_group']['route']['pickup_points'] as List;
 

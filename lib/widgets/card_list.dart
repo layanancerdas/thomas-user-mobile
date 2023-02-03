@@ -134,18 +134,31 @@ class _CardListState extends State<CardList> {
               child: Column(
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SvgPicture.asset('assets/images/map.svg'),
-                      SizedBox(
-                        width: 8,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset('assets/images/map.svg'),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          CustomText(
+                            "Location Trips",
+                            color: ColorsCustom.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ],
                       ),
                       CustomText(
-                        "Location Trips",
-                        color: ColorsCustom.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        "Pending",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black
+                        // getColorTypeText()
+                        ,
                       ),
                     ],
                   ),

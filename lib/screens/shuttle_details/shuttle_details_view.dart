@@ -9,6 +9,8 @@ import 'package:tomas/helpers/custom_tab_indicator.dart';
 import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/redux/modules/ajk_state.dart';
+import 'package:tomas/screens/choose_month/widget/list_subcription.dart';
+import 'package:tomas/screens/detail_order/widget/list_subscription.dart';
 import 'package:tomas/screens/shuttle_details/widgets/card_information.dart';
 import 'package:tomas/widgets/card_schedule.dart';
 import 'package:tomas/widgets/custom_button.dart';
@@ -157,6 +159,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                   height: 2.7,
                 ),
                 SizedBox(height: 5),
+                ListSubscriptionOrder(),
                 CardSchedule(
                   dateA: Utils.formatterDate.format(DateTime.parse(
                       state.selectedTrip['start_date'] +

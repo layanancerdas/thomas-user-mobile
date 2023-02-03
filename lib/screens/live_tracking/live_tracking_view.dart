@@ -44,20 +44,29 @@ class LiveTrackingView extends LiveTrackingViewModel {
                   //         image: AssetImage("assets/images/map-dummy.jpeg"),
                   //         fit: BoxFit.cover)),
                   // child: GoogleMap(
-                  //   initialCameraPosition: initializePosition,
+                  //   mapType: MapType.normal,
+                  //   initialCameraPosition: initialLocation,
+                  //   markers: Set<Marker>.of(markers.values),
+                  //   circles: Set<Circle>.of(circles.values),
+                  //   polylines: Set<Polyline>.of(polylines.values),
+                  //   myLocationButtonEnabled: false,
+                  //   onMapCreated: (GoogleMapController _controller) {
+                  //     controller2 = _controller;
+                  //     getUserLocation(initLocation: true);
+                  //   },
                   // )
                   // )
                   // MyApp())
                   // Image.network(getStaticImageWithPolyline()))
-                  // child: MapBoxNavigationView(
-                  //     options: options,
-                  //     onRouteEvent: onEmbeddedRouteEvent,
-                  //     onCreated:
-                  //         (MapBoxNavigationViewController _controller) async {
-                  //       controller = _controller;
-                  //       _controller.initialize();
-                  //       onCreated();
-                  //     }),
+                  child: MapBoxNavigationView(
+                      options: options,
+                      // onRouteEvent: onEmbeddedRouteEvent,
+                      onCreated:
+                          (MapBoxNavigationViewController _controller) async {
+                        controller = _controller;
+                        _controller.initialize();
+                        onCreated();
+                      }),
                 ),
                 Positioned(
                     bottom: 30,

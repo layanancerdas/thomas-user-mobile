@@ -33,12 +33,9 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
   Future<void> onBook(Map value) async {
     // print(value);
     await store.dispatch(SetSelectedTrip(selectedTrip: value));
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) =>
-                // ShuttleDetails()
-                DetailOrder()));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => ShuttleDetails())
+        // DetailOrder())
+        );
   }
 
   Future<void> getAllTripById() async {

@@ -6,15 +6,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/widgets/custom_text.dart';
 
-class ListSubscription extends StatefulWidget {
-  const ListSubscription({Key key}) : super(key: key);
+class ListSubscriptionOrder extends StatefulWidget {
+  const ListSubscriptionOrder({Key key}) : super(key: key);
 
   @override
-  State<ListSubscription> createState() => _ListSubscriptionState();
+  State<ListSubscriptionOrder> createState() => _ListSubscriptionOrderState();
 }
 
-class _ListSubscriptionState extends State<ListSubscription> {
-  bool isExpand = true;
+class _ListSubscriptionOrderState extends State<ListSubscriptionOrder> {
+  bool isExpand = false;
   @override
   Widget build(BuildContext context) {
     return isExpand

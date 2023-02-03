@@ -13,6 +13,7 @@ import 'package:tomas/screens/home/home.dart';
 import 'package:tomas/screens/payment_confirmation/payment_confirmation.dart';
 import 'package:tomas/widgets/custom_dialog.dart';
 import 'package:tomas/widgets/custom_text.dart';
+import 'package:uuid/uuid.dart';
 import './shuttle_details.dart';
 import 'package:tomas/localization/app_translations.dart';
 
@@ -29,6 +30,13 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
         isLoading = value;
       });
     }
+  }
+
+  void setOrderID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var uuid = Uuid();
+    var v4 = await uuid.v4();
+    prefs.setString('ORDER_ID', v4);
   }
 
   Future<void> onBooking() async {
@@ -57,6 +65,7 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
               getSelectedTrip: res.data['data']));
           print("1");
           toggleLoading(false);
+          await setOrderID();
           Navigator.push(context,
               MaterialPageRoute(builder: (_) => PaymentConfirmation()));
         } else if (res.data['message'].toLowerCase().contains("already")) {
@@ -72,7 +81,7 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
           } else if (!dataPayment.containsKey('status') ||
               dataPayment['status'] == 'PENDING') {
             print("3");
-
+            await setOrderID();
             toggleLoading(false);
             Navigator.push(context,
                 MaterialPageRoute(builder: (_) => PaymentConfirmation()));
