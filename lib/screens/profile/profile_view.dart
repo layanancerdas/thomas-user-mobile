@@ -156,6 +156,12 @@ class ProfileView extends ProfileViewModel {
                         ),
                         ProfileMenu(
                           divider: true,
+                          icon: "user_outline.svg",
+                          text: "My Subscription",
+                          onPress: onPersonalInformationClick,
+                        ),
+                        ProfileMenu(
+                          divider: true,
                           icon: 'call_outline.svg',
                           text:
                               "${AppTranslations.of(context).text("contact_us")}",

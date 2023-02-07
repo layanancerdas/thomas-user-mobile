@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:loading/indicator/ball_spin_fade_loader_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/redux/modules/ajk_state.dart';
+import 'package:tomas/screens/subscribe_trip/screen/subscribe_trip.dart';
 import 'package:tomas/widgets/alert_permit.dart';
 import 'package:tomas/widgets/card_round_trip.dart';
 import 'package:tomas/widgets/custom_text.dart';
@@ -16,6 +18,7 @@ import 'package:tomas/localization/app_translations.dart';
 
 class RoundTripView extends RoundTripViewModel {
   @override
+  bool isSubscribe = false;
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return StoreConnector<AppState, AjkState>(
@@ -122,6 +125,47 @@ class RoundTripView extends RoundTripViewModel {
                       ),
                     ),
                     SizedBox(height: 5),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            isSubscribe
+                                ? 'Subscribe active'
+                                : 'Subscribe is not active',
+                            color: isSubscribe
+                                ? ColorsCustom.newGreen
+                                : ColorsCustom.primary,
+                            fontSize: 14,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isSubscribe = !isSubscribe;
+                              });
+                              Get.to(SubscribeTrip(
+                                  idRoute: state.selectedRoute['route_id']));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: ColorsCustom.primary,
+                                  borderRadius: BorderRadius.circular(20)),
+                              padding: EdgeInsets.all(12),
+                              child: CustomText(
+                                isSubscribe
+                                    ? 'Extend Subscribe'
+                                    : 'Subscribe Now',
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5),
                     trips.length > 0
                         ? ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
@@ -175,6 +219,7 @@ class RoundTripView extends RoundTripViewModel {
                                 distance: '1',
                                 data: trips[i],
                                 onBook: onBook,
+                                isActive: isSubscribe,
                               );
                             })
                         : Container(

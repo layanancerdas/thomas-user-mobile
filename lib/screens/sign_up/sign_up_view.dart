@@ -205,6 +205,52 @@ class SignUpView extends SignUpViewModel {
                         ],
                       ),
                     ),
+                    SizedBox(height: 33),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            "Shift",
+                            color: Color(0xFFA1A4A8),
+                            fontSize: 12,
+                            height: 1.5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 'Shift',
+                                      groupValue: selectedShift,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          selectedShift = val;
+                                        });
+                                      }),
+                                  Text('Shift')
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 'Non Shift',
+                                      groupValue: selectedShift,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          selectedShift = val;
+                                        });
+                                      }),
+                                  Text('Non Shift')
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                     // FormText(
                     //   hint: "Password",
                     //   obscureText: true,

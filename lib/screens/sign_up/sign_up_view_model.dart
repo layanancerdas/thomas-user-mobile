@@ -16,6 +16,7 @@ abstract class SignUpViewModel extends State<SignUp> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nipController = TextEditingController();
 
+  String selectedShift = 'Non Shift';
   int selectedDivision;
 
   // String countryCode = "+62";

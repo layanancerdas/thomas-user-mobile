@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:redux/redux.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/redux/actions/ajk_action.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/redux/modules/ajk_state.dart';
+import 'package:tomas/screens/subscribe_trip/screen/subscribe_trip.dart';
 import 'package:tomas/widgets/alert_permit.dart';
 import 'package:tomas/widgets/custom_button.dart';
 import 'package:tomas/widgets/custom_text.dart';
@@ -31,6 +33,7 @@ class _ChoosePickupPointState extends State<ChoosePickupPoint> {
     store.dispatch(
         SetSelectedPickUpPoint(selectedPickUpPoint: selectedPickUpPoints));
     Navigator.pushNamed(context, '/RoundTrip');
+    // Get.to(SubscribeTrip());
   }
 
   @override

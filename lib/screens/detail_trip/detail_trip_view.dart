@@ -146,27 +146,27 @@ class DetailTripView extends DetailTripViewModel {
                                 },
                                 details: state.selectedMyTrip['details'],
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                    "Your Position :",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300,
-                                    height: 2.1,
-                                    color: ColorsCustom.black,
-                                  ),
-                                  CustomText(
-                                    distance.toStringAsFixed(0) +
-                                        ' Meter From Pickup Point',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    height: 2.1,
-                                    color: ColorsCustom.primary,
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     CustomText(
+                              //       "Your Position :",
+                              //       fontSize: 14,
+                              //       fontWeight: FontWeight.w300,
+                              //       height: 2.1,
+                              //       color: ColorsCustom.black,
+                              //     ),
+                              //     CustomText(
+                              //       distance.toStringAsFixed(0) +
+                              //           ' Meter From Pickup Point',
+                              //       fontSize: 14,
+                              //       fontWeight: FontWeight.w600,
+                              //       height: 2.1,
+                              //       color: ColorsCustom.primary,
+                              //     ),
+                              //   ],
+                              // ),
                               SizedBox(height: 2),
                               Row(
                                 mainAxisAlignment:

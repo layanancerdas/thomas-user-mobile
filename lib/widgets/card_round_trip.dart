@@ -24,6 +24,7 @@ class CardRoundtrip extends StatelessWidget {
       color,
       week;
   final Map data;
+  final bool isActive;
   final onBook;
 
   CardRoundtrip(
@@ -43,7 +44,8 @@ class CardRoundtrip extends StatelessWidget {
       this.data,
       this.locationC,
       this.locationD,
-      this.week});
+      this.week,
+      this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -409,28 +411,28 @@ class CardRoundtrip extends StatelessWidget {
               // color: Colors.red,
               padding: const EdgeInsets.only(left: 24, right: 16),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  RichText(
-                    text: new TextSpan(
-                      text: 'Rp',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: ColorsCustom.primary,
-                          fontFamily: 'Poppins'),
-                      children: <TextSpan>[
-                        new TextSpan(text: '$price'),
-                        new TextSpan(
-                            text: '/pkg',
-                            style: TextStyle(
-                              color: ColorsCustom.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                            )),
-                      ],
-                    ),
-                  ),
+                  // RichText(
+                  //   text: new TextSpan(
+                  //     text: 'Rp',
+                  //     style: TextStyle(
+                  //         fontWeight: FontWeight.w500,
+                  //         fontSize: 14,
+                  //         color: ColorsCustom.primary,
+                  //         fontFamily: 'Poppins'),
+                  //     children: <TextSpan>[
+                  //       new TextSpan(text: '$price'),
+                  //       new TextSpan(
+                  //           text: '/pkg',
+                  //           style: TextStyle(
+                  //             color: ColorsCustom.black,
+                  //             fontWeight: FontWeight.w400,
+                  //             fontSize: 12,
+                  //           )),
+                  //     ],
+                  //   ),
+                  // ),
                   // Row(
                   //   mainAxisSize: MainAxisSize.min,
                   //   children: [
@@ -453,13 +455,13 @@ class CardRoundtrip extends StatelessWidget {
                       builder: (context, stateUser) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: isActive
+                                ? ColorsCustom.primary
+                                : ColorsCustom.newGrey,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
                             padding: EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 18),
-                            // color: !stateUser.userDetail['permitted_ajk']
-                            // ? ColorsCustom.disable
-                            // : ColorsCustom.primary,
                             elevation: 1,
                           ),
                           //materialTapTargetSize:

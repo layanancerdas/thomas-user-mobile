@@ -74,13 +74,13 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: TextButton(
-            style: TextButton.styleFrom(),
-            onPressed: () => Navigator.pop(context),
-            child: SvgPicture.asset(
-              'assets/images/back_icon.svg',
-            ),
-          ),
+          // leading: TextButton(
+          //   style: TextButton.styleFrom(),
+          //   onPressed: () => Navigator.pop(context),
+          //   child: SvgPicture.asset(
+          //     'assets/images/back_icon.svg',
+          //   ),
+          // ),
           title: CustomText(
             "Payment",
             color: ColorsCustom.black,

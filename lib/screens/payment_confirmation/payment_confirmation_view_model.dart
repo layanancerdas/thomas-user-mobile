@@ -35,6 +35,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
   String linkPayment = "";
   String name = "";
   String email = "";
+  String amountPay = "";
   bool isLoading = false;
   bool errorPayment = false;
 
@@ -43,6 +44,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     super.initState();
     getOrderID();
     getUserDetail();
+    setTotalPay();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   store = StoreProvider.of<AppState>(context);
     //   initData();
@@ -61,6 +63,14 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     order_id = prefs.getString('ORDER_ID');
     print(order_id);
+  }
+
+  void setTotalPay() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      amountPay = prefs.getString('ORDER_AMOUNT');
+    });
   }
 
   Future<void> getUserDetail() async {
@@ -82,15 +92,15 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
   //   store.dispatch(UseBalance());
   // }
   Future<void> postAjkSubscription(
-      amount, paymentMethod, urlPayment, paymentName) async {
+      paymentMethod, urlPayment, paymentName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwtToken = prefs.getString("jwtToken");
     Dio dio = Dio();
     var url = BASE_API + "/ajk/user/subscription";
     var params = {
-      "subcriptions_id": "c0401aa0-a122-11ed-8460-87488a91dd46",
+      "subcriptions_id": "880f24c0-a6a2-11ed-8e24-c36b17f16c5d",
       "merchandOrderId": order_id,
-      "paymentAmount": amount.toString(),
+      "paymentAmount": amountPay.toString(),
       "paymentMethod": paymentMethod,
       "paymentMethodName": paymentName,
       "productDetails": "Paket 1 bulan Pahlawan Gazibu",
@@ -109,26 +119,29 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
         },
       ),
     );
-    print(response.data);
+    print('ini url payment' + urlPayment);
     if (response.data['code'] == 'SUCCESS') {
       toggleLoading(false);
       Get.off(PaymentWebView(url: linkPayment, orderId: order_id));
+    } else {
+      print(response.data);
     }
   }
 
-  Future<void> onPayClick(amount, paymentMethod, paymentName) async {
+  Future<void> onPayClick(paymentMethod, paymentName) async {
     toggleLoading(true);
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var signature = md5
-        .convert(utf8.encode(
-            BASE_MERCHANT_CODE + order_id + amount.toString() + DUITKU_API_KEY))
+        .convert(utf8.encode(BASE_MERCHANT_CODE +
+            order_id +
+            amountPay.toString() +
+            DUITKU_API_KEY))
         .toString();
     Dio dio = Dio();
     var url = BASE_DUITKU + "/v2/inquiry";
-    print(amount);
     var params = {
       "merchantCode": BASE_MERCHANT_CODE,
-      "paymentAmount": amount.toString(),
+      "paymentAmount": amountPay.toString(),
       "paymentMethod": paymentMethod,
       "merchantOrderId": order_id,
       "productDetails": "Paket 1 bulan Pahlawan Gazibu",
@@ -137,7 +150,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
       "callbackUrl": "https://google.com/callback",
       "returnUrl": "https://google.com/return",
       "signature": signature,
-      "expiryPeriod": 1
+      "expiryPeriod": 60
     };
     final response = await dio.post(
       url,
@@ -151,8 +164,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     );
     if (response.data['statusCode'] == "00") {
       linkPayment = response.data['paymentUrl'];
-      print(linkPayment);
-      postAjkSubscription(amount, paymentMethod, linkPayment, paymentName);
+      postAjkSubscription(paymentMethod, linkPayment, paymentName);
     } else {
       print('gagal');
       print(response.data);

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomas/configs/config.dart';
 import 'package:tomas/providers/providers.dart';
+import 'package:tomas/screens/failed_payment/screen/failed_payment.dart';
 import 'package:tomas/screens/home/home.dart';
 import 'package:crypto/crypto.dart';
 import 'package:tomas/screens/success_payment/screen/success_payment.dart';
@@ -43,7 +44,7 @@ class PaymentWebVIewController extends GetxController {
     } else if (response.data['code'] == 'SUCCESS' &&
         statusPayment == 'FAILED') {
       toggleLoading(false);
-      Get.off(Home());
+      Get.off(FailedPayment());
     } else {
       toggleLoading(false);
     }

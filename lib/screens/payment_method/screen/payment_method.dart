@@ -53,7 +53,6 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
   @override
   Widget build(BuildContext context) {
-    print(signature);
     return Scaffold(
         appBar: AppBar(
           leading: TextButton(
@@ -88,15 +87,25 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     ),
                   )
                 : ListView.builder(
-                    itemCount: controller.dataPayment.length,
-                    itemBuilder: (context, index) => CardPaymentMethodList(
-                          urlImages: controller.dataPayment[index]
-                              ['paymentImage'],
-                          name: controller.dataPayment[index]['paymentName'],
-                          onTapMethod: () {
-                            Get.off(PaymentConfirmation(),
-                                arguments: controller.dataPayment[index]);
-                          },
-                        )))));
+                    itemCount: controller.dataPayment.length + 1,
+                    itemBuilder: (context, index) => index ==
+                            controller.dataPayment.length
+                        ? CardPaymentMethodList(
+                            urlImages: '212121',
+                            name: 'PLAFON KOPKAR',
+                            onTapMethod: () {
+                              Get.off(PaymentConfirmation(),
+                                  arguments: controller.dataPayment[index]);
+                            },
+                          )
+                        : CardPaymentMethodList(
+                            urlImages: controller.dataPayment[index]
+                                ['paymentImage'],
+                            name: controller.dataPayment[index]['paymentName'],
+                            onTapMethod: () {
+                              Get.off(PaymentConfirmation(),
+                                  arguments: controller.dataPayment[index]);
+                            },
+                          )))));
   }
 }

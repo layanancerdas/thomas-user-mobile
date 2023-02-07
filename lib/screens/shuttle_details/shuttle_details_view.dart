@@ -57,83 +57,75 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                 ],
               ),
             ),
-            body: Stack(
-              children: [
-                TabBarView(
-                  children: [scheduleSection(context), eTicketSection(context)],
-                ),
-                Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: StoreConnector<AppState, AjkState>(
-                        converter: (store) => store.state.ajkState,
-                        builder: (context, state) {
-                          return Container(
-                              padding: EdgeInsets.fromLTRB(24, 15, 8, 15),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    spreadRadius: 2,
-                                    blurRadius: 8,
-                                    offset: Offset(
-                                        3, 0), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Row(children: [
-                                CustomText(
-                                  "Rp${Utils.currencyFormat.format(state.selectedPickUpPoint['price'] * 10)}",
-                                  color: ColorsCustom.primary,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  TabBarView(
+                    children: [
+                      scheduleSection(context),
+                      eTicketSection(context)
+                    ],
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: StoreConnector<AppState, AjkState>(
+                          converter: (store) => store.state.ajkState,
+                          builder: (context, state) {
+                            return Container(
+                                padding: EdgeInsets.fromLTRB(24, 15, 8, 15),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(
+                                          3, 0), // changes position of shadow
+                                    ),
+                                  ],
                                 ),
-                                CustomText(
-                                  "/package",
-                                  color: ColorsCustom.black,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 12,
-                                ),
-                                SizedBox(width: 20),
-                                Expanded(
-                                    child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          width: 170,
-                                          child: CustomButton(
-                                            onPressed: () => onBooking(),
-                                            bgColor: ColorsCustom.primary,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            textColor: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            text: "Book",
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8),
-                                          ),
-                                        )))
-                              ]));
-                        })),
-                isLoading
-                    ? Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        color: Colors.white70,
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: Loading(
-                            color: ColorsCustom.primary,
-                            indicator: BallSpinFadeLoaderIndicator(),
+                                child: Row(children: [
+                                  Expanded(
+                                      child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Container(
+                                            width: 170,
+                                            child: CustomButton(
+                                              onPressed: () => onBooking(),
+                                              bgColor: ColorsCustom.primary,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              textColor: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              text: "Book",
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 8),
+                                            ),
+                                          )))
+                                ]));
+                          })),
+                  isLoading
+                      ? Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: Colors.white70,
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Loading(
+                              color: ColorsCustom.primary,
+                              indicator: BallSpinFadeLoaderIndicator(),
+                            ),
                           ),
-                        ),
-                      )
-                    : SizedBox()
-              ],
+                        )
+                      : SizedBox()
+                ],
+              ),
             )));
   }
 

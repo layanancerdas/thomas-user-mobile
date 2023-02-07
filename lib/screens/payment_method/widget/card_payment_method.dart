@@ -26,20 +26,26 @@ class CardPaymentMethodList extends StatelessWidget {
               children: [
                 Container(
                     padding: EdgeInsets.all(20),
-                    child: urlImages.substring(urlImages.length - 3) == 'SVG'
-                        ? SizedBox(
+                    child: name == 'PLAFON KOPKAR'
+                        ? Image.asset(
+                            'assets/images/logo_kopkar.png',
                             width: 80,
                             height: 20,
-                            child: SvgPicture.network(
-                              urlImages,
-                              color: Color(0xff1A4C93),
-                            ),
                           )
-                        : Image.network(
-                            urlImages,
-                            width: 80,
-                            height: 20,
-                          )),
+                        : urlImages.substring(urlImages.length - 3) == 'SVG'
+                            ? SizedBox(
+                                width: 80,
+                                height: 20,
+                                child: SvgPicture.network(
+                                  urlImages,
+                                  color: Color(0xff1A4C93),
+                                ),
+                              )
+                            : Image.network(
+                                urlImages,
+                                width: 80,
+                                height: 20,
+                              )),
                 SizedBox(
                   width: 12,
                 ),

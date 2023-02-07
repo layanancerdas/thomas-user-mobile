@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomas/helpers/colors_custom.dart';
+import 'package:tomas/helpers/utils.dart';
+import 'package:tomas/screens/payment_confirmation/payment_confirmation.dart';
 import 'package:tomas/screens/payment_webview/screen/payment_webview.dart';
+import 'package:tomas/screens/round_trip/round_trip.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/localization/app_translations.dart';
 import 'package:tomas/screens/detail_subscription/screen/detail_subscription.dart';
+import 'package:uuid/uuid.dart';
 
-class CardList extends StatefulWidget {
+class CardListSubscribeTrip extends StatefulWidget {
   final String pointA,
       pointB,
       addressA,
       addressB,
       differenceAB,
       name,
-      statusPayment,
-      urlPayment,
-      orderIdPayment;
-  CardList(
+      month,
+      amount;
+  CardListSubscribeTrip(
       {this.name,
       this.pointA,
       this.pointB,
       this.addressA,
       this.addressB,
       this.differenceAB,
-      this.statusPayment,
-      this.orderIdPayment,
-      this.urlPayment});
+      this.month,
+      this.amount});
 
   @override
-  _CardListState createState() => _CardListState();
+  _CardListSubscribeTripState createState() => _CardListSubscribeTripState();
 }
 
-class _CardListState extends State<CardList> {
+class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
   String responseStatus = '';
   bool isLoading = true;
 
@@ -41,6 +44,18 @@ class _CardListState extends State<CardList> {
   //     isLoading = value;
   //   });
   // }
+  void setOrderID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var uuid = Uuid();
+    var v4 = await uuid.v4();
+    prefs.setString('ORDER_ID', v4);
+  }
+
+  void setOrderAmount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('ORDER_AMOUNT', widget.amount);
+  }
 
   @override
   void initState() {
@@ -65,17 +80,7 @@ class _CardListState extends State<CardList> {
             shape: RoundedRectangleBorder(),
             // highlightColor: ColorsCustom.black.withOpacity(0.01),
             padding: EdgeInsets.all(0)),
-        onPressed: () => {
-          widget.statusPayment == 'PENDING'
-              ? Get.to(PaymentWebView(
-                  url: widget.urlPayment,
-                  orderId: widget.orderIdPayment,
-                ))
-              : Get.to(DetailSubscription(
-                  pointA: 'terminal',
-                  pointB: 'kantor',
-                ))
-        },
+        onPressed: () => {Get.to(RoundTrip())},
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +127,7 @@ class _CardListState extends State<CardList> {
                           padding: EdgeInsets.symmetric(vertical: 3),
                           child: Center(
                             child: CustomText(
-                              "1 Month",
+                              widget.month,
                               fontSize: 10,
                               fontWeight: FontWeight.w400,
                               color: Colors.white
@@ -171,14 +176,6 @@ class _CardListState extends State<CardList> {
                           ),
                         ],
                       ),
-                      CustomText(
-                        widget.statusPayment,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black
-                        // getColorTypeText()
-                        ,
-                      ),
                     ],
                   ),
                   SizedBox(
@@ -203,59 +200,96 @@ class _CardListState extends State<CardList> {
                     height: 6,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: CustomText(
-                          widget.pointA,
-                          color: ColorsCustom.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            widget.pointA,
+                            color: ColorsCustom.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                          CustomText(
+                            widget.addressA,
+                            color: ColorsCustom.generalText,
+                            fontSize: 10,
+                          ),
+                        ],
                       ),
-                      SvgPicture.asset('assets/images/arrow-switch.svg'),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: CustomText(
+                      Column(
+                        children: [
+                          SvgPicture.asset('assets/images/arrow-switch.svg'),
+                          CustomText(
+                            widget.differenceAB,
+                            color: ColorsCustom.generalText,
+                            fontSize: 10,
+                            height: 2.4,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CustomText(
                             widget.pointB,
                             color: ColorsCustom.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        widget.addressA,
-                        color: ColorsCustom.generalText,
-                        fontSize: 10,
-                      ),
-                      CustomText(
-                        widget.differenceAB,
-                        color: ColorsCustom.generalText,
-                        fontSize: 10,
-                      ),
-                      CustomText(
-                        widget.addressB,
-                        color: ColorsCustom.generalText,
-                        fontSize: 10,
+                          CustomText(
+                            widget.addressB,
+                            color: ColorsCustom.generalText,
+                            fontSize: 10,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                   SizedBox(
                     height: 12,
                   ),
-                  CustomText(
-                    "View Detail",
-                    color: ColorsCustom.primary,
-                    fontSize: 14,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RichText(
+                        text: new TextSpan(
+                          text: 'Rp. ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: ColorsCustom.primary,
+                              fontFamily: 'Poppins'),
+                          children: <TextSpan>[
+                            new TextSpan(
+                                text: Utils.currencyFormat
+                                    .format(int.parse(widget.amount))),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          await setOrderID();
+                          await setOrderAmount();
+                          Get.to(PaymentConfirmation());
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: ColorsCustom.primary,
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                          child: CustomText(
+                            "Subscribe Now",
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

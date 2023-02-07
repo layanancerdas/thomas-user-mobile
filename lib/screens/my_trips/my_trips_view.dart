@@ -21,7 +21,7 @@ class MyTripsView extends MyTripsViewModel {
   Widget build(BuildContext context) {
     return DefaultTabController(
         initialIndex: index,
-        length: 4,
+        length: 3,
         child: Scaffold(
             appBar: AppBar(
               centerTitle: false,
@@ -51,10 +51,10 @@ class MyTripsView extends MyTripsViewModel {
                     width: 16,
                     height: 3),
                 tabs: [
-                  Tab(
-                    // text: "${AppTranslations.of(context).text("pending")}",
-                    text: "List",
-                  ),
+                  // Tab(
+                  //   // text: "${AppTranslations.of(context).text("pending")}",
+                  //   text: "List",
+                  // ),
                   Tab(text: "${AppTranslations.of(context).text("active")}"),
                   Tab(
                     text: "${AppTranslations.of(context).text("completed")}",
@@ -67,7 +67,7 @@ class MyTripsView extends MyTripsViewModel {
               children: [
                 TabBarView(
                   children: [
-                    ListSection(),
+                    // ListSection(),
                     // PendingSection(),
                     ActiveSection(),
                     CompletedSection(),

@@ -30,6 +30,7 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
   @override
   var data = Get.arguments;
   Widget build(BuildContext context) {
+    print(amountPay);
     return Scaffold(
       key: paymentConfirmationKey,
       appBar: AppBar(
@@ -57,7 +58,7 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
             //         DUITKU_API_KEY))
             //     .toString();
             // print(signature);
-            print(data);
+            // print(state.ajkState.selectedRoute);
             return SafeArea(
               child: Stack(
                 children: [
@@ -151,11 +152,22 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                                             //   color: ColorsCustom.primary,
                                             // )
                                             CustomText(
-                                              "Rp${stateGeneral.selectedVouchers.containsKey("voucher_id") ? stateGeneral.selectedVouchers['discount_type'] == 'AMOUNT' ? Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10 - stateGeneral.selectedVouchers['discount_amount']) : Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10 - (state.ajkState.selectedPickUpPoint['price'] * 10 * (stateGeneral.selectedVouchers['discount_percentage'] * 100) ~/ 100)) : Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10)}",
+                                              amountPay == ''
+                                                  ? ''
+                                                  : 'Rp. ' +
+                                                      Utils.currencyFormat
+                                                          .format(int.parse(
+                                                              amountPay)),
                                               color: ColorsCustom.primary,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16,
                                             ),
+                                            // CustomText(
+                                            //   "Rp${stateGeneral.selectedVouchers.containsKey("voucher_id") ? stateGeneral.selectedVouchers['discount_type'] == 'AMOUNT' ? Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10 - stateGeneral.selectedVouchers['discount_amount']) : Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10 - (state.ajkState.selectedPickUpPoint['price'] * 10 * (stateGeneral.selectedVouchers['discount_percentage'] * 100) ~/ 100)) : Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10)}",
+                                            //   color: ColorsCustom.primary,
+                                            //   fontWeight: FontWeight.w600,
+                                            //   fontSize: 16,
+                                            // ),
                                           ],
                                         );
                                       });
@@ -167,15 +179,16 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                                 child: Container(
                                   width: 170,
                                   child: CustomButton(
-                                    onPressed: () => onPayClick(
-                                        state.ajkState
-                                                .selectedPickUpPoint['price'] *
-                                            10,
-                                        data['paymentMethod'],
-                                        data['paymentName'])
+                                    onPressed: () => data != null
+                                        ? onPayClick(data['paymentMethod'],
+                                            data['paymentName'])
+                                        : Get.snackbar('Warning',
+                                            'Pilih payment method terlebih dahulu')
                                     // onNext()
                                     ,
-                                    bgColor: ColorsCustom.primary,
+                                    bgColor: data != null
+                                        ? ColorsCustom.primary
+                                        : ColorsCustom.newGrey,
                                     textColor: Colors.white,
                                     fontSize: 16,
                                     borderRadius: BorderRadius.circular(12),

@@ -11,6 +11,7 @@ import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/screens/home/home.dart';
 import 'package:tomas/screens/payment_confirmation/payment_confirmation.dart';
+import 'package:tomas/screens/success_payment/screen/success_payment.dart';
 import 'package:tomas/widgets/custom_dialog.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:uuid/uuid.dart';
@@ -65,9 +66,8 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
               getSelectedTrip: res.data['data']));
           print("1");
           toggleLoading(false);
-          await setOrderID();
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => PaymentConfirmation()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => SuccessPayment()));
         } else if (res.data['message'].toLowerCase().contains("already")) {
           // await store.dispatch(SetSelectedMyTrip(
           //     selectedMyTrip: res.data['data'][0],
@@ -81,10 +81,9 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
           } else if (!dataPayment.containsKey('status') ||
               dataPayment['status'] == 'PENDING') {
             print("3");
-            await setOrderID();
             toggleLoading(false);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => PaymentConfirmation()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => SuccessPayment()));
           }
         } else {
           // toggleLoading(false);
