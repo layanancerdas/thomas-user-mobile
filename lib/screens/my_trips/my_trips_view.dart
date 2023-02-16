@@ -20,7 +20,7 @@ class MyTripsView extends MyTripsViewModel {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        initialIndex: index,
+        initialIndex: 0,
         length: 3,
         child: Scaffold(
             appBar: AppBar(

@@ -30,7 +30,6 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
   @override
   var data = Get.arguments;
   Widget build(BuildContext context) {
-    print(amountPay);
     return Scaffold(
       key: paymentConfirmationKey,
       appBar: AppBar(
@@ -51,38 +50,16 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
       body: StoreConnector<AppState, AppState>(
           converter: (store) => store.state,
           builder: (context, state) {
-            // var signature = md5
-            //     .convert(utf8.encode(BASE_MERCHANT_CODE +
-            //         order_id +
-            //         20000.toString() +
-            //         DUITKU_API_KEY))
-            //     .toString();
-            // print(signature);
-            // print(state.ajkState.selectedRoute);
             return SafeArea(
               child: Stack(
                 children: [
                   ListView(
                     padding: EdgeInsets.only(top: 16, left: 16, right: 16),
                     children: [
-                      PurchaseConfirmation(),
-                      // CardBalance(
-                      //   toggle: toggleUseBalance,
-                      //   useBalance: state.transactionState.useBalance,
-                      //   isZeroPrice:
-                      //       state.ajkState.selectedPickUpPoint['price'] <= 0,
-                      // ),
+                      PurchaseConfirmation(month),
                       state.ajkState.selectedPickUpPoint['price'] <= 0
                           ? SizedBox()
                           : SizedBox(height: 16),
-                      // CardWallet(
-                      //   onWalletClick: onWalletClick,
-                      //   isZeroPrice:
-                      //       state.ajkState.selectedPickUpPoint['price'] <= 0,
-                      // ),
-                      // state.ajkState.selectedPickUpPoint['price'] <= 0
-                      //     ? SizedBox()
-                      //     : SizedBox(height: 16),
 
                       CardCoupon(
                         isZeroPrice:
@@ -147,10 +124,6 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14,
                                             ),
-                                            // CustomText(
-                                            //   "${stateGeneral.selectedVouchers['discount_amount']}",
-                                            //   color: ColorsCustom.primary,
-                                            // )
                                             CustomText(
                                               amountPay == ''
                                                   ? ''
@@ -162,12 +135,6 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16,
                                             ),
-                                            // CustomText(
-                                            //   "Rp${stateGeneral.selectedVouchers.containsKey("voucher_id") ? stateGeneral.selectedVouchers['discount_type'] == 'AMOUNT' ? Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10 - stateGeneral.selectedVouchers['discount_amount']) : Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10 - (state.ajkState.selectedPickUpPoint['price'] * 10 * (stateGeneral.selectedVouchers['discount_percentage'] * 100) ~/ 100)) : Utils.currencyFormat.format(state.ajkState.selectedPickUpPoint['price'] * 10)}",
-                                            //   color: ColorsCustom.primary,
-                                            //   fontWeight: FontWeight.w600,
-                                            //   fontSize: 16,
-                                            // ),
                                           ],
                                         );
                                       });

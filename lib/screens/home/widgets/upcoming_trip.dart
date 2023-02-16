@@ -47,7 +47,7 @@ class UpcomingTrip extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (_) => Home(
                                     index: 1,
-                                    tab: 1,
+                                    tab: 0,
                                     forceLoading: true,
                                   ))),
                       child: CustomText(

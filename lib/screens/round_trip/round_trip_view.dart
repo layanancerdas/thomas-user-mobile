@@ -141,11 +141,11 @@ class RoundTripView extends RoundTripViewModel {
                           ),
                           InkWell(
                             onTap: () {
+                              Get.to(SubscribeTrip(
+                                  idRoute: state.selectedRoute['route_id']));
                               setState(() {
                                 isSubscribe = !isSubscribe;
                               });
-                              Get.to(SubscribeTrip(
-                                  idRoute: state.selectedRoute['route_id']));
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -153,9 +153,7 @@ class RoundTripView extends RoundTripViewModel {
                                   borderRadius: BorderRadius.circular(20)),
                               padding: EdgeInsets.all(12),
                               child: CustomText(
-                                isSubscribe
-                                    ? 'Extend Subscribe'
-                                    : 'Subscribe Now',
+                                isSubscribe ? 'Subscribe Now' : 'Subscribe Now',
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,

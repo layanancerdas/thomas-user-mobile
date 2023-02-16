@@ -18,11 +18,13 @@ class CardListSubscribeTrip extends StatefulWidget {
       addressA,
       addressB,
       differenceAB,
+      id,
       name,
       month,
       amount;
   CardListSubscribeTrip(
       {this.name,
+      this.id,
       this.pointA,
       this.pointB,
       this.addressA,
@@ -51,10 +53,28 @@ class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
     prefs.setString('ORDER_ID', v4);
   }
 
+  void setOrderName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('ORDER_NAME', widget.name);
+  }
+
+  void setSubsId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('SUBS_ID', widget.id);
+  }
+
   void setOrderAmount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setString('ORDER_AMOUNT', widget.amount);
+  }
+
+  void setDuration() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('ORDER_DURATION', widget.month);
   }
 
   @override
@@ -202,21 +222,23 @@ class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            widget.pointA,
-                            color: ColorsCustom.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                          CustomText(
-                            widget.addressA,
-                            color: ColorsCustom.generalText,
-                            fontSize: 10,
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              widget.pointA,
+                              color: ColorsCustom.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                            CustomText(
+                              widget.addressA,
+                              color: ColorsCustom.generalText,
+                              fontSize: 10,
+                            ),
+                          ],
+                        ),
                       ),
                       Column(
                         children: [
@@ -229,21 +251,24 @@ class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          CustomText(
-                            widget.pointB,
-                            color: ColorsCustom.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                          CustomText(
-                            widget.addressB,
-                            color: ColorsCustom.generalText,
-                            fontSize: 10,
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            CustomText(
+                              widget.pointB,
+                              textAlign: TextAlign.end,
+                              color: ColorsCustom.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                            CustomText(
+                              widget.addressB,
+                              color: ColorsCustom.generalText,
+                              fontSize: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -272,6 +297,9 @@ class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
                         onTap: () async {
                           await setOrderID();
                           await setOrderAmount();
+                          await setDuration();
+                          await setOrderName();
+                          await setSubsId();
                           Get.to(PaymentConfirmation());
                         },
                         child: Container(

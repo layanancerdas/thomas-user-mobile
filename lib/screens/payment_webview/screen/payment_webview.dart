@@ -8,6 +8,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:loading/indicator/ball_spin_fade_loader_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/screens/home/home.dart';
 import 'package:tomas/screens/payment_webview/controller/payment_webview_controller.dart';
@@ -31,6 +33,14 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   double progress = 0;
   String url2 = '';
   Timer timer;
+  bool isLoading = true;
+
+  void toggleLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -87,66 +97,92 @@ class _PaymentWebViewState extends State<PaymentWebView> {
           ),
         ),
         body: SizedBox(
-          child: Column(
+          child: Stack(
             children: <Widget>[
-              Expanded(
-                child: SizedBox(
-                  child: InAppWebView(
-                    key: webViewKey,
-                    initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
-                    pullToRefreshController: pullToRefreshController,
-                    onWebViewCreated: (controller) {
-                      webViewController = controller;
-                    },
-                    onLoadStart: (controller, url) {
-                      setState(() {
-                        this.url2 = url.toString();
-                      });
-                    },
-                    shouldOverrideUrlLoading:
-                        (controller, navigationAction) async {
-                      var uri = navigationAction.request.url;
+              Column(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      child: InAppWebView(
+                        key: webViewKey,
+                        initialUrlRequest:
+                            URLRequest(url: Uri.parse(widget.url)),
+                        pullToRefreshController: pullToRefreshController,
+                        onWebViewCreated: (controller) {
+                          webViewController = controller;
+                        },
+                        onLoadStart: (controller, url) {
+                          setState(() {
+                            this.url2 = url.toString();
+                          });
+                        },
+                        shouldOverrideUrlLoading:
+                            (controller, navigationAction) async {
+                          var uri = navigationAction.request.url;
 
-                      if (![
-                        "http",
-                        "https",
-                        "file",
-                        "chrome",
-                        "data",
-                        "javascript",
-                        "about"
-                      ].contains(uri.scheme)) {
-                        if (await canLaunchUrl(uri)) {
-                          // Launch the App
-                          await launchUrl(
-                            uri,
-                          );
-                          // and cancel the request
-                          return NavigationActionPolicy.CANCEL;
-                        }
-                      }
+                          if (![
+                            "http",
+                            "https",
+                            "file",
+                            "chrome",
+                            "data",
+                            "javascript",
+                            "about"
+                          ].contains(uri.scheme)) {
+                            if (await canLaunchUrl(uri)) {
+                              // Launch the App
+                              await launchUrl(
+                                uri,
+                              );
+                              // and cancel the request
+                              return NavigationActionPolicy.CANCEL;
+                            }
+                          }
 
-                      return NavigationActionPolicy.ALLOW;
-                    },
-                    onProgressChanged: (controller, progress) {
-                      if (progress == 100) {
-                        pullToRefreshController?.endRefreshing();
-                      }
-                      setState(() {
-                        this.progress = progress / 100;
-                        // urlController.text = this.url;
-                      });
-                    },
-                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                      setState(() {
-                        this.url2 = url.toString();
-                        // urlController.text = this.url;
-                      });
-                    },
-                    onConsoleMessage: (controller, consoleMessage) {},
+                          return NavigationActionPolicy.ALLOW;
+                        },
+                        onProgressChanged: (controller, progress) {
+                          if (progress == 100) {
+                            toggleLoading(false);
+                            pullToRefreshController?.endRefreshing();
+
+                            print('object');
+                          }
+
+                          setState(() {
+                            this.progress = progress / 100;
+                            // urlController.text = this.url;
+                          });
+                        },
+                        onUpdateVisitedHistory:
+                            (controller, url, androidIsReload) {
+                          setState(() {
+                            this.url2 = url.toString();
+                            // urlController.text = this.url;
+                          });
+                        },
+                        onConsoleMessage: (controller, consoleMessage) {},
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
+              isLoading
+                  ? Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      color: Colors.white70,
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Loading(
+                          color: ColorsCustom.primary,
+                          indicator: BallSpinFadeLoaderIndicator(),
+                        ),
+                      ),
+                    )
+                  : Container()
             ],
           ),
         ));

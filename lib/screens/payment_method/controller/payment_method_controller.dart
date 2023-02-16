@@ -24,6 +24,7 @@ class PaymentMethodController extends GetxController {
       "datetime": datenow,
       "signature": signature
     };
+
     // MyDialog.showLoadingDialog();
     final response = await dio.post(
       url,
@@ -35,6 +36,7 @@ class PaymentMethodController extends GetxController {
         },
       ),
     );
+    print(response.data);
     if (response.data['responseCode'] == "00") {
       dataPayment = response.data['paymentFee'];
       toggleLoading(false);

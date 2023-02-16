@@ -88,6 +88,11 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                                   ],
                                 ),
                                 child: Row(children: [
+                                  CustomText(
+                                    "Rp. 20.000 / Trip",
+                                    color: ColorsCustom.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   Expanded(
                                       child: Align(
                                           alignment: Alignment.centerRight,
@@ -151,7 +156,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                   height: 2.7,
                 ),
                 SizedBox(height: 5),
-                ListSubscriptionOrder(),
+                // ListSubscriptionOrder(),
                 CardSchedule(
                   dateA: Utils.formatterDate.format(DateTime.parse(
                       state.selectedTrip['start_date'] +

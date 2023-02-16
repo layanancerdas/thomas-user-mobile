@@ -7,11 +7,21 @@ import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/localization/app_translations.dart';
 import 'package:tomas/screens/detail_subscription/screen/detail_subscription.dart';
 
+extension StringCasingExtension on String {
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
+      .split(' ')
+      .map((str) => str.toCapitalized())
+      .join(' ');
+}
+
 class CardList extends StatefulWidget {
   final String pointA,
       pointB,
       addressA,
       addressB,
+      month,
       differenceAB,
       name,
       statusPayment,
@@ -19,6 +29,7 @@ class CardList extends StatefulWidget {
       orderIdPayment;
   CardList(
       {this.name,
+      this.month,
       this.pointA,
       this.pointB,
       this.addressA,
@@ -122,7 +133,7 @@ class _CardListState extends State<CardList> {
                           padding: EdgeInsets.symmetric(vertical: 3),
                           child: Center(
                             child: CustomText(
-                              "1 Month",
+                              widget.month,
                               fontSize: 10,
                               fontWeight: FontWeight.w400,
                               color: Colors.white
@@ -171,14 +182,42 @@ class _CardListState extends State<CardList> {
                           ),
                         ],
                       ),
-                      CustomText(
-                        widget.statusPayment,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black
-                        // getColorTypeText()
-                        ,
-                      ),
+                      widget.statusPayment == 'SUCCESS'
+                          ? Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 3, horizontal: 8),
+                              decoration: BoxDecoration(
+                                  color: ColorsCustom.primaryGreenVeryLow,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      width: 1, color: ColorsCustom.newGreen)),
+                              child: CustomText(
+                                widget.statusPayment.toTitleCase(),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: ColorsCustom.newGreen
+                                // getColorTypeText()
+                                ,
+                              ),
+                            )
+                          : Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 3, horizontal: 8),
+                              decoration: BoxDecoration(
+                                  color: ColorsCustom.primaryOrangeVeryLow,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: ColorsCustom.primaryOrange)),
+                              child: CustomText(
+                                widget.statusPayment.toTitleCase(),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: ColorsCustom.primaryOrange
+                                // getColorTypeText()
+                                ,
+                              ),
+                            ),
                     ],
                   ),
                   SizedBox(
@@ -214,14 +253,12 @@ class _CardListState extends State<CardList> {
                       ),
                       SvgPicture.asset('assets/images/arrow-switch.svg'),
                       Expanded(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: CustomText(
-                            widget.pointB,
-                            color: ColorsCustom.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
+                        child: CustomText(
+                          widget.pointB,
+                          textAlign: TextAlign.right,
+                          color: ColorsCustom.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
                         ),
                       ),
                     ],
@@ -232,20 +269,25 @@ class _CardListState extends State<CardList> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomText(
-                        widget.addressA,
-                        color: ColorsCustom.generalText,
-                        fontSize: 10,
+                      Expanded(
+                        child: CustomText(
+                          widget.addressA,
+                          color: ColorsCustom.generalText,
+                          fontSize: 10,
+                        ),
                       ),
                       CustomText(
                         widget.differenceAB,
                         color: ColorsCustom.generalText,
                         fontSize: 10,
                       ),
-                      CustomText(
-                        widget.addressB,
-                        color: ColorsCustom.generalText,
-                        fontSize: 10,
+                      Expanded(
+                        child: CustomText(
+                          widget.addressB,
+                          textAlign: TextAlign.right,
+                          color: ColorsCustom.generalText,
+                          fontSize: 10,
+                        ),
                       ),
                     ],
                   ),

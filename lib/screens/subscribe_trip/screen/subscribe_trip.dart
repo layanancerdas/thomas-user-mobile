@@ -73,6 +73,7 @@ class _SubscribeTripState extends State<SubscribeTrip> {
                     padding: EdgeInsets.all(12),
                     itemCount: controller.dataSubscribe.length,
                     itemBuilder: (context, index) => CardListSubscribeTrip(
+                          id: controller.dataSubscribe[index]['id'],
                           addressA: controller.dataSubscribe[index]['routes']
                               ['pickup_points'][0]['address'],
                           addressB: controller.dataSubscribe[index]['routes']

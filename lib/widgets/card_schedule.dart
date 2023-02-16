@@ -43,6 +43,7 @@ class CardSchedule extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -77,6 +78,13 @@ class CardSchedule extends StatelessWidget {
                   fontSize: 12,
                 )
               ],
+            ),
+            SizedBox(height: 15),
+            CustomText(
+              "Seat Available : 2",
+              color: ColorsCustom.black,
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
             ),
             SizedBox(height: 15),
             Container(

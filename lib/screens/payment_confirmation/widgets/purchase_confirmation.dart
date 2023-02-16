@@ -9,6 +9,9 @@ import 'package:tomas/redux/modules/user_state.dart';
 import 'package:tomas/widgets/custom_text.dart';
 
 class PurchaseConfirmation extends StatelessWidget {
+  final String month;
+  PurchaseConfirmation(this.month);
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AjkState>(
@@ -17,6 +20,7 @@ class PurchaseConfirmation extends StatelessWidget {
           return StoreConnector<AppState, UserState>(
               converter: (store) => store.state.userState,
               builder: (context, stateUser) {
+                print(state.selectedTrip['start_date']);
                 return Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(14),
@@ -65,32 +69,11 @@ class PurchaseConfirmation extends StatelessWidget {
                       SizedBox(
                         height: 8,
                       ),
-                      Row(
-                        children: [
-                          CustomText(
-                            "${Utils.formatterDate.format(DateTime.parse(state.selectedTrip['start_date'])) ?? "-"}",
-                            color: ColorsCustom.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                          ),
-                          CustomText(
-                            " - ",
-                            color: ColorsCustom.black,
-                            fontWeight: FontWeight.w300,
-                            fontSize: 12,
-                          ),
-                          // Container(
-                          //   width: 30,
-                          //   margin: EdgeInsets.symmetric(horizontal: 5),
-                          //   child: Image.asset('assets/images/arrow.png'),
-                          // ),
-                          CustomText(
-                            "${Utils.formatterDateWithYear.format(DateTime.parse(state.selectedTrip['end_date'])) ?? "-"}",
-                            color: ColorsCustom.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                          )
-                        ],
+                      CustomText(
+                        "${month} Subscriptions",
+                        color: ColorsCustom.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
                       ),
                     ],
                   ),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:tomas/configs/config.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/redux/app_state.dart';
+import 'package:tomas/screens/choose_month/widget/list_subcription.dart';
+import 'package:tomas/screens/list_subcsription/screen/ListSubscription.dart';
 import 'package:tomas/screens/profile/widgets/ajk_request_time.dart';
 import 'package:tomas/screens/profile/widgets/profile_menu.dart';
 import 'package:tomas/widgets/custom_text.dart';
@@ -156,9 +159,9 @@ class ProfileView extends ProfileViewModel {
                         ),
                         ProfileMenu(
                           divider: true,
-                          icon: "user_outline.svg",
+                          icon: "bag_outline.svg",
                           text: "My Subscription",
-                          onPress: onPersonalInformationClick,
+                          onPress: () => Get.to(ListSubcription()),
                         ),
                         ProfileMenu(
                           divider: true,

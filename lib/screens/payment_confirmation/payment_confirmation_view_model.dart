@@ -36,6 +36,9 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
   String name = "";
   String email = "";
   String amountPay = "";
+  String month = "";
+  String nameSubs = "";
+  String idSubs = "";
   bool isLoading = false;
   bool errorPayment = false;
 
@@ -44,6 +47,9 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     super.initState();
     getOrderID();
     getUserDetail();
+    getMonth();
+    getName();
+    getSubsId();
     setTotalPay();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   store = StoreProvider.of<AppState>(context);
@@ -73,6 +79,30 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     });
   }
 
+  void getMonth() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      month = prefs.getString('ORDER_DURATION');
+    });
+  }
+
+  void getName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      nameSubs = prefs.getString('ORDER_NAME');
+    });
+  }
+
+  void getSubsId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      idSubs = prefs.getString('SUBS_ID');
+    });
+  }
+
   Future<void> getUserDetail() async {
     try {
       dynamic res = await Providers.getUserDetail();
@@ -98,12 +128,12 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     Dio dio = Dio();
     var url = BASE_API + "/ajk/user/subscription";
     var params = {
-      "subcriptions_id": "880f24c0-a6a2-11ed-8e24-c36b17f16c5d",
+      "subcriptions_id": idSubs,
       "merchandOrderId": order_id,
       "paymentAmount": amountPay.toString(),
       "paymentMethod": paymentMethod,
       "paymentMethodName": paymentName,
-      "productDetails": "Paket 1 bulan Pahlawan Gazibu",
+      "productDetails": nameSubs,
       "customerVaName": name,
       "email": email,
       "payment_url": urlPayment
@@ -124,6 +154,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
       toggleLoading(false);
       Get.off(PaymentWebView(url: linkPayment, orderId: order_id));
     } else {
+      toggleLoading(false);
       print(response.data);
     }
   }
@@ -144,7 +175,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
       "paymentAmount": amountPay.toString(),
       "paymentMethod": paymentMethod,
       "merchantOrderId": order_id,
-      "productDetails": "Paket 1 bulan Pahlawan Gazibu",
+      "productDetails": nameSubs,
       "customerVaName": name,
       "email": email,
       "callbackUrl": "https://google.com/callback",

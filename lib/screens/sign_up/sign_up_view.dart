@@ -223,27 +223,40 @@ class SignUpView extends SignUpViewModel {
                               Row(
                                 children: [
                                   Radio(
-                                      value: 'Shift',
+                                      value: 1,
                                       groupValue: selectedShift,
                                       onChanged: (val) {
                                         setState(() {
                                           selectedShift = val;
                                         });
                                       }),
-                                  Text('Shift')
+                                  Text('Non-Shift')
                                 ],
                               ),
                               Row(
                                 children: [
                                   Radio(
-                                      value: 'Non Shift',
+                                      value: 2,
                                       groupValue: selectedShift,
                                       onChanged: (val) {
                                         setState(() {
                                           selectedShift = val;
                                         });
                                       }),
-                                  Text('Non Shift')
+                                  Text('Shift Red')
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 3,
+                                      groupValue: selectedShift,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          selectedShift = val;
+                                        });
+                                      }),
+                                  Text('Shift White')
                                 ],
                               ),
                             ],
