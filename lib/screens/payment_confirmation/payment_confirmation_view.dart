@@ -50,6 +50,7 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
       body: StoreConnector<AppState, AppState>(
           converter: (store) => store.state,
           builder: (context, state) {
+            print(state.userState.selectedMyTrip['invoice_id']);
             return SafeArea(
               child: Stack(
                 children: [
@@ -66,25 +67,27 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                             state.ajkState.selectedPickUpPoint['price'] <= 0,
                       ),
                       SizedBox(height: 16),
-                      CardPaymentMethod(
-                        onTapMethod: () {
-                          Get.off(PaymentMethod(
-                            amount:
-                                state.ajkState.selectedPickUpPoint['price'] *
-                                    10,
-                          ));
-                        },
-                        payment: data != null ? data['paymentName'] : null,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 24, bottom: 16),
-                        child: CustomText(
-                          "${AppTranslations.of(context).text("price_details")}",
-                          color: ColorsCustom.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
+
+                      int.parse(amountPay) == 0
+                          ? SizedBox()
+                          : CardPaymentMethod(
+                              onTapMethod: () {
+                                Get.off(PaymentMethod(
+                                  amount: int.parse(amountPay),
+                                ));
+                              },
+                              payment:
+                                  data != null ? data['paymentName'] : null,
+                            ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(top: 24, bottom: 16),
+                      //   child: CustomText(
+                      //     "${AppTranslations.of(context).text("price_details")}",
+                      //     color: ColorsCustom.black,
+                      //     fontWeight: FontWeight.w600,
+                      //     fontSize: 14,
+                      //   ),
+                      // ),
                       // CardPriceDetails()
                     ],
                   ),
@@ -146,14 +149,19 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
                                 child: Container(
                                   width: 170,
                                   child: CustomButton(
-                                    onPressed: () => data != null
-                                        ? onPayClick(data['paymentMethod'],
-                                            data['paymentName'])
+                                    onPressed: () => data != null ||
+                                            int.parse(amountPay) == 0
+                                        ? int.parse(amountPay) == 0
+                                            ? onZeroPricePay(state.userState
+                                                .selectedMyTrip['invoice_id'])
+                                            : onPayClick(data['paymentMethod'],
+                                                data['paymentName'])
                                         : Get.snackbar('Warning',
                                             'Pilih payment method terlebih dahulu')
                                     // onNext()
                                     ,
-                                    bgColor: data != null
+                                    bgColor: data != null ||
+                                            int.parse(amountPay) == 0
                                         ? ColorsCustom.primary
                                         : ColorsCustom.newGrey,
                                     textColor: Colors.white,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_spin_fade_loader_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -22,6 +23,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -89,7 +91,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                                 ),
                                 child: Row(children: [
                                   CustomText(
-                                    "Rp. 20.000 / Trip",
+                                    "Rp. ${Utils.currencyFormat.format(state.selectedPickUpPoint['price'] * 10)} / Trip",
                                     color: ColorsCustom.black,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -158,6 +160,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                 SizedBox(height: 5),
                 // ListSubscriptionOrder(),
                 CardSchedule(
+                  includedDate: includedDate,
                   dateA: Utils.formatterDate.format(DateTime.parse(
                       state.selectedTrip['start_date'] +
                           " " +
@@ -199,6 +202,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                 ),
                 SizedBox(height: 5),
                 CardSchedule(
+                  includedDate: includedDate,
                   dateB: Utils.formatterDateWithYear.format(DateTime.parse(
                       state.selectedTrip['end_date'] +
                           " " +

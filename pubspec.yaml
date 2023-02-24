@@ -70,6 +70,7 @@ dependencies:
   get: ^4.6.5
   flutter_inappwebview: ^5.7.2+3
   uuid: ^3.0.6
+  cloud_firestore: ^4.4.1
 
 dev_dependencies:
   flutter_test:

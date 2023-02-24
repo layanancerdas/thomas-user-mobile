@@ -61,6 +61,7 @@
   "no_notification":"You don’t have any notifications.\nAll of your notifications will be shown here.",
   "no_plan_trip":"Oops! We couldn’t find any available\ntransport. Please check your route.",
   "no_shuttle":"Oops! Shuttle not found. Please try\nother keyword and check your network.",
+  
   "verify_phone":"Verify phone number",
   "have_sent_verification":"We have sent a Whatsapp verification code to ",
   "enter_verify":". Please enter the verification code.",

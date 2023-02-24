@@ -23,6 +23,8 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
 
   bool isLoading = true;
 
+  DateTime selectedDate = DateTime.now();
+
   void toggleLoading(bool value) {
     setState(() {
       isLoading = value;
@@ -41,13 +43,12 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
         );
   }
 
-  Future<void> getAllTripById() async {
+  Future<void> getAllTripById(start_date, end_date) async {
     try {
       dynamic res = await Providers.getTripByRouteId(
-        id: store.state.ajkState.selectedRoute['route_id'],
-        // startDate: 1619852730000,
-        // endDate: 1622271930000
-      );
+          id: store.state.ajkState.selectedRoute['route_id'],
+          startDate: start_date,
+          endDate: end_date);
       print(res);
 
       List _data = res.data['data'] as List;
@@ -75,7 +76,7 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
   }
 
   Future<void> onRefresh() async {
-    await getAllTripById();
+    // await getAllTripById();
     await getResolveDate();
   }
 
@@ -94,7 +95,7 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
-      getAllTripById();
+      getAllTripById(DateTime.now(), DateTime.now().add(Duration(days: 365)));
       getResolveDate();
       getUserDetail();
     });

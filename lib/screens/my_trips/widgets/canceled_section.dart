@@ -86,89 +86,92 @@ class _CanceledSectionState extends State<CanceledSection> {
               footer: ClassicFooter(
                 loadStyle: LoadStyle.ShowWhenLoading,
               ),
-              child: ListView(
-                padding: EdgeInsets.all(20),
-                children: [
-                  CardCancelled(),
-                ],
-              )
-              //     state.canceledTrip.length > 0
-              // ?  ListView.builder(
-              //         shrinkWrap: true,
-              //         padding: EdgeInsets.only(top: 16, bottom: 16),
-              //         itemCount: state.canceledTrip.length,
-              //         itemBuilder: (ctx, i) {
-              //           return CardTrips(
-              //             dateA:
-              //                 state.canceledTrip[i]['trip']['type'] == 'RETURN'
-              //                     ? DateTime.fromMillisecondsSinceEpoch(
-              //                         state.canceledTrip[i]['trip']
-              //                             ['departure_time'])
-              //                     : DateTime.fromMillisecondsSinceEpoch(
-              //                         state.canceledTrip[i]['trip']
-              //                             ['departure_time']),
-              //             dateB: state.canceledTrip[i]['trip']['type'] ==
-              //                     'RETURN'
-              //                 ? DateTime.fromMillisecondsSinceEpoch(
-              //                         state.canceledTrip[i]['trip']
-              //                             ['departure_time'])
-              //                     .add(Duration(
-              //                         minutes: state.canceledTrip[i]
-              //                             ['pickup_point']['time_to_dest']))
-              //                 : DateTime.fromMillisecondsSinceEpoch(
-              //                         state.canceledTrip[i]['trip']['departure_time'])
-              //                     .add(Duration(minutes: state.canceledTrip[i]['pickup_point']['time_to_dest'])),
-              //             timeB: state.canceledTrip[i]['trip']['type'] == 'RETURN'
-              //                 ? DateTime.parse(state.canceledTrip[i]['trip']['trip_group']['start_date'] + " " + state.canceledTrip[i]['trip']['trip_group']['return_time'])
-              //                     .add(Duration(
-              //                         minutes: state.canceledTrip[i]
-              //                             ['pickup_point']['time_to_dest']))
-              //                 : DateTime.parse(state.canceledTrip[i]['trip']
-              //                             ['trip_group']['start_date'] +
-              //                         " " +
-              //                         state.canceledTrip[i]['trip']
-              //                             ['trip_group']['departure_time'])
-              //                     .add(Duration(minutes: state.canceledTrip[i]['pickup_point']['time_to_dest'])),
-              //             timeA:
-              //                 state.canceledTrip[i]['trip']['type'] == 'RETURN'
-              //                     ? DateTime.parse(state.canceledTrip[i]['trip']
-              //                             ['trip_group']['start_date'] +
-              //                         " " +
-              //                         state.canceledTrip[i]['trip']
-              //                             ['trip_group']['return_time'])
-              //                     : DateTime.parse(state.canceledTrip[i]['trip']
-              //                             ['trip_group']['start_date'] +
-              //                         " " +
-              //                         state.canceledTrip[i]['trip']
-              //                             ['trip_group']['departure_time']),
-              //             title: "AJK " +
-              //                 (state.canceledTrip[i]['trip']['type'] == 'RETURN'
-              //                     ? "Return"
-              //                     : "Departure"),
-              //             pointA: state.canceledTrip[i]['trip']['type'] ==
-              //                     'RETURN'
-              //                 ? state.canceledTrip[i]['trip']['trip_group']
-              //                     ['route']['destination_name']
-              //                 : state.canceledTrip[i]['pickup_point']['name'],
-              //             pointB: state.canceledTrip[i]['trip']['type'] ==
-              //                     'RETURN'
-              //                 ? state.canceledTrip[i]['pickup_point']['name']
-              //                 : state.canceledTrip[i]['trip']['trip_group']
-              //                     ['route']['destination_name'],
-              //             type: state.canceledTrip[i]['status'] == 'CANCELED'
-              //                 ? "Canceled"
-              //                 : "Missed Trip",
-              //             data: state.canceledTrip[i],
-              //             id: state.canceledTrip[i]['booking_id'],
-              //             differenceAB:
-              //                 "${state.canceledTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.canceledTrip[i]['pickup_point']['time_to_dest'] % 60}m",
-              //           );
-              //         })
-              // : NoTrips(
-              //     text:
-              //       "${AppTranslations.of(context).text("no_cancelled_trip")}",
-              //   )
-              );
+              child:
+                  // ListView(
+                  //   padding: EdgeInsets.all(20),
+                  //   children: [
+                  //     CardCancelled(),
+                  //   ],
+                  // )
+                  state.canceledTrip.length > 0
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(top: 16, bottom: 16),
+                          itemCount: state.canceledTrip.length,
+                          itemBuilder: (ctx, i) {
+                            return CardTrips(
+                              dateA: state.canceledTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? DateTime.fromMillisecondsSinceEpoch(
+                                      state.canceledTrip[i]['trip']
+                                          ['departure_time'])
+                                  : DateTime.fromMillisecondsSinceEpoch(
+                                      state.canceledTrip[i]['trip']
+                                          ['departure_time']),
+                              dateB: state.canceledTrip[i]['trip']['type'] == 'RETURN'
+                                  ? DateTime.fromMillisecondsSinceEpoch(
+                                          state.canceledTrip[i]['trip']
+                                              ['departure_time'])
+                                      .add(Duration(
+                                          minutes: state.canceledTrip[i]
+                                              ['pickup_point']['time_to_dest']))
+                                  : DateTime.fromMillisecondsSinceEpoch(
+                                          state.canceledTrip[i]['trip']['departure_time'])
+                                      .add(Duration(minutes: state.canceledTrip[i]['pickup_point']['time_to_dest'])),
+                              timeB: state.canceledTrip[i]['trip']['type'] == 'RETURN'
+                                  ? DateTime.parse(state.canceledTrip[i]['trip']['trip_group']['start_date'] + " " + state.canceledTrip[i]['trip']['trip_group']['return_time'])
+                                      .add(Duration(
+                                          minutes: state.canceledTrip[i]
+                                              ['pickup_point']['time_to_dest']))
+                                  : DateTime.parse(state.canceledTrip[i]['trip']
+                                              ['trip_group']['start_date'] +
+                                          " " +
+                                          state.canceledTrip[i]['trip']
+                                              ['trip_group']['departure_time'])
+                                      .add(Duration(minutes: state.canceledTrip[i]['pickup_point']['time_to_dest'])),
+                              timeA: state.canceledTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? DateTime.parse(state.canceledTrip[i]['trip']
+                                          ['trip_group']['start_date'] +
+                                      " " +
+                                      state.canceledTrip[i]['trip']
+                                          ['trip_group']['return_time'])
+                                  : DateTime.parse(state.canceledTrip[i]['trip']
+                                          ['trip_group']['start_date'] +
+                                      " " +
+                                      state.canceledTrip[i]['trip']
+                                          ['trip_group']['departure_time']),
+                              title: "AJK " +
+                                  (state.canceledTrip[i]['trip']['type'] ==
+                                          'RETURN'
+                                      ? "Return"
+                                      : "Departure"),
+                              pointA: state.canceledTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? state.canceledTrip[i]['trip']['trip_group']
+                                      ['route']['destination_name']
+                                  : state.canceledTrip[i]['pickup_point']
+                                      ['name'],
+                              pointB: state.canceledTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? state.canceledTrip[i]['pickup_point']
+                                      ['name']
+                                  : state.canceledTrip[i]['trip']['trip_group']
+                                      ['route']['destination_name'],
+                              type:
+                                  state.canceledTrip[i]['status'] == 'CANCELED'
+                                      ? "Canceled"
+                                      : "Missed Trip",
+                              data: state.canceledTrip[i],
+                              id: state.canceledTrip[i]['booking_id'],
+                              differenceAB:
+                                  "${state.canceledTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.canceledTrip[i]['pickup_point']['time_to_dest'] % 60}m",
+                            );
+                          })
+                      : NoTrips(
+                          text:
+                              "${AppTranslations.of(context).text("no_cancelled_trip")}",
+                        ));
         });
   }
 }

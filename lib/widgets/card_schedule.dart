@@ -17,22 +17,23 @@ class CardSchedule extends StatelessWidget {
       pointB,
       addressA,
       addressB;
+  final List includedDate;
 
   final LatLng coordinatesA, coordinatesB;
 
-  CardSchedule({
-    this.dateA,
-    this.dateB,
-    this.timeA,
-    this.timeB,
-    this.differenceAB,
-    this.pointA,
-    this.pointB,
-    this.addressA,
-    this.addressB,
-    this.coordinatesA,
-    this.coordinatesB,
-  });
+  CardSchedule(
+      {this.dateA,
+      this.dateB,
+      this.timeA,
+      this.timeB,
+      this.differenceAB,
+      this.pointA,
+      this.pointB,
+      this.addressA,
+      this.addressB,
+      this.coordinatesA,
+      this.coordinatesB,
+      this.includedDate});
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +80,73 @@ class CardSchedule extends StatelessWidget {
                 )
               ],
             ),
+
+            // ListView.builder(
+            //   shrinkWrap: true,
+            //   physics: NeverScrollableScrollPhysics(),
+            //   itemCount: includedDate.length,
+            //   itemBuilder: (context, i) {
+            //     return Row(
+            //       children: [
+            //         Container(
+            //           width: 10,
+            //           height: 10,
+            //           decoration: BoxDecoration(
+            //               color: ColorsCustom.primary,
+            //               borderRadius: BorderRadius.circular(20)),
+            //         ),
+            //         SizedBox(
+            //           width: 5,
+            //         ),
+            //         Text(includedDate[i].substring(includedDate[i].length - 2)),
+            //         SizedBox(
+            //           width: 5,
+            //         ),
+            //       ],
+            //     );
+            //     ;
+            //   },
+            // ),
+            SizedBox(
+              height: 15,
+            ),
+            CustomText(
+              'Date :',
+              color: Colors.black,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Wrap(
+              spacing: 2,
+              runSpacing: 5,
+              children: List.generate(includedDate.length, (i) {
+                return Container(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    direction: Axis.horizontal,
+                    children: [
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                            color: ColorsCustom.primary,
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(includedDate[i]
+                          .substring(includedDate[i].length - 2)),
+                      SizedBox(
+                        width: 5,
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ),
+
             SizedBox(height: 15),
             CustomText(
               "Seat Available : 2",

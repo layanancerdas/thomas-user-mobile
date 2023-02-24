@@ -215,9 +215,13 @@ class Providers {
             }));
   }
 
-  static Future getTripByRouteId({String id}) async {
+  static Future getTripByRouteId({String id, startDate, endDate}) async {
     return Dio().get('$BASE_API/ajk/trips',
-        queryParameters: {'route_id': id},
+        queryParameters: {
+          'route_id': id,
+          'start_date': startDate,
+          'end_date': endDate
+        },
         options: Options(
             headers: {'authorization': basicAuth},
             followRedirects: false,

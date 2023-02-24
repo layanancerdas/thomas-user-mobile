@@ -195,7 +195,11 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     );
     if (response.data['statusCode'] == "00") {
       linkPayment = response.data['paymentUrl'];
-      postAjkSubscription(paymentMethod, linkPayment, paymentName);
+      if (idSubs != '') {
+        postAjkSubscription(paymentMethod, linkPayment, paymentName);
+      } else {
+        Get.off(PaymentWebView(url: linkPayment, orderId: order_id));
+      }
     } else {
       print('gagal');
       print(response.data);
@@ -295,62 +299,58 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
   //   toggleLoading(false);
   // }
 
-  // Future<void> onZeroPricePay() async {
-  //   toggleLoading(true);
-  //   try {
-  //     dynamic res = await Providers.paymentBooking(
-  //         balanceAmount: store.state.transactionState.useBalance
-  //             ? store.state.transactionState.balances
-  //             : 0,
-  //         invoiceId: store.state.userState.selectedMyTrip['invoice_id'],
-  //         paymentMethodId:
-  //             store.state.transactionState.selectedPaymentMethod['id'] ?? null,
-  //         voucherId:
-  //             store.state.generalState.selectedVouchers['voucher_id'] ?? null);
-  //     print(res.data);
-  //     if (res.data['code'] == 'SUCCESS') {
-  //       // await store.dispatch(SetSelectedMyTrip(
-  //       //     selectedMyTrip: res.data['data'][0],
-  //       //     getSelectedTrip: res.data['data']));
+  Future<void> onZeroPricePay(invoiceId) async {
+    toggleLoading(true);
+    try {
+      dynamic res = await Providers.paymentBooking(
+          balanceAmount: 0,
+          invoiceId: invoiceId,
+          paymentMethodId: null,
+          voucherId: null);
+      print(res.data);
+      if (res.data['code'] == 'SUCCESS') {
+        // await store.dispatch(SetSelectedMyTrip(
+        //     selectedMyTrip: res.data['data'][0],
+        //     getSelectedTrip: res.data['data']));
 
-  //       // await getBookingByGroupId();
-  //       // await getPaymentByInvoiceId();
+        // await getBookingByGroupId();
+        // await getPaymentByInvoiceId();
 
-  //       // if (dataPayment != null && dataPayment != {}) {
-  //       //   print(res.data['data']);
+        // if (dataPayment != null && dataPayment != {}) {
+        //   print(res.data['data']);
 
-  //       //   if (dataPayment['status'] == 'SUCCESS') {
+        //   if (dataPayment['status'] == 'SUCCESS') {
 
-  //       await getBookingByGroupId();
-  //       // await getPaymentByInvoiceId();
-  //       // await LifecycleManager.of(context).getBookingData();
+        // await getBookingByGroupId();
+        // await getPaymentByInvoiceId();
+        // await LifecycleManager.of(context).getBookingData();
 
-  //       toggleLoading(false);
-  //       Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //               builder: (_) => Payment(
-  //                     mode: "finish",
-  //                     // detail: widget.detail,
-  //                     // goToFinish: widget.goToFinish,
-  //                   )));
-  //       // } else {
-  //       //   print('error');
-  //       // }
-  //       // } else {
-  //       //   print("error2");
-  //       // }
-  //     } else {
-  //       print(res.data['message']);
-  //       showDialogError('error', "${res.data['message']}, please try again");
-  //       // await onZeroPricePay();
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
+        toggleLoading(false);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => Payment(
+                      mode: "finish",
+                      // detail: widget.detail,
+                      // goToFinish: widget.goToFinish,
+                    )));
+        // } else {
+        //   print('error');
+        // }
+        // } else {
+        //   print("error2");
+        // }
+      } else {
+        print(res.data['message']);
+        showDialogError('error', "${res.data['message']}, please try again");
+        // await onZeroPricePay();
+      }
+    } catch (e) {
+      print(e);
+    }
 
-  //   toggleLoading(false);
-  // }
+    toggleLoading(false);
+  }
 
   void showDialogError(String mode, String message) {
     showDialog(

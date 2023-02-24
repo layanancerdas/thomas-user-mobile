@@ -28,7 +28,6 @@ abstract class SearchAjkShuttleViewModel extends State<SearchAjkShuttle> {
   }
 
   void onSearchRoute(String value) {
-    print("something");
     setState(() {});
     List _routesTemp = [];
     store.state.ajkState.routes.forEach((element) {
@@ -37,7 +36,6 @@ abstract class SearchAjkShuttleViewModel extends State<SearchAjkShuttle> {
             element['destination_name']
                 .toLowerCase()
                 .contains(value.toLowerCase())) {
-          print("suaper");
           if (!_routesTemp.contains(element)) {
             _routesTemp.add(element);
           }

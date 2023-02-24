@@ -69,12 +69,40 @@ class PurchaseConfirmation extends StatelessWidget {
                       SizedBox(
                         height: 8,
                       ),
-                      CustomText(
-                        "${month} Subscriptions",
-                        color: ColorsCustom.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                      ),
+                      month == '0'
+                          ? Row(
+                              children: [
+                                CustomText(
+                                  "${Utils.formatterDate.format(DateTime.parse(state.selectedTrip['start_date'])) ?? "-"}",
+                                  color: ColorsCustom.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                ),
+                                CustomText(
+                                  " - ",
+                                  color: ColorsCustom.black,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 12,
+                                ),
+                                // Container(
+                                //   width: 30,
+                                //   margin: EdgeInsets.symmetric(horizontal: 5),
+                                //   child: Image.asset('assets/images/arrow.png'),
+                                // ),
+                                CustomText(
+                                  "${Utils.formatterDateWithYear.format(DateTime.parse(state.selectedTrip['end_date'])) ?? "-"}",
+                                  color: ColorsCustom.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                )
+                              ],
+                            )
+                          : CustomText(
+                              "${month} Subscriptions",
+                              color: ColorsCustom.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
                     ],
                   ),
                 );

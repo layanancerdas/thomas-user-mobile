@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomas/helpers/colors_custom.dart';
@@ -22,7 +25,8 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
   Store<AppState> store;
 
   Map dataPayment = {};
-
+  List days = [];
+  List includedDate = [];
   bool isLoading = false;
 
   void toggleLoading(bool value) {
@@ -33,6 +37,31 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
     }
   }
 
+  void setOrderName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('ORDER_NAME', 'jakarta-bogor');
+  }
+
+  void setSubsId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('SUBS_ID', '');
+  }
+
+  void setOrderAmount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('ORDER_AMOUNT',
+        (store.state.ajkState.selectedPickUpPoint['price'] * 10).toString());
+  }
+
+  void setDuration() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('ORDER_DURATION', '0');
+  }
+
   void setOrderID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var uuid = Uuid();
@@ -41,6 +70,11 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
   }
 
   Future<void> onBooking() async {
+    await setOrderID();
+    await setOrderAmount();
+    await setDuration();
+    await setOrderName();
+    await setSubsId();
     if (!store.state.userState.userDetail['permitted_ajk']) {
       permitCheckAndRequest();
     } else {
@@ -66,8 +100,8 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
               getSelectedTrip: res.data['data']));
           print("1");
           toggleLoading(false);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => SuccessPayment()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => PaymentConfirmation()));
         } else if (res.data['message'].toLowerCase().contains("already")) {
           // await store.dispatch(SetSelectedMyTrip(
           //     selectedMyTrip: res.data['data'][0],
@@ -82,8 +116,8 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
               dataPayment['status'] == 'PENDING') {
             print("3");
             toggleLoading(false);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => SuccessPayment()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => PaymentConfirmation()));
           }
         } else {
           // toggleLoading(false);
@@ -95,6 +129,13 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
         print("Booking");
         print(e);
       }
+    }
+  }
+
+  getDaysInBetween(DateTime startDate, DateTime endDate) async {
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      await days.add(
+          DateFormat('yyyy-MM-dd').format(startDate.add(Duration(days: i))));
     }
   }
 
@@ -164,7 +205,7 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
       dynamic res = await Providers.getPaymentByInvoiceId(
           invoiceId: store.state.userState.selectedMyTrip['invoice']
               ['invoice_id']);
-
+      print(res.data);
       if (res.data['code'] == "SUCCESS") {
         setState(() {
           dataPayment =
@@ -309,14 +350,40 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
     store.dispatch(SetSelectedMyTrip(selectedMyTrip: {}, getSelectedTrip: []));
   }
 
+  void setIncludedDate() async {
+    toggleLoading(true);
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      for (var i = 0; i < days.length; i++) {
+        if (store.state.ajkState.selectedTrip['excluded_dates']
+            .contains(days[i])) {
+          if (i == days.length - 1) {
+            toggleLoading(false);
+            timer.cancel();
+          }
+        } else {
+          includedDate.add(days[i]);
+          if (i == days.length - 1) {
+            toggleLoading(false);
+            timer.cancel();
+          }
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
+
       getUserDetail();
       getVouchers();
       resetSelectedMyTrip();
+      getDaysInBetween(
+          DateTime.parse(store.state.ajkState.selectedTrip['start_date']),
+          DateTime.parse(store.state.ajkState.selectedTrip['end_date']));
+      setIncludedDate();
     });
   }
 }

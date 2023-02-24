@@ -31,7 +31,7 @@ class _ActiveSectionState extends State<ActiveSection> {
           status: "ACTIVE",
           limit: store.state.userState.limitActiveTrip + 10,
           offset: store.state.userState.activeTrip.length);
-
+      print(res.data);
       if (res.data['data'].length > 0 &&
           (res.data['code'] == '00' || res.data['code'] == 'SUCCESS')) {
         await store.dispatch(SetActiveTrip(activeTrip: [
@@ -98,122 +98,115 @@ class _ActiveSectionState extends State<ActiveSection> {
                     loadStyle: LoadStyle.ShowWhenLoading,
                   ),
                   child: state.activeTrip.length > 0
-                      ? ListView(
-                          children: [
-                            // CardActiveCheckIn(),
-                            CardActive(),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              padding: EdgeInsets.only(top: 16, bottom: 16),
-                              itemCount: state.activeTrip.length - 1,
-                              itemBuilder: (ctx, i) {
-                                // print('ini i' +
-                                //     Utils.formatterDateWithYear
-                                //         .format(
-                                //             DateTime.fromMillisecondsSinceEpoch(
-                                //                 state.activeTrip[i]['trip']
-                                //                     ['departure_time']))
-                                //         .toString() +
-                                //     'ini i+1' +
-                                //     Utils.formatterDateWithYear
-                                //         .format(
-                                //             DateTime.fromMillisecondsSinceEpoch(
-                                //                 state.activeTrip[i + 1]['trip']
-                                //                     ['departure_time']))
-                                //         .toString());
-                                return
-                                    // Utils.formatterDateWithYear
-                                    //             .format(DateTime
-                                    //                 .fromMillisecondsSinceEpoch(
-                                    //                     state.activeTrip[i]['trip']
-                                    //                         ['departure_time']))
-                                    //             .toString() ==
-                                    //         Utils.formatterDateWithYear
-                                    //             .format(DateTime
-                                    //                 .fromMillisecondsSinceEpoch(
-                                    //                     state.activeTrip[i + 1]
-                                    //                             ['trip']
-                                    //                         ['departure_time']))
-                                    //             .toString()
-                                    //     ?
-                                    CardTrips(
-                                  dateA: state.activeTrip[i]['trip']['type'] ==
-                                          'RETURN'
-                                      ? DateTime.fromMillisecondsSinceEpoch(
-                                          state.activeTrip[i]['trip']
-                                              ['departure_time'])
-                                      : DateTime.fromMillisecondsSinceEpoch(
-                                          state.activeTrip[i]['trip']
-                                              ['departure_time']),
-                                  // dateB: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                                  //     ? DateTime.fromMillisecondsSinceEpoch(
-                                  //             state.activeTrip[i]['trip']
-                                  //                 ['departure_time'])
-                                  //         .add(Duration(
-                                  //             minutes: state.activeTrip[i]
-                                  //                 ['pickup_point']['time_to_dest']))
-                                  //     : DateTime.fromMillisecondsSinceEpoch(
-                                  //             state.activeTrip[i]['trip']['departure_time'])
-                                  //         .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
-                                  timeB: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                                      ? DateTime.parse(state.activeTrip[i]['trip']['trip_group']['start_date'] + " " + state.activeTrip[i]['trip']['trip_group']['return_time'])
-                                          .add(Duration(
-                                              minutes: state.activeTrip[i]['pickup_point']
-                                                  ['time_to_dest']))
-                                      : DateTime.parse(state.activeTrip[i]['trip']
-                                                  ['trip_group']['start_date'] +
-                                              " " +
-                                              state.activeTrip[i]['trip']
-                                                  ['trip_group']['departure_time'])
-                                          .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
-                                  timeA: state.activeTrip[i]['trip']['type'] ==
-                                          'RETURN'
-                                      ? DateTime.parse(state.activeTrip[i]['trip']
+                      ?
+                      // ListView(
+                      //     children: [
+                      // CardActiveCheckIn(),
+                      // CardActive(),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(top: 16, bottom: 16),
+                          itemCount: state.activeTrip.length - 1,
+                          itemBuilder: (ctx, i) {
+                            // print('ini i' +
+                            //     Utils.formatterDateWithYear
+                            //         .format(
+                            //             DateTime.fromMillisecondsSinceEpoch(
+                            //                 state.activeTrip[i]['trip']
+                            //                     ['departure_time']))
+                            //         .toString() +
+                            //     'ini i+1' +
+                            //     Utils.formatterDateWithYear
+                            //         .format(
+                            //             DateTime.fromMillisecondsSinceEpoch(
+                            //                 state.activeTrip[i + 1]['trip']
+                            //                     ['departure_time']))
+                            //         .toString());
+                            return
+                                // Utils.formatterDateWithYear
+                                //             .format(DateTime
+                                //                 .fromMillisecondsSinceEpoch(
+                                //                     state.activeTrip[i]['trip']
+                                //                         ['departure_time']))
+                                //             .toString() ==
+                                //         Utils.formatterDateWithYear
+                                //             .format(DateTime
+                                //                 .fromMillisecondsSinceEpoch(
+                                //                     state.activeTrip[i + 1]
+                                //                             ['trip']
+                                //                         ['departure_time']))
+                                //             .toString()
+                                //     ?
+                                CardTrips(
+                              dateA: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? DateTime.fromMillisecondsSinceEpoch(state
+                                      .activeTrip[i]['trip']['departure_time'])
+                                  : DateTime.fromMillisecondsSinceEpoch(state
+                                      .activeTrip[i]['trip']['departure_time']),
+                              // dateB: state.activeTrip[i]['trip']['type'] == 'RETURN'
+                              //     ? DateTime.fromMillisecondsSinceEpoch(
+                              //             state.activeTrip[i]['trip']
+                              //                 ['departure_time'])
+                              //         .add(Duration(
+                              //             minutes: state.activeTrip[i]
+                              //                 ['pickup_point']['time_to_dest']))
+                              //     : DateTime.fromMillisecondsSinceEpoch(
+                              //             state.activeTrip[i]['trip']['departure_time'])
+                              //         .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
+                              timeB: state.activeTrip[i]['trip']['type'] == 'RETURN'
+                                  ? DateTime.parse(state.activeTrip[i]['trip']['trip_group']['start_date'] + " " + state.activeTrip[i]['trip']['trip_group']['return_time'])
+                                      .add(Duration(
+                                          minutes: state.activeTrip[i]
+                                              ['pickup_point']['time_to_dest']))
+                                  : DateTime.parse(state.activeTrip[i]['trip']
                                               ['trip_group']['start_date'] +
                                           " " +
                                           state.activeTrip[i]['trip']
-                                              ['trip_group']['return_time'])
-                                      : DateTime.parse(state.activeTrip[i]
-                                                  ['trip']['trip_group']
-                                              ['start_date'] +
-                                          " " +
-                                          state.activeTrip[i]['trip']
-                                              ['trip_group']['departure_time']),
-                                  title: "AJK " +
-                                      (state.activeTrip[i]['trip']['type'] ==
-                                              'RETURN'
-                                          ? "Return"
-                                          : "Departure"),
-                                  pointA: state.activeTrip[i]['trip']['type'] ==
+                                              ['trip_group']['departure_time'])
+                                      .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
+                              timeA: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? DateTime.parse(state.activeTrip[i]['trip']
+                                          ['trip_group']['start_date'] +
+                                      " " +
+                                      state.activeTrip[i]['trip']['trip_group']
+                                          ['return_time'])
+                                  : DateTime.parse(state.activeTrip[i]['trip']
+                                          ['trip_group']['start_date'] +
+                                      " " +
+                                      state.activeTrip[i]['trip']['trip_group']
+                                          ['departure_time']),
+                              title: "AJK " +
+                                  (state.activeTrip[i]['trip']['type'] ==
                                           'RETURN'
-                                      ? state.activeTrip[i]['trip']
-                                              ['trip_group']['route']
-                                          ['destination_name']
-                                      : state.activeTrip[i]['pickup_point']
-                                          ['name'],
-                                  pointB: state.activeTrip[i]['trip']['type'] ==
-                                          'RETURN'
-                                      ? state.activeTrip[i]['pickup_point']
-                                          ['name']
-                                      : state.activeTrip[i]['trip']
-                                              ['trip_group']['route']
-                                          ['destination_name'],
-                                  type:
-                                      state.activeTrip[i]['details'] != null &&
-                                              state.activeTrip[i]['details']
-                                                      ['status'] ==
-                                                  'ONGOING'
-                                          ? 'Ongoing'
-                                          : "Booking Confirmed",
-                                  data: state.activeTrip[i],
-                                  id: state.activeTrip[i]['booking_id'],
-                                  differenceAB:
-                                      "${state.activeTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.activeTrip[i]['pickup_point']['time_to_dest'] % 60}m",
-                                );
-                                // : Text('data');
-                              },
-                            )
-                          ],
+                                      ? "Return"
+                                      : "Departure"),
+                              pointA: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? state.activeTrip[i]['trip']['trip_group']
+                                      ['route']['destination_name']
+                                  : state.activeTrip[i]['pickup_point']['name'],
+                              pointB: state.activeTrip[i]['trip']['type'] ==
+                                      'RETURN'
+                                  ? state.activeTrip[i]['pickup_point']['name']
+                                  : state.activeTrip[i]['trip']['trip_group']
+                                      ['route']['destination_name'],
+                              type: state.activeTrip[i]['details'] != null &&
+                                      state.activeTrip[i]['details']
+                                              ['status'] ==
+                                          'ONGOING'
+                                  ? 'Ongoing'
+                                  : "Booking Confirmed",
+                              data: state.activeTrip[i],
+                              id: state.activeTrip[i]['booking_id'],
+                              differenceAB:
+                                  "${state.activeTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.activeTrip[i]['pickup_point']['time_to_dest'] % 60}m",
+                            );
+                            // : Text('data');
+                          },
+                          //   )
+                          // ],
                         )
                       : NoTrips(
                           text:
