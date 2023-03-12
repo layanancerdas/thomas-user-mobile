@@ -1,4 +1,4 @@
-package com.tomas.app
+package com.tomas.apps
 
 import io.flutter.embedding.android.FlutterActivity
 

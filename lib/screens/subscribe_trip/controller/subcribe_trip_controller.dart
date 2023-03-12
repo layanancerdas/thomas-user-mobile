@@ -22,14 +22,14 @@ class SubscribeTripController extends GetxController {
     isLoading.value = value;
   }
 
-  Future<void> getSubscribeByRoutesId(routesId) async {
+  Future<void> getSubscribeByRoutesId(routesId, pickupPointId) async {
     // print(store.state.ajkState.selectedRoute['route_id']);
     toggleLoading(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwtToken = prefs.getString("jwtToken");
     Dio dio = Dio();
     var url = BASE_API + "/ajk/subscription";
-    var params = {"routes_id": routesId};
+    var params = {"routes_id": routesId, 'pickup_point_id': pickupPointId};
     final response = await dio.get(
       url,
       queryParameters: params,

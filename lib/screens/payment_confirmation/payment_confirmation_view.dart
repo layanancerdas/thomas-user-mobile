@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,6 +30,7 @@ import 'package:crypto/crypto.dart';
 class PaymentConfirmationView extends PaymentConfirmationViewModel {
   @override
   var data = Get.arguments;
+
   Widget build(BuildContext context) {
     return Scaffold(
       key: paymentConfirmationKey,
@@ -50,14 +52,13 @@ class PaymentConfirmationView extends PaymentConfirmationViewModel {
       body: StoreConnector<AppState, AppState>(
           converter: (store) => store.state,
           builder: (context, state) {
-            print(state.userState.selectedMyTrip['invoice_id']);
             return SafeArea(
               child: Stack(
                 children: [
                   ListView(
                     padding: EdgeInsets.only(top: 16, left: 16, right: 16),
                     children: [
-                      PurchaseConfirmation(month),
+                      PurchaseConfirmation(month, startDate, endDate),
                       state.ajkState.selectedPickUpPoint['price'] <= 0
                           ? SizedBox()
                           : SizedBox(height: 16),

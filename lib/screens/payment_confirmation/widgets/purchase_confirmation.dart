@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/redux/app_state.dart';
@@ -10,7 +11,8 @@ import 'package:tomas/widgets/custom_text.dart';
 
 class PurchaseConfirmation extends StatelessWidget {
   final String month;
-  PurchaseConfirmation(this.month);
+  final int start_date, end_date;
+  PurchaseConfirmation(this.month, this.start_date, this.end_date);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,6 @@ class PurchaseConfirmation extends StatelessWidget {
           return StoreConnector<AppState, UserState>(
               converter: (store) => store.state.userState,
               builder: (context, stateUser) {
-                print(state.selectedTrip['start_date']);
                 return Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(14),
@@ -69,6 +70,37 @@ class PurchaseConfirmation extends StatelessWidget {
                       SizedBox(
                         height: 8,
                       ),
+                      start_date == 0 || end_date == 0
+                          ? SizedBox()
+                          : Row(
+                              children: [
+                                CustomText(
+                                  DateFormat('dd MMMM yyyy').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          start_date)),
+                                  color: ColorsCustom.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                ),
+                                CustomText(
+                                  " - ",
+                                  color: ColorsCustom.black,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 12,
+                                ),
+                                CustomText(
+                                  DateFormat('dd MMMM yyyy').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          end_date)),
+                                  color: ColorsCustom.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                )
+                              ],
+                            ),
+                      SizedBox(
+                        height: 8,
+                      ),
                       month == '0'
                           ? Row(
                               children: [
@@ -98,11 +130,17 @@ class PurchaseConfirmation extends StatelessWidget {
                               ],
                             )
                           : CustomText(
-                              "${month} Subscriptions",
+                              "${month} Month Subscriptions",
                               color: ColorsCustom.black,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                               fontSize: 12,
                             ),
+                      // CustomText(
+                      //     "Single Day Trip",
+                      //     color: ColorsCustom.black,
+                      //     fontWeight: FontWeight.w600,
+                      //     fontSize: 12,
+                      //   ),
                     ],
                   ),
                 );

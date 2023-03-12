@@ -39,6 +39,8 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
   String month = "";
   String nameSubs = "";
   String idSubs = "";
+  int startDate = 0;
+  int endDate = 0;
   bool isLoading = false;
   bool errorPayment = false;
 
@@ -51,6 +53,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     getName();
     getSubsId();
     setTotalPay();
+    getStartEndDate();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   store = StoreProvider.of<AppState>(context);
     //   initData();
@@ -95,6 +98,15 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     });
   }
 
+  void getStartEndDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      startDate = prefs.getInt('START_DATE');
+      endDate = prefs.getInt('END_DATE');
+    });
+  }
+
   void getSubsId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -136,7 +148,9 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
       "productDetails": nameSubs,
       "customerVaName": name,
       "email": email,
-      "payment_url": urlPayment
+      "payment_url": urlPayment,
+      "start_date": startDate,
+      "end_date": endDate,
     };
     final response = await dio.post(
       url,

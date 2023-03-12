@@ -242,7 +242,7 @@ class _CardTripsState extends State<CardTrips> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
                     "${Utils.formatterDateWithYear.format(widget.dateA)}",
@@ -251,13 +251,13 @@ class _CardTripsState extends State<CardTrips> {
                     height: 2.4,
                     fontSize: 10,
                   ),
-                  // CustomText(
-                  //   "${Utils.formatterDateWithYear.format(widget.dateB)}",
-                  //   color: ColorsCustom.black,
-                  //   fontWeight: FontWeight.w500,
-                  //   height: 2.4,
-                  //   fontSize: 10,
-                  // ),
+                  CustomText(
+                    "${Utils.formatterDateWithYear.format(widget.dateB)}",
+                    color: ColorsCustom.black,
+                    fontWeight: FontWeight.w500,
+                    height: 2.4,
+                    fontSize: 10,
+                  ),
                 ],
               ),
             ),

@@ -3,7 +3,7 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.tomas.app",
+      "package_name": "com.tomas.apps",
       "sha256_cert_fingerprints": [
         "E2:B9:AC:6A:50:D4:75:6D:C7:3F:E2:AE:C2:22:80:A8:EB:94:B1:B1:7C:0D:2F:6A:2E:FF:92:E4:55:73:C0:E4",
         "6C:D3:DC:D5:C0:70:2C:ED:85:18:24:7E:E7:F4:57:75:D4:36:CC:41:5A:24:F4:37:D0:3B:00:F1:26:F0:BB:CA"

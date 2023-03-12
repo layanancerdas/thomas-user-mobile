@@ -18,12 +18,14 @@ import 'package:tomas/widgets/custom_button.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import './shuttle_details_view_model.dart';
 import 'widgets/card_policy.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ShuttleDetailsView extends ShuttleDetailsViewModel {
   @override
+  CalendarFormat _calendarFormat = CalendarFormat.week;
+  // var listDate = [DateTime.utc(2023, 3, 10), DateTime.utc(2023, 3, 04)];
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -150,17 +152,122 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: 8),
+                      height: 20,
+                      width: 20,
+                      child: SvgPicture.asset('assets/images/school_bus.svg'),
+                    ),
+                    CustomText(
+                      "Every ",
+                      color: ColorsCustom.black,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 12,
+                    ),
+                    CustomText(
+                      "${Utils.formatterDate.format(DateTime.parse(state.selectedTrip['start_date'] + " " + state.selectedTrip['departure_time'])) ?? "-"}",
+                      color: ColorsCustom.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    ),
+                    CustomText(
+                      " - ",
+                      color: ColorsCustom.black,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 12,
+                    ),
+                    CustomText(
+                      "${Utils.formatterDateWithYear.format(DateTime.parse(state.selectedTrip['end_date'] + " " + state.selectedTrip['return_time'])) ?? "-"}",
+                      color: ColorsCustom.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                CustomText(
+                  "Date Schedule",
+                  color: ColorsCustom.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                isLoading
+                    ? Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Colors.white70,
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Loading(
+                            color: ColorsCustom.primary,
+                            indicator: BallSpinFadeLoaderIndicator(),
+                          ),
+                        ),
+                      )
+                    : TableCalendar(
+                        headerStyle: HeaderStyle(
+                            titleTextStyle: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w600),
+                            formatButtonTextStyle:
+                                TextStyle(color: Colors.white, fontSize: 14),
+                            formatButtonPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            formatButtonDecoration: BoxDecoration(
+                                color: ColorsCustom.primary,
+                                borderRadius: BorderRadius.circular(20))),
+                        calendarStyle: CalendarStyle(
+                            selectedDecoration: (BoxDecoration(
+                                color: ColorsCustom.primary,
+                                borderRadius: BorderRadius.circular(30))),
+                            todayTextStyle: TextStyle(color: Colors.white),
+                            todayDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: ColorsCustom.blueSystem)),
+                        firstDay: includedDate[0],
+                        lastDay: includedDate[includedDate.length - 1],
+                        focusedDay: includedDate[0],
+                        calendarFormat: _calendarFormat,
+                        onFormatChanged: (format) => setState(() {
+                          _calendarFormat = format;
+                        }),
+                        selectedDayPredicate: (day) =>
+                            includedDate.contains(day),
+                        // shouldFillViewport: true,
+                      ),
+                SizedBox(
+                  height: 15,
+                ),
+                // CustomText(
+                //   "Seat Available : 2",
+                //   color: ColorsCustom.black,
+                //   fontWeight: FontWeight.w500,
+                //   fontSize: 12,
+                // ),
+                SizedBox(
+                  height: 15,
+                ),
                 CustomText(
                   "Departure Schedule",
                   color: ColorsCustom.black,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w600,
                   fontSize: 14,
-                  height: 2.7,
                 ),
-                SizedBox(height: 5),
+
                 // ListSubscriptionOrder(),
                 CardSchedule(
-                  includedDate: includedDate,
+                  // includedDate: includedDate,
                   dateA: Utils.formatterDate.format(DateTime.parse(
                       state.selectedTrip['start_date'] +
                           " " +
@@ -192,17 +299,15 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                       state.selectedTrip['route']['destination_latitude'],
                       state.selectedTrip['route']['destination_longitude']),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 CustomText(
                   "Return Schedule",
                   color: ColorsCustom.black,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w600,
                   fontSize: 14,
-                  height: 2.7,
                 ),
-                SizedBox(height: 5),
                 CardSchedule(
-                  includedDate: includedDate,
+                  // includedDate: includedDate,
                   dateB: Utils.formatterDateWithYear.format(DateTime.parse(
                       state.selectedTrip['end_date'] +
                           " " +

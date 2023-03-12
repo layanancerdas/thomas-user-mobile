@@ -37,6 +37,13 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
     }
   }
 
+  void setStartEndDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('START_DATE', '');
+    prefs.setString('END_DATE', '');
+  }
+
   void setOrderName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -75,6 +82,7 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
     await setDuration();
     await setOrderName();
     await setSubsId();
+    await setStartEndDate();
     if (!store.state.userState.userDetail['permitted_ajk']) {
       permitCheckAndRequest();
     } else {
@@ -100,8 +108,13 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
               getSelectedTrip: res.data['data']));
           print("1");
           toggleLoading(false);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => PaymentConfirmation()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => SuccessPayment(
+                        title: 'Booking Confirmed',
+                        message: 'Your booking success confirmed!',
+                      )));
         } else if (res.data['message'].toLowerCase().contains("already")) {
           // await store.dispatch(SetSelectedMyTrip(
           //     selectedMyTrip: res.data['data'][0],
@@ -116,8 +129,13 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
               dataPayment['status'] == 'PENDING') {
             print("3");
             toggleLoading(false);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => PaymentConfirmation()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => SuccessPayment(
+                          title: 'Booking Confirmed',
+                          message: 'Your booking success confirmed!',
+                        )));
           }
         } else {
           // toggleLoading(false);
@@ -361,7 +379,7 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
             timer.cancel();
           }
         } else {
-          includedDate.add(days[i]);
+          includedDate.add(DateTime.parse(days[i] + ' 00:00:00.000Z'));
           if (i == days.length - 1) {
             toggleLoading(false);
             timer.cancel();

@@ -16,7 +16,7 @@ abstract class SignUpViewModel extends State<SignUp> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nipController = TextEditingController();
 
-  int selectedShift = 1;
+  String selectedShift = 'NON_SHIFT';
   int selectedDivision;
 
   // String countryCode = "+62";
@@ -257,7 +257,8 @@ abstract class SignUpViewModel extends State<SignUp> {
             mobileNo:
                 phoneNumberController.text.replaceAll(new RegExp(r"\s+"), ""),
             name: fullnameController.text,
-            nip: nipController.text);
+            nip: nipController.text,
+            shiftType: selectedShift);
         print(res);
 
         if (res.data['message'] == 'SUCCESS') {

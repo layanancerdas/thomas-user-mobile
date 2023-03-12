@@ -36,10 +36,10 @@ class UserState {
         activeTrip: [],
         completedTrip: [],
         canceledTrip: [],
-        limitActiveTrip: 10,
-        limitCanceledTrip: 10,
-        limitCompletedTrip: 10,
-        limitPendingTrip: 10);
+        limitActiveTrip: 50,
+        limitCanceledTrip: 25,
+        limitCompletedTrip: 25,
+        limitPendingTrip: 25);
   }
 
   UserState copyWith({

@@ -59,19 +59,84 @@ class CardBooking extends StatelessWidget {
                   color: ColorsCustom.black.withOpacity(0.12)),
             ]),
         child: Column(children: [
-          completed
-              ? SizedBox()
-              : QrImage(
-                  data:
-                      "${BASE_API + "/ajk/booking/confirm_attendance?booking_id="}$bookingId",
-                  version: QrVersions.auto,
-                  size: 200.0,
-                ),
-          completed ? SizedBox() : SizedBox(height: 10),
-          completed
-              ? SizedBox()
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          // completed
+          //     ? SizedBox()
+          //     : QrImage(
+          //         data:
+          //             "${BASE_API + "/ajk/booking/confirm_attendance?booking_id="}$bookingId",
+          //         version: QrVersions.auto,
+          //         size: 200.0,
+          //       ),
+          // completed ? SizedBox() : SizedBox(height: 10),
+          // completed
+          //     ? SizedBox()
+          //     : Row(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         children: [
+          //           CustomText(
+          //             "${AppTranslations.of(context).text("booking_code")}",
+          //             color: ColorsCustom.generalText,
+          //             fontSize: 14,
+          //             fontWeight: FontWeight.w300,
+          //           ),
+          //           CustomText(
+          //             "$bookingCode",
+          //             color: ColorsCustom.primary,
+          //             fontSize: 14,
+          //             fontWeight: FontWeight.w600,
+          //           ),
+          //         ],
+          //       ),
+          // completed
+          //     ? SizedBox()
+          //     : Stack(
+          //         children: [
+          //           Container(
+          //             margin: EdgeInsets.symmetric(vertical: 16),
+          //             height: 10,
+          //             child: Row(
+          //               children: [
+          //                 Expanded(
+          //                     child: SvgPicture.asset(
+          //                   "assets/images/divider-dotted.svg",
+          //                   width: screenSize.width,
+          //                 )),
+          //               ],
+          //             ),
+          //           ),
+          //           Positioned(
+          //               top: 0,
+          //               bottom: 0,
+          //               left: -12,
+          //               child: Center(
+          //                   child: Container(
+          //                 height: 24,
+          //                 width: 24,
+          //                 decoration: BoxDecoration(
+          //                     color: Color(0xFFF3F3F3),
+          //                     borderRadius: BorderRadius.circular(12)),
+          //               ))),
+          //           Positioned(
+          //               top: 0,
+          //               bottom: 0,
+          //               right: -12,
+          //               child: Center(
+          //                 child: Container(
+          //                   height: 24,
+          //                   width: 24,
+          //                   decoration: BoxDecoration(
+          //                       color: Color(0xFFF3F3F3),
+          //                       borderRadius: BorderRadius.circular(12)),
+          //                 ),
+          //               ))
+          //         ],
+          //       ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CustomText(
                       "${AppTranslations.of(context).text("booking_code")}",
@@ -87,54 +152,9 @@ class CardBooking extends StatelessWidget {
                     ),
                   ],
                 ),
-          completed
-              ? SizedBox()
-              : Stack(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 16),
-                      height: 10,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: SvgPicture.asset(
-                            "assets/images/divider-dotted.svg",
-                            width: screenSize.width,
-                          )),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                        top: 0,
-                        bottom: 0,
-                        left: -12,
-                        child: Center(
-                            child: Container(
-                          height: 24,
-                          width: 24,
-                          decoration: BoxDecoration(
-                              color: Color(0xFFF3F3F3),
-                              borderRadius: BorderRadius.circular(12)),
-                        ))),
-                    Positioned(
-                        top: 0,
-                        bottom: 0,
-                        right: -12,
-                        child: Center(
-                          child: Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                                color: Color(0xFFF3F3F3),
-                                borderRadius: BorderRadius.circular(12)),
-                          ),
-                        ))
-                  ],
+                SizedBox(
+                  height: 10,
                 ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
                 Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(

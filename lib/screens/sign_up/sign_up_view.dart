@@ -223,7 +223,7 @@ class SignUpView extends SignUpViewModel {
                               Row(
                                 children: [
                                   Radio(
-                                      value: 1,
+                                      value: 'NON_SHIFT',
                                       groupValue: selectedShift,
                                       onChanged: (val) {
                                         setState(() {
@@ -236,7 +236,7 @@ class SignUpView extends SignUpViewModel {
                               Row(
                                 children: [
                                   Radio(
-                                      value: 2,
+                                      value: 'RED_SHIFT',
                                       groupValue: selectedShift,
                                       onChanged: (val) {
                                         setState(() {
@@ -249,7 +249,7 @@ class SignUpView extends SignUpViewModel {
                               Row(
                                 children: [
                                   Radio(
-                                      value: 3,
+                                      value: 'WHITE_SHIFT',
                                       groupValue: selectedShift,
                                       onChanged: (val) {
                                         setState(() {
@@ -264,25 +264,8 @@ class SignUpView extends SignUpViewModel {
                         ],
                       ),
                     ),
-                    // FormText(
-                    //   hint: "Password",
-                    //   obscureText: true,
-                    //   controller: passwordController,
-                    //   onChange: clearError,
-                    // ),
-                    // errorConfirmPassword != ""
-                    //     ? ErrorForm(error: errorConfirmPassword)
-                    //     : SizedBox(height: 20),
-                    // FormText(
-                    //   hint: "Confirm Password",
-                    //   obscureText: true,
-                    //   controller: confirmPasswordController,
-                    //   onChange: clearError,
-                    // ),
+
                     SizedBox(height: 20),
-                    // errorRegister != ""
-                    //     ? ErrorForm(error: errorRegister)
-                    //     : SizedBox(height: 20),
                   ],
                 ),
               ),

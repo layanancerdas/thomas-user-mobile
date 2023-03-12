@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/screens/payment_webview/screen/payment_webview.dart';
 import 'package:tomas/widgets/custom_text.dart';
@@ -26,7 +27,9 @@ class CardList extends StatefulWidget {
       name,
       statusPayment,
       urlPayment,
-      orderIdPayment;
+      orderIdPayment,
+      startDate,
+      endDate;
   CardList(
       {this.name,
       this.month,
@@ -37,7 +40,9 @@ class CardList extends StatefulWidget {
       this.differenceAB,
       this.statusPayment,
       this.orderIdPayment,
-      this.urlPayment});
+      this.urlPayment,
+      this.startDate,
+      this.endDate});
 
   @override
   _CardListState createState() => _CardListState();
@@ -146,7 +151,15 @@ class _CardListState extends State<CardList> {
                           height: 4,
                         ),
                         CustomText(
-                          "Mon, 06 Feb 23 - Mon, 06 Mar 23",
+                          widget.startDate == null || widget.endDate == null
+                              ? ''
+                              : DateFormat('dd MMMM yyyy').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          int.parse(widget.startDate))) +
+                                  ' - ' +
+                                  DateFormat('dd MMMM yyyy').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          int.parse(widget.endDate))),
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           color: Colors.white

@@ -44,14 +44,16 @@ class Providers {
       String email,
       String divisionId,
       String mobileNo,
-      String nip}) async {
+      String nip,
+      String shiftType}) async {
     return Dio().post('$BASE_API/users',
         data: {
           "name": name,
           "email": email,
           "division_id": divisionId,
           "phone_number": mobileNo,
-          "nip": nip
+          "nip": nip,
+          "shift_type": shiftType
         },
         options: Options(
             headers: {'authorization': basicAuth},

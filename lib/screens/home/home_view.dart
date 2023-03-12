@@ -267,95 +267,103 @@ class HomeView extends HomeViewModel {
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(25),
                                         topRight: Radius.circular(25))),
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.zero,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        UpcomingTrip(),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CustomText(
-                                                "${AppTranslations.of(context).text("travel_by")}",
-                                                color: ColorsCustom.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              SizedBox(height: 16),
-                                              Row(
-                                                children: [
-                                                  Expanded(
+                                child: RefreshIndicator(
+                                  onRefresh: () {
+                                    initData();
+                                    return Future<void>.delayed(
+                                        const Duration(seconds: 0));
+                                  },
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          UpcomingTrip(),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CustomText(
+                                                  "${AppTranslations.of(context).text("travel_by")}",
+                                                  color: ColorsCustom.black,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                SizedBox(height: 16),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                        child: ButtonMenu(
+                                                      logo: 'school_bus.svg',
+                                                      name: "AJK",
+                                                      color: ColorsCustom
+                                                          .primaryVeryLow,
+                                                      onClick: () => !state
+                                                                  .userDetail[
+                                                              'permitted_ajk']
+                                                          ? Utils
+                                                              .permitCheckAndRequest(
+                                                                  context,
+                                                                  mode: 'home')
+                                                          : Navigator.pushNamed(
+                                                              context,
+                                                              '/SearchAjkShuttle'),
+                                                    )),
+                                                    Expanded(
                                                       child: ButtonMenu(
-                                                    logo: 'school_bus.svg',
-                                                    name: "AJK",
-                                                    color: ColorsCustom
-                                                        .primaryVeryLow,
-                                                    onClick: () => !state
-                                                                .userDetail[
-                                                            'permitted_ajk']
-                                                        ? Utils
-                                                            .permitCheckAndRequest(
-                                                                context,
-                                                                mode: 'home')
-                                                        : Navigator.pushNamed(
-                                                            context,
-                                                            '/SearchAjkShuttle'),
-                                                  )),
-                                                  Expanded(
-                                                    child: ButtonMenu(
-                                                      logo: 'rental.svg',
-                                                      name: "Rental",
-                                                      color: ColorsCustom
-                                                          .primaryGreenVeryLow,
-                                                      onClick: () =>
-                                                          showDialogComingSoon(),
+                                                        logo: 'rental.svg',
+                                                        name: "Rental",
+                                                        color: ColorsCustom
+                                                            .primaryGreenVeryLow,
+                                                        onClick: () =>
+                                                            showDialogComingSoon(),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    child: ButtonMenu(
-                                                      logo: 'nebeng.svg',
-                                                      name: "Nebeng",
-                                                      color: ColorsCustom
-                                                          .primaryOrangeVeryLow,
-                                                      onClick: () =>
-                                                          showDialogComingSoon(),
+                                                    Expanded(
+                                                      child: ButtonMenu(
+                                                        logo: 'nebeng.svg',
+                                                        name: "Nebeng",
+                                                        color: ColorsCustom
+                                                            .primaryOrangeVeryLow,
+                                                        onClick: () =>
+                                                            showDialogComingSoon(),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    child: ButtonMenu(
-                                                      logo:
-                                                          'electric_train.svg',
-                                                      name: "Multimoda",
-                                                      color: ColorsCustom
-                                                          .primaryBlueVeryLow,
-                                                      onClick: () =>
-                                                          showDialogComingSoon(),
+                                                    Expanded(
+                                                      child: ButtonMenu(
+                                                        logo:
+                                                            'electric_train.svg',
+                                                        name: "Multimoda",
+                                                        color: ColorsCustom
+                                                            .primaryBlueVeryLow,
+                                                        onClick: () =>
+                                                            showDialogComingSoon(),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        state.activeTrip.length <= 0 &&
-                                                stateGeneral.vouchers.length > 0
-                                            ? Padding(
-                                                padding:
-                                                    EdgeInsets.only(top: 24),
-                                                child: VoucherPopUp())
-                                            : SizedBox()
-                                      ],
-                                    ),
-                                    SizedBox(height: 40),
-                                  ],
+                                          state.activeTrip.length <= 0 &&
+                                                  stateGeneral.vouchers.length >
+                                                      0
+                                              ? Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 24),
+                                                  child: VoucherPopUp())
+                                              : SizedBox()
+                                        ],
+                                      ),
+                                      SizedBox(height: 40),
+                                    ],
+                                  ),
                                 ))),
                         // Positioned(
                         //     top: screenSize.height / 3.5 + 24,

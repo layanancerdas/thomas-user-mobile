@@ -40,7 +40,10 @@ class PaymentWebVIewController extends GetxController {
     print(response.data);
     if (response.data['code'] == 'SUCCESS' && statusPayment == 'SUCCESS') {
       toggleLoading(false);
-      Get.off(SuccessPayment());
+      Get.off(SuccessPayment(
+        title: 'Success Payment',
+        message: 'Your payment is successful',
+      ));
     } else if (response.data['code'] == 'SUCCESS' &&
         statusPayment == 'FAILED') {
       toggleLoading(false);

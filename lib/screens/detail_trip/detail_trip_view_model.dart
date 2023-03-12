@@ -330,6 +330,7 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       dynamic res = await Providers.cancelBooking(
         bookingId: store.state.userState.selectedMyTrip['booking_id'],
       );
+      print(res.data);
       if (res.data['code'] == "SUCCESS") {
         await LifecycleManager.of(context).getBookingData();
         await getBookingByGroupId();

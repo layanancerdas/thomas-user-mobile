@@ -15,11 +15,13 @@ import 'package:tomas/widgets/card_list_subscribe_trip.dart';
 import 'package:tomas/widgets/card_schedule.dart';
 import 'package:tomas/widgets/custom_button.dart';
 import 'package:tomas/widgets/custom_text.dart';
+import 'package:tomas/widgets/no_result_subscribe.dart';
 
 class SubscribeTrip extends StatefulWidget {
   @override
-  final String idRoute;
-  const SubscribeTrip({Key key, this.idRoute}) : super(key: key);
+  final String idRoute, pickupPointId;
+  const SubscribeTrip({Key key, this.idRoute, this.pickupPointId})
+      : super(key: key);
   @override
   State<SubscribeTrip> createState() => _SubscribeTripState();
 }
@@ -31,7 +33,8 @@ class _SubscribeTripState extends State<SubscribeTrip> {
   @override
   void initState() {
     // TODO: implement initState
-    controller.getSubscribeByRoutesId(widget.idRoute);
+    print(widget.pickupPointId);
+    controller.getSubscribeByRoutesId(widget.idRoute, widget.pickupPointId);
     super.initState();
   }
 
@@ -69,27 +72,32 @@ class _SubscribeTripState extends State<SubscribeTrip> {
                       ),
                     ),
                   )
-                : ListView.builder(
-                    padding: EdgeInsets.all(12),
-                    itemCount: controller.dataSubscribe.length,
-                    itemBuilder: (context, index) => CardListSubscribeTrip(
-                          id: controller.dataSubscribe[index]['id'],
-                          addressA: controller.dataSubscribe[index]['routes']
-                              ['pickup_points'][0]['address'],
-                          addressB: controller.dataSubscribe[index]['routes']
-                              ['destination_address'],
-                          differenceAB:
-                              "${controller.dataSubscribe[index]['routes']['pickup_points'][0]['time_to_dest'] ~/ 60}h ${controller.dataSubscribe[index]['routes']['pickup_points'][0]['time_to_dest'] % 60}m",
-                          month:
-                              (controller.dataSubscribe[index]['duration'] / 30)
-                                      .toStringAsFixed(0) +
-                                  ' Month',
-                          name: controller.dataSubscribe[index]['name'],
-                          pointA: controller.dataSubscribe[index]['routes']
-                              ['pickup_points'][0]['name'],
-                          pointB: controller.dataSubscribe[index]['routes']
-                              ['destination_name'],
-                          amount: controller.dataSubscribe[index]['amount'],
-                        )))));
+                : controller.dataSubscribe.length == 0
+                    ? Container(
+                        height: screenSize.height / 1.3,
+                        width: double.infinity,
+                        child: NoResultSubscribe())
+                    : ListView.builder(
+                        padding: EdgeInsets.all(12),
+                        itemCount: controller.dataSubscribe.length,
+                        itemBuilder: (context, index) => CardListSubscribeTrip(
+                              id: controller.dataSubscribe[index]['id'],
+                              addressA: controller.dataSubscribe[index]
+                                  ['routes']['pickup_points'][0]['address'],
+                              addressB: controller.dataSubscribe[index]
+                                  ['routes']['destination_address'],
+                              differenceAB:
+                                  "${controller.dataSubscribe[index]['routes']['pickup_points'][0]['time_to_dest'] ~/ 60}h ${controller.dataSubscribe[index]['routes']['pickup_points'][0]['time_to_dest'] % 60}m",
+                              month: (controller.dataSubscribe[index]
+                                          ['duration'] /
+                                      30)
+                                  .toStringAsFixed(0),
+                              name: controller.dataSubscribe[index]['name'],
+                              pointA: controller.dataSubscribe[index]['routes']
+                                  ['pickup_points'][0]['name'],
+                              pointB: controller.dataSubscribe[index]['routes']
+                                  ['destination_name'],
+                              amount: controller.dataSubscribe[index]['amount'],
+                            )))));
   }
 }

@@ -24,27 +24,28 @@ class CardRoundtrip extends StatelessWidget {
       color,
       week;
   final Map data;
+  final bool subscribe;
   final onBook;
 
-  CardRoundtrip({
-    this.name,
-    this.price,
-    this.timeA,
-    this.timeB,
-    this.timeC,
-    this.timeD,
-    this.differenceAB,
-    this.differenceCD,
-    this.locationA,
-    this.locationB,
-    this.color: 'blue',
-    this.distance,
-    this.onBook,
-    this.data,
-    this.locationC,
-    this.locationD,
-    this.week,
-  });
+  CardRoundtrip(
+      {this.name,
+      this.price,
+      this.timeA,
+      this.timeB,
+      this.timeC,
+      this.timeD,
+      this.differenceAB,
+      this.differenceCD,
+      this.locationA,
+      this.locationB,
+      this.color: 'blue',
+      this.distance,
+      this.onBook,
+      this.data,
+      this.locationC,
+      this.locationD,
+      this.week,
+      this.subscribe});
 
   @override
   Widget build(BuildContext context) {
@@ -454,7 +455,9 @@ class CardRoundtrip extends StatelessWidget {
                       builder: (context, stateUser) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorsCustom.primary,
+                            backgroundColor: subscribe
+                                ? ColorsCustom.primary
+                                : ColorsCustom.newGrey,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
                             padding: EdgeInsets.symmetric(

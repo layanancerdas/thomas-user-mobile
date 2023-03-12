@@ -20,7 +20,7 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
       RefreshController(initialRefresh: false);
 
   List trips = [];
-
+  bool subscribe = false;
   bool isLoading = true;
 
   DateTime selectedDate = DateTime.now();
@@ -44,6 +44,7 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
   }
 
   Future<void> getAllTripById(start_date, end_date) async {
+    toggleLoading(true);
     try {
       dynamic res = await Providers.getTripByRouteId(
           id: store.state.ajkState.selectedRoute['route_id'],
@@ -57,6 +58,7 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
       setState(() {
         trips = _temp;
       });
+      toggleLoading(false);
       refreshController.refreshCompleted();
     } catch (e) {
       print(e);

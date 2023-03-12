@@ -20,6 +20,7 @@ import 'package:tomas/screens/detail_trip/widgets/more_info.dart';
 import 'package:tomas/screens/detail_trip/widgets/payment_info.dart';
 import 'package:tomas/screens/lifecycle_manager/lifecycle_manager.dart';
 import 'package:tomas/screens/review/review.dart';
+import 'package:tomas/screens/success_payment/screen/success_payment.dart';
 import 'package:tomas/widgets/custom_button.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/widgets/map_fullscreen.dart';
@@ -31,8 +32,6 @@ class DetailTripView extends DetailTripViewModel {
   bool isCheckIn = false;
   @override
   Widget build(BuildContext context) {
-    
-
     return StoreConnector<AppState, UserState>(
         converter: (store) => store.state.userState,
         builder: (context, state) {
@@ -149,28 +148,28 @@ class DetailTripView extends DetailTripViewModel {
                               //   },
                               //   details: state.selectedMyTrip['details'],
                               // ),
-                              // Row(
-                              //   mainAxisAlignment:
-                              //       MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     CustomText(
-                              //       "Your Position :",
-                              //       fontSize: 14,
-                              //       fontWeight: FontWeight.w300,
-                              //       height: 2.1,
-                              //       color: ColorsCustom.black,
-                              //     ),
-                              //     CustomText(
-                              //       distance.toStringAsFixed(0) +
-                              //           ' Meter From Pickup Point',
-                              //       fontSize: 14,
-                              //       fontWeight: FontWeight.w600,
-                              //       height: 2.1,
-                              //       color: ColorsCustom.primary,
-                              //     ),
-                              //   ],
-                              // ),
-                              SizedBox(height: 2),
+                              // // Row(
+                              // //   mainAxisAlignment:
+                              // //       MainAxisAlignment.spaceBetween,
+                              // //   children: [
+                              // //     CustomText(
+                              // //       "Your Position :",
+                              // //       fontSize: 14,
+                              // //       fontWeight: FontWeight.w300,
+                              // //       height: 2.1,
+                              // //       color: ColorsCustom.black,
+                              // //     ),
+                              // //     CustomText(
+                              // //       distance.toStringAsFixed(0) +
+                              // //           ' Meter From Pickup Point',
+                              // //       fontSize: 14,
+                              // //       fontWeight: FontWeight.w600,
+                              // //       height: 2.1,
+                              // //       color: ColorsCustom.primary,
+                              // //     ),
+                              // //   ],
+                              // // ),
+                              // SizedBox(height: 2),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -287,7 +286,7 @@ class DetailTripView extends DetailTripViewModel {
                                               null)
                                   ? CardWaitingPayment()
                                   : CardBooking(
-                                    checkIn : isCheckIn,
+                                      checkIn: isCheckIn,
                                       completed:
                                           state.selectedMyTrip['status'] ==
                                                   "COMPLETED" ||
@@ -582,6 +581,13 @@ class DetailTripView extends DetailTripViewModel {
                                                     setState(() {
                                                       isCheckIn = !isCheckIn;
                                                     });
+                                                    Get.off(SuccessPayment(
+                                                      title: 'Success Checkin',
+                                                      message:
+                                                          'Show your booking code to driver',
+                                                      code:
+                                                          'Booking Code : 0DJA123',
+                                                    ));
                                                   },
                                                   child: Ink(
                                                     padding: EdgeInsets.all(18),
@@ -606,32 +612,42 @@ class DetailTripView extends DetailTripViewModel {
                                                 SizedBox(
                                                   height: 12,
                                                 ),
-                                                InkWell(
-                                                  onTap: () => onConfirmation(),
-                                                  child: Ink(
-                                                    padding: EdgeInsets.all(18),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        border: Border.all(
-                                                            width: 1,
+                                                state.selectedMyTrip['trip']
+                                                            ['type'] ==
+                                                        'RETURN'
+                                                    ? SizedBox()
+                                                    : InkWell(
+                                                        onTap: () =>
+                                                            onConfirmation(),
+                                                        child: Ink(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  18),
+                                                          decoration: BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              border: Border.all(
+                                                                  width: 1,
+                                                                  color: ColorsCustom
+                                                                      .primary)),
+                                                          width:
+                                                              double.infinity,
+                                                          child: CustomText(
+                                                            "Cancel Trip",
+                                                            fontWeight:
+                                                                FontWeight.w600,
                                                             color: ColorsCustom
-                                                                .primary)),
-                                                    width: double.infinity,
-                                                    child: CustomText(
-                                                      "Cancel Trip",
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          ColorsCustom.primary,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ),
+                                                                .primary,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ),
                                                 // OutlinedButton(
                                                 //   style:
                                                 //       OutlinedButton.styleFrom(

@@ -7,7 +7,9 @@ import 'package:tomas/screens/my_trips/my_trips.dart';
 import 'package:tomas/widgets/custom_text.dart';
 
 class SuccessPayment extends StatelessWidget {
-  const SuccessPayment({Key key}) : super(key: key);
+  final String title, message, code;
+  const SuccessPayment({Key key, this.title, this.message, this.code})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class SuccessPayment extends StatelessWidget {
           ),
         ),
         title: CustomText(
-          "Success Transaction",
+          title,
           color: ColorsCustom.black,
         ),
       ),
@@ -54,10 +56,27 @@ class SuccessPayment extends StatelessWidget {
                         height: 16,
                       ),
                       CustomText(
-                        "Your payment is successful.",
+                        message,
                         color: ColorsCustom.black,
                         fontSize: 16,
                       ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      code == null
+                          ? SizedBox()
+                          : CustomText(
+                              code,
+                              color: ColorsCustom.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+
+                      // CustomText(
+                      //   'Show your booking code to driver',
+                      //   color: ColorsCustom.black,
+                      //   fontSize: 16,
+                      // ),
                     ]),
               ),
               Align(

@@ -100,6 +100,8 @@ class _ListSubcriptionState extends State<ListSubcription> {
                   itemBuilder: (ctx, i) {
                     return dataList[i]['subs'][0]['pay']['status'] != 'FAILED'
                         ? CardList(
+                            startDate: dataList[i]['start_date'],
+                            endDate: dataList[i]['end_date'],
                             month: (dataList[i]['subs'][0]['duration'] / 30)
                                     .toStringAsFixed(0) +
                                 ' Month',

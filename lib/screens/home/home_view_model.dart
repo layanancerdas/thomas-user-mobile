@@ -366,23 +366,25 @@ abstract class HomeViewModel extends State<Home> {
   }
 
   Future<void> initData() async {
-    // toggleIsLoading(true);
+    toggleIsLoading(true);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String jwtToken = prefs.getString("jwtToken");
 
       if (jwtToken != null) {
         await getUserDetail();
-        await getResolveDate();
-        await getPaymentMethods();
+        // await getResolveDate();
+        // await getPaymentMethods();
         await getBookingData();
-        await getVouchers();
-        await getUserBalance();
+        // await getVouchers();
+        // await getUserBalance();
         await getNotifications();
-        print('object');
+        // print('object');
         automaticCanceled();
+        toggleLoading(false);
       } else {
         await getUserDetail();
+        toggleLoading(false);
       }
     } catch (e) {
       print(e.toString());
