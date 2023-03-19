@@ -14,6 +14,12 @@ class PaymentMethodController extends GetxController {
     isLoading.value = value;
   }
 
+  void setPaymentMethod(data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('PAYMENT_METHOD', jsonEncode(data));
+  }
+
   void getPaymentMethods(amount, datenow, signature) async {
     toggleLoading(true);
     Dio dio = Dio();

@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomas/configs/config.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/helpers/utils.dart';
+import 'package:tomas/localization/app_translations.dart';
 import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/transaction_action.dart';
 import 'package:tomas/redux/actions/user_action.dart';
@@ -130,6 +131,46 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
     }
   }
 
+  void errorDialog(errorText) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: CustomText(
+            AppTranslations.of(context).currentLanguage == 'id'
+                ? "Error"
+                : 'Kesalahan',
+            color: ColorsCustom.black,
+          ),
+          content: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
+                errorText,
+                color: ColorsCustom.generalText,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: CustomText(
+                'Oke',
+                color: ColorsCustom.blueSystem,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // void toggleUseBalance() {
   //   store.dispatch(UseBalance());
   // }
@@ -169,6 +210,7 @@ abstract class PaymentConfirmationViewModel extends State<PaymentConfirmation> {
       Get.off(PaymentWebView(url: linkPayment, orderId: order_id));
     } else {
       toggleLoading(false);
+      errorDialog('Subscribe sudah aktif');
       print(response.data);
     }
   }

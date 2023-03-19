@@ -15,12 +15,14 @@ import 'package:tomas/screens/payment_confirmation/payment_confirmation.dart';
 import 'package:tomas/screens/payment_confirmation/widgets/card_payment_method.dart';
 import 'package:tomas/screens/payment_method/controller/payment_method_controller.dart';
 import 'package:tomas/screens/payment_method/widget/card_payment_method.dart';
+import 'package:tomas/screens/shuttle_detail_easyride/shuttle_details_easyride.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:crypto/crypto.dart';
 
 class PaymentMethod extends StatefulWidget {
   final int amount;
-  const PaymentMethod({Key key, this.amount}) : super(key: key);
+  final String page;
+  const PaymentMethod({Key key, this.amount, this.page}) : super(key: key);
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -94,8 +96,10 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             urlImages: '212121',
                             name: 'PLAFON KOPKAR',
                             onTapMethod: () {
-                              Get.off(PaymentConfirmation(),
-                                  arguments: controller.dataPayment[index]);
+                              widget.page == 'easyride'
+                                  ? Get.off(ShuttleDetailsEasyRide())
+                                  : Get.off(PaymentConfirmation(),
+                                      arguments: controller.dataPayment[index]);
                             },
                           )
                         : CardPaymentMethodList(
@@ -103,8 +107,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
                                 ['paymentImage'],
                             name: controller.dataPayment[index]['paymentName'],
                             onTapMethod: () {
-                              Get.off(PaymentConfirmation(),
-                                  arguments: controller.dataPayment[index]);
+                              controller.setPaymentMethod(
+                                  controller.dataPayment[index]);
+                              widget.page == 'easyride'
+                                  ? Get.off(ShuttleDetailsEasyRide())
+                                  : Get.off(PaymentConfirmation(),
+                                      arguments: controller.dataPayment[index]);
                             },
                           )))));
   }

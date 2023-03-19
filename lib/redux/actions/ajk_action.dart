@@ -4,6 +4,12 @@ class SetSelectedTrip {
   SetSelectedTrip({this.selectedTrip});
 }
 
+class SetSelectedEasyRide {
+  final Map selectedEasyRide;
+
+  SetSelectedEasyRide({this.selectedEasyRide});
+}
+
 class SetSelectedRoute {
   final Map selectedRoute;
 

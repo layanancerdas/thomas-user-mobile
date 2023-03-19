@@ -18,8 +18,9 @@ import 'package:tomas/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PaymentWebView extends StatefulWidget {
-  final String url, orderId;
-  const PaymentWebView({Key key, this.url, this.orderId}) : super(key: key);
+  final String url, orderId, page;
+  const PaymentWebView({Key key, this.url, this.orderId, this.page})
+      : super(key: key);
 
   @override
   State<PaymentWebView> createState() => _PaymentWebViewState();
@@ -59,7 +60,12 @@ class _PaymentWebViewState extends State<PaymentWebView> {
           );
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (controller.status == "00") {
-        controller.updateStatusPay(widget.orderId, 'SUCCESS');
+        widget.page == 'easyride'
+            ? Get.off(SuccessPayment(
+                title: 'Success Payment',
+                message: 'Your payment is successful',
+              ))
+            : controller.updateStatusPay(widget.orderId, 'SUCCESS');
         timer.cancel();
       } else if (controller.status == "02") {
         controller.updateStatusPay(widget.orderId, 'FAILED');

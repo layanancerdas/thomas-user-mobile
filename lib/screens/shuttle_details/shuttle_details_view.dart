@@ -93,7 +93,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                                 ),
                                 child: Row(children: [
                                   CustomText(
-                                    "Rp. ${Utils.currencyFormat.format(state.selectedPickUpPoint['price'] * 10)} / Trip",
+                                    "Subscribe Actived",
                                     color: ColorsCustom.black,
                                     fontWeight: FontWeight.w600,
                                   ),

@@ -330,7 +330,6 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       dynamic res = await Providers.cancelBooking(
         bookingId: store.state.userState.selectedMyTrip['booking_id'],
       );
-      print(res.data);
       if (res.data['code'] == "SUCCESS") {
         await LifecycleManager.of(context).getBookingData();
         await getBookingByGroupId();
@@ -341,6 +340,25 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       print(e);
     } finally {
       await onShowDialogCancel();
+    }
+  }
+
+  Future<void> onCheckIn() async {
+    print(store.state.userState.selectedMyTrip['booking_id']);
+    try {
+      dynamic res = await Providers.confirmAttendance(
+        bookingId: store.state.userState.selectedMyTrip['booking_id'],
+      );
+      print(res.data);
+      if (res.data['code'] == "SUCCESS") {
+        print('berhasil check in');
+        await getBookingRefresh();
+        print('berhasil refresh');
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      // await onShowDialogCancel();
     }
   }
 
@@ -400,6 +418,18 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       store.dispatch(SetSelectedMyTrip(
           selectedMyTrip: res.data['data'],
           getSelectedTrip: [res.data['data']]));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getBookingRefresh() async {
+    try {
+      dynamic res = await Providers.getBookingByBookingId(
+          bookingId: store.state.userState.selectedMyTrip['booking_id']);
+      store.dispatch(SetSelectedMyTrip(
+        selectedMyTrip: res.data['data'],
+      ));
     } catch (e) {
       print(e);
     }

@@ -266,9 +266,24 @@ class Providers {
     String jwtToken = prefs.getString("jwtToken");
 
     return Dio().put('$BASE_API/ajk/booking/cancel',
-        data: {'booking_id': bookingId},
+        data: {'booking_id': bookingId, 'pay_amount': 0},
         options: Options(
             headers: {'authorization': basicAuth, 'token': jwtToken},
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 1000;
+            }));
+  }
+
+  static Future confirmAttendance({String bookingId}) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return Dio().get('$BASE_API/ajk/booking/confirm_attendance',
+        queryParameters: {'booking_id': bookingId},
+        options: Options(
+            headers: {
+              'authorization': basicAuth,
+            },
             followRedirects: false,
             validateStatus: (status) {
               return status < 1000;

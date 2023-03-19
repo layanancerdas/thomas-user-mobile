@@ -73,155 +73,171 @@ class UpcomingTrip extends StatelessWidget {
                               ? state.activeTrip.length
                               : state.pendingTrip.length,
                           itemBuilder: (ctx, i) {
-                            return Container(
-                                margin: EdgeInsets.only(bottom: 30, top: 20),
-                                width: screenSize.width - 32,
-                                child: state.activeTrip.length > 0
-                                    ? CardTrips(
-                                        home: true,
-                                        dateA: state.activeTrip[i]['trip']
-                                                    ['type'] ==
-                                                'RETURN'
-                                            ? DateTime
-                                                .fromMillisecondsSinceEpoch(state
-                                                        .activeTrip[i]['trip']
-                                                    ['departure_time'])
-                                            : DateTime
-                                                .fromMillisecondsSinceEpoch(
-                                                    state.activeTrip[i]['trip']
-                                                        ['departure_time']),
-                                        dateB: state.activeTrip[i]['trip']
-                                                    ['type'] ==
-                                                'RETURN'
-                                            ? DateTime.fromMillisecondsSinceEpoch(state.activeTrip[i]['trip']['departure_time'])
-                                                .add(Duration(
-                                                    minutes: state.activeTrip[i]
-                                                            ['pickup_point']
-                                                        ['time_to_dest']))
-                                            : DateTime.fromMillisecondsSinceEpoch(
+                            return DateTime.now().isAfter(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        state.activeTrip[i]['trip']
+                                            ['departure_time']))
+                                ? SizedBox()
+                                : Container(
+                                    margin:
+                                        EdgeInsets.only(bottom: 30, top: 20),
+                                    width: screenSize.width - 32,
+                                    child: state.activeTrip.length > 0
+                                        ? CardTrips(
+                                            home: true,
+                                            dateA: state.activeTrip[i]['trip']
+                                                        ['type'] ==
+                                                    'RETURN'
+                                                ? DateTime.fromMillisecondsSinceEpoch(
                                                     state.activeTrip[i]['trip']
                                                         ['departure_time'])
-                                                .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
-                                        timeB: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                                            ? DateTime.parse(state.activeTrip[i]['trip']['trip_group']['start_date'] + " " + state.activeTrip[i]['trip']['trip_group']['return_time']).add(Duration(
-                                                minutes: state.activeTrip[i]['pickup_point']
-                                                    ['time_to_dest']))
-                                            : DateTime.parse(state.activeTrip[i]['trip']['trip_group']
+                                                : DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        state.activeTrip[i]
+                                                                ['trip']
+                                                            ['departure_time']),
+                                            dateB: state.activeTrip[i]['trip']
+                                                        ['type'] ==
+                                                    'RETURN'
+                                                ? DateTime.fromMillisecondsSinceEpoch(state.activeTrip[i]['trip']['departure_time'])
+                                                    .add(Duration(
+                                                        minutes: state.activeTrip[i]
+                                                                ['pickup_point']
+                                                            ['time_to_dest']))
+                                                : DateTime.fromMillisecondsSinceEpoch(
+                                                        state.activeTrip[i]['trip']
+                                                            ['departure_time'])
+                                                    .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
+                                            timeB: state.activeTrip[i]['trip']
+                                                        ['type'] ==
+                                                    'RETURN'
+                                                ? DateTime.parse(state.activeTrip[i]
+                                                                    ['trip']
+                                                                ['trip_group']
+                                                            ['start_date'] +
+                                                        " " +
+                                                        state.activeTrip[i]
+                                                                    ['trip']
+                                                                ['trip_group']
+                                                            ['return_time'])
+                                                    .add(
+                                                        Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest']))
+                                                : DateTime.parse(state.activeTrip[i]['trip']['trip_group']['start_date'] + " " + state.activeTrip[i]['trip']['trip_group']['departure_time']).add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
+                                            timeA: state.activeTrip[i]['trip']['type'] == 'RETURN'
+                                                ? DateTime.parse(state.activeTrip[i]
+                                                            ['trip']['trip_group']
+                                                        ['start_date'] +
+                                                    " " +
+                                                    state.activeTrip[i]['trip']['trip_group']
+                                                        ['return_time'])
+                                                : DateTime.parse(state.activeTrip[i]
+                                                            ['trip']['trip_group']
                                                         ['start_date'] +
                                                     " " +
                                                     state.activeTrip[i]['trip']
-                                                        ['trip_group']['departure_time'])
-                                                .add(Duration(minutes: state.activeTrip[i]['pickup_point']['time_to_dest'])),
-                                        timeA: state.activeTrip[i]['trip']['type'] == 'RETURN'
-                                            ? DateTime.parse(state.activeTrip[i]
-                                                        ['trip']['trip_group']
-                                                    ['start_date'] +
-                                                " " +
-                                                state.activeTrip[i]['trip']
-                                                        ['trip_group']
-                                                    ['return_time'])
-                                            : DateTime.parse(state.activeTrip[i]
-                                                        ['trip']['trip_group']
-                                                    ['start_date'] +
-                                                " " +
-                                                state.activeTrip[i]['trip']
-                                                    ['trip_group']['departure_time']),
-                                        title: "AJK " +
-                                            (state.activeTrip[i]['trip']
+                                                        ['trip_group']['departure_time']),
+                                            title: "AJK " +
+                                                (state.activeTrip[i]['trip']
+                                                            ['type'] ==
+                                                        'RETURN'
+                                                    ? "Return"
+                                                    : "Departure"),
+                                            pointA: state.activeTrip[i]['trip']
                                                         ['type'] ==
                                                     'RETURN'
-                                                ? "Return"
-                                                : "Departure"),
-                                        pointA: state.activeTrip[i]['trip']
-                                                    ['type'] ==
-                                                'RETURN'
-                                            ? state.activeTrip[i]['trip']
-                                                    ['trip_group']['route']
-                                                ['destination_name']
-                                            : state.activeTrip[i]
-                                                ['pickup_point']['name'],
-                                        pointB: state.activeTrip[i]['trip']
-                                                    ['type'] ==
-                                                'RETURN'
-                                            ? state.activeTrip[i]
-                                                ['pickup_point']['name']
-                                            : state.activeTrip[i]['trip']
-                                                    ['trip_group']['route']
-                                                ['destination_name'],
-                                        type: state.activeTrip[i]['details'] !=
-                                                    null &&
-                                                state.activeTrip[i]['details']
-                                                        ['status'] ==
-                                                    'ONGOING'
-                                            ? 'Ongoing'
-                                            : "Booking Confirmed",
-                                        data: state.activeTrip[i],
-                                        id: state.activeTrip[i]['booking_id'],
-                                        differenceAB:
-                                            "${state.activeTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.activeTrip[i]['pickup_point']['time_to_dest'] % 60}m",
-                                      )
-                                    : CardTrips(
-                                        dateB: DateTime.parse(
-                                            state.pendingTrip[i]['trip']
+                                                ? state.activeTrip[i]['trip']
+                                                        ['trip_group']['route']
+                                                    ['destination_name']
+                                                : state.activeTrip[i]
+                                                    ['pickup_point']['name'],
+                                            pointB: state.activeTrip[i]['trip']
+                                                        ['type'] ==
+                                                    'RETURN'
+                                                ? state.activeTrip[i]
+                                                    ['pickup_point']['name']
+                                                : state.activeTrip[i]['trip']
+                                                        ['trip_group']['route']
+                                                    ['destination_name'],
+                                            type: state.activeTrip[i]
+                                                            ['details'] !=
+                                                        null &&
+                                                    state.activeTrip[i]
+                                                                ['details']
+                                                            ['status'] ==
+                                                        'ONGOING'
+                                                ? 'Ongoing'
+                                                : "Booking Confirmed",
+                                            data: state.activeTrip[i],
+                                            id: state.activeTrip[i]
+                                                ['booking_id'],
+                                            differenceAB:
+                                                "${state.activeTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.activeTrip[i]['pickup_point']['time_to_dest'] % 60}m",
+                                          )
+                                        : CardTrips(
+                                            dateB: DateTime.parse(state
+                                                        .pendingTrip[i]['trip']
                                                     ['trip_group']['end_date'] +
                                                 " " +
                                                 state.pendingTrip[i]['trip']
                                                         ['trip_group']
                                                     ['departure_time']),
-                                        dateA: DateTime.parse(
-                                                state.pendingTrip[i]['trip']
+                                            dateA: DateTime.parse(state.pendingTrip[i]
+                                                                ['trip']
                                                             ['trip_group']
                                                         ['start_date'] +
                                                     " " +
                                                     state.pendingTrip[i]['trip']
                                                             ['trip_group']
                                                         ['departure_time'])
-                                            .add(Duration(
-                                                minutes: state.pendingTrip[i]
-                                                        ['pickup_point']
-                                                    ['time_to_dest'])),
-                                        timeA: DateTime.parse(state
-                                                    .pendingTrip[i]['trip']
-                                                ['trip_group']['start_date'] +
-                                            " " +
-                                            state.pendingTrip[i]['trip']
-                                                    ['trip_group']
-                                                ['departure_time']),
-                                        timeB: DateTime.parse(state
-                                                    .pendingTrip[i]['trip']
-                                                ['trip_group']['end_date'] +
-                                            " " +
-                                            state.pendingTrip[i]['trip']
-                                                ['trip_group']['return_time']),
-                                        title: "AJK " +
-                                            (state.pendingTrip[i]['trip']
+                                                .add(Duration(
+                                                    minutes: state.pendingTrip[i]
+                                                            ['pickup_point']
+                                                        ['time_to_dest'])),
+                                            timeA: DateTime.parse(
+                                                state.pendingTrip[i]['trip']
+                                                            ['trip_group']
+                                                        ['start_date'] +
+                                                    " " +
+                                                    state.pendingTrip[i]['trip']
+                                                            ['trip_group']
+                                                        ['departure_time']),
+                                            timeB: DateTime.parse(state
+                                                        .pendingTrip[i]['trip']
+                                                    ['trip_group']['end_date'] +
+                                                " " +
+                                                state.pendingTrip[i]['trip']
+                                                        ['trip_group']
+                                                    ['return_time']),
+                                            title: "AJK " +
+                                                (state.pendingTrip[i]['trip']
+                                                            ['type'] ==
+                                                        'RETURN'
+                                                    ? "Return"
+                                                    : "Departure"),
+                                            pointA: state.pendingTrip[i]['trip']
                                                         ['type'] ==
                                                     'RETURN'
-                                                ? "Return"
-                                                : "Departure"),
-                                        pointA: state.pendingTrip[i]['trip']
-                                                    ['type'] ==
-                                                'RETURN'
-                                            ? state.pendingTrip[i]['trip']
-                                                    ['trip_group']['route']
-                                                ['destination_name']
-                                            : state.pendingTrip[i]
-                                                ['pickup_point']['name'],
-                                        pointB: state.pendingTrip[i]['trip']
-                                                    ['type'] ==
-                                                'RETURN'
-                                            ? state.pendingTrip[i]
-                                                ['pickup_point']['name']
-                                            : state.pendingTrip[i]['trip']
-                                                    ['trip_group']['route']
-                                                ['destination_name'],
-                                        type: "Waiting for Payment",
-                                        data: state.pendingTrip[i],
-                                        id: state.pendingTrip[i]['booking_id'],
-                                        differenceAB:
-                                            "${state.pendingTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.pendingTrip[i]['pickup_point']['time_to_dest'] % 60}m",
-                                        home: true,
-                                      ));
+                                                ? state.pendingTrip[i]['trip']
+                                                        ['trip_group']['route']
+                                                    ['destination_name']
+                                                : state.pendingTrip[i]
+                                                    ['pickup_point']['name'],
+                                            pointB: state.pendingTrip[i]['trip']
+                                                        ['type'] ==
+                                                    'RETURN'
+                                                ? state.pendingTrip[i]
+                                                    ['pickup_point']['name']
+                                                : state.pendingTrip[i]['trip']
+                                                        ['trip_group']['route']
+                                                    ['destination_name'],
+                                            type: "Waiting for Payment",
+                                            data: state.pendingTrip[i],
+                                            id: state.pendingTrip[i]
+                                                ['booking_id'],
+                                            differenceAB:
+                                                "${state.pendingTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.pendingTrip[i]['pickup_point']['time_to_dest'] % 60}m",
+                                            home: true,
+                                          ));
                           },
                         )),
                   ],

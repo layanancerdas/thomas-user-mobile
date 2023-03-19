@@ -47,78 +47,9 @@ class CardSchedule extends StatelessWidget {
         Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Row(
-        //   children: [
-        //     Container(
-        //       margin: EdgeInsets.only(right: 8),
-        //       height: 20,
-        //       width: 20,
-        //       child: SvgPicture.asset('assets/images/school_bus.svg'),
-        //     ),
-        //     CustomText(
-        //       "Every ",
-        //       color: ColorsCustom.black,
-        //       fontWeight: FontWeight.w300,
-        //       fontSize: 12,
-        //     ),
-        //     CustomText(
-        //       "${dateA ?? "-"}",
-        //       color: ColorsCustom.black,
-        //       fontWeight: FontWeight.w500,
-        //       fontSize: 12,
-        //     ),
-        //     CustomText(
-        //       " - ",
-        //       color: ColorsCustom.black,
-        //       fontWeight: FontWeight.w300,
-        //       fontSize: 12,
-        //     ),
-        //     CustomText(
-        //       "${dateB ?? "-"}",
-        //       color: ColorsCustom.black,
-        //       fontWeight: FontWeight.w500,
-        //       fontSize: 12,
-        //     )
-        //   ],
-        // ),
-
-        // ListView.builder(
-        //   shrinkWrap: true,
-        //   physics: NeverScrollableScrollPhysics(),
-        //   itemCount: includedDate.length,
-        //   itemBuilder: (context, i) {
-        //     return Row(
-        //       children: [
-        //         Container(
-        //           width: 10,
-        //           height: 10,
-        //           decoration: BoxDecoration(
-        //               color: ColorsCustom.primary,
-        //               borderRadius: BorderRadius.circular(20)),
-        //         ),
-        //         SizedBox(
-        //           width: 5,
-        //         ),
-        //         Text(includedDate[i].substring(includedDate[i].length - 2)),
-        //         SizedBox(
-        //           width: 5,
-        //         ),
-        //       ],
-        //     );
-        //     ;
-        //   },
-        // ),
         SizedBox(
           height: 15,
         ),
-
-        // CustomText(
-        //   "Seat Available : 2",
-        //   color: ColorsCustom.black,
-        //   fontWeight: FontWeight.w500,
-        //   fontSize: 12,
-        // ),
-        SizedBox(height: 15),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Row(

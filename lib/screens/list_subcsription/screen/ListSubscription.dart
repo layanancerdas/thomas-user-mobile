@@ -98,6 +98,14 @@ class _ListSubcriptionState extends State<ListSubcription> {
                   padding: EdgeInsets.all(12),
                   itemCount: dataList.length,
                   itemBuilder: (ctx, i) {
+                    Map dataPickup = {};
+                    dataList[i]['subs'][0]['route']['pickup_points']
+                        .forEach((e) {
+                      if (e['pickup_point_id'] ==
+                          dataList[i]['subs'][0]['pickup_point_id']) {
+                        dataPickup = e;
+                      }
+                    });
                     return dataList[i]['subs'][0]['pay']['status'] != 'FAILED'
                         ? CardList(
                             startDate: dataList[i]['start_date'],
@@ -113,16 +121,18 @@ class _ListSubcriptionState extends State<ListSubcription> {
                                 ['payment_url'],
                             orderIdPayment: dataList[i]['subs'][0]['pay']
                                 ['merchand_order_id'],
-                            pointA: dataList[i]['subs'][0]['route']
-                                ['pickup_points'][0]['name'],
+                            pointA: dataPickup['name'] == null
+                                ? ''
+                                : dataPickup['name'],
                             pointB: dataList[i]['subs'][0]['route']
                                 ['destination_name'],
                             addressA: dataList[i]['subs'][0]['route']
                                 ['pickup_points'][0]['address'],
                             addressB: dataList[i]['subs'][0]['route']
                                 ['destination_address'],
-                            differenceAB:
-                                "${dataList[i]['subs'][0]['route']['pickup_points'][0]['time_to_dest'] ~/ 60}h ${dataList[i]['subs'][0]['route']['pickup_points'][0]['time_to_dest'] % 60}m",
+                            differenceAB: dataPickup['time_to_dest'] == null
+                                ? ''
+                                : "${dataPickup['time_to_dest'] ~/ 60}h ${dataPickup['time_to_dest'] % 60}m",
                           )
                         : Container();
                   },

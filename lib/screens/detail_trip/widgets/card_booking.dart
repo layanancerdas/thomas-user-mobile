@@ -10,7 +10,7 @@ import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/localization/app_translations.dart';
 
 class CardBooking extends StatelessWidget {
-  final bool completed, isReturn, checkIn;
+  final bool completed, isReturn;
   final String bookingCode,
       bookingId,
       timeA,
@@ -24,23 +24,23 @@ class CardBooking extends StatelessWidget {
       addressB;
   final LatLng coordinatesA, coordinatesB;
 
-  CardBooking(
-      {this.bookingCode,
-      this.bookingId,
-      this.timeA,
-      this.timeB,
-      this.differenceAB,
-      this.pointA,
-      this.pointB,
-      this.addressA,
-      this.addressB,
-      this.coordinatesA,
-      this.coordinatesB,
-      this.dateA,
-      this.dateB,
-      this.completed,
-      this.isReturn: false,
-      this.checkIn});
+  CardBooking({
+    this.bookingCode,
+    this.bookingId,
+    this.timeA,
+    this.timeB,
+    this.differenceAB,
+    this.pointA,
+    this.pointB,
+    this.addressA,
+    this.addressB,
+    this.coordinatesA,
+    this.coordinatesB,
+    this.dateA,
+    this.dateB,
+    this.completed,
+    this.isReturn: false,
+  });
 
   @override
   Widget build(BuildContext context) {

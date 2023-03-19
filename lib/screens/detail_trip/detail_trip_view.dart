@@ -29,12 +29,16 @@ import 'widgets/bus_details.dart';
 import 'package:tomas/widgets/card_active_checkin.dart';
 
 class DetailTripView extends DetailTripViewModel {
-  bool isCheckIn = false;
+  // bool isCheckIn = false;
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, UserState>(
         converter: (store) => store.state.userState,
         builder: (context, state) {
+          // print(distance);
+          // print(state.selectedMyTrip['status']);
+          // print(state)
+          // print(state.selectedMyTrip['attended']);
           return Scaffold(
             appBar: AppBar(
               leading: TextButton(
@@ -286,7 +290,6 @@ class DetailTripView extends DetailTripViewModel {
                                               null)
                                   ? CardWaitingPayment()
                                   : CardBooking(
-                                      checkIn: isCheckIn,
                                       completed:
                                           state.selectedMyTrip['status'] ==
                                                   "COMPLETED" ||
@@ -511,28 +514,100 @@ class DetailTripView extends DetailTripViewModel {
                                     ),
                                   )),
                               state.selectedMyTrip['status'] == "PENDING"
-                                  ? SizedBox(height: 130)
-                                  : (state.selectedMyTrip['status'] ==
-                                              "ACTIVE" &&
-                                          state.selectedMyTrip['details'] !=
-                                              null &&
-                                          state.selectedMyTrip['details']
-                                                  ['status'] ==
-                                              'ONGOING')
-                                      ? SizedBox(
-                                          height: 90,
+                                  ? Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            // onCheckIn();
+                                            Get.off(SuccessPayment(
+                                              title: 'Success Checkin',
+                                              message:
+                                                  'Show your booking code to driver',
+                                              code: 'Booking Code : 0DJA123',
+                                            ));
+                                          },
+                                          child: Ink(
+                                            padding: EdgeInsets.all(18),
+                                            decoration: BoxDecoration(
+                                                color: ColorsCustom.yellow,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            width: double.infinity,
+                                            child: CustomText(
+                                              "Pay",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                              textAlign: TextAlign.center,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
                                         )
-                                      : SizedBox(height: 20),
-                              state.selectedMyTrip['status'] == "PENDING" ||
-                                      (state
-                                                  .selectedMyTrip['status'] ==
-                                              "ACTIVE" &&
-                                          state.selectedMyTrip['details'] !=
-                                              null &&
-                                          state.selectedMyTrip['details']
-                                                  ['status'] ==
-                                              'ONGOING')
-                                  ? SizedBox()
+                                      ],
+                                    )
+                                  : SizedBox(height: 20),
+                              (state.selectedMyTrip['status'] == "ACTIVE" &&
+                                      state.selectedMyTrip['details'] != null &&
+                                      state.selectedMyTrip['details']
+                                              ['status'] ==
+                                          'ONGOING')
+                                  ? state.selectedMyTrip['attended']
+                                      ? Container(
+                                          margin: EdgeInsets.only(bottom: 20),
+                                          child: CustomText(
+                                            "You haved check in, have a nice trip",
+                                            fontWeight: FontWeight.w600,
+                                            color: ColorsCustom.newGreen,
+                                            textAlign: TextAlign.center,
+                                            fontSize: 14,
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            onCheckIn();
+                                            // Get.off(SuccessPayment(
+                                            //   title: 'Success Checkin',
+                                            //   message:
+                                            //       'Show your booking code to driver',
+                                            //   code: 'Booking Code : 0DJA123',
+                                            // ));
+                                          },
+                                          child: Ink(
+                                            padding: EdgeInsets.all(18),
+                                            decoration: BoxDecoration(
+                                                color: 0 < distance
+                                                    // &&
+                                                    //         DateTime.now().isAfter(state.selectedMyTrip['trip']
+                                                    //                     [
+                                                    //                     'type'] ==
+                                                    //                 'RETURN'
+                                                    //             ? DateTime.fromMillisecondsSinceEpoch(state.selectedMyTrip['trip']['departure_time']).subtract(Duration(
+                                                    //                 minutes:
+                                                    //                     30))
+                                                    //             : DateTime.fromMillisecondsSinceEpoch(state.selectedMyTrip['trip']['departure_time'])
+                                                    //                 .subtract(
+                                                    //                     Duration(minutes: 30)))
+                                                    //  &&
+                                                    //         distance < 700
+                                                    ? ColorsCustom.newGreen
+                                                    : Colors.grey,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            width: double.infinity,
+                                            child: CustomText(
+                                              "Check In",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                              textAlign: TextAlign.center,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        )
                                   : state.selectedMyTrip['status'] ==
                                               "COMPLETED" &&
                                           state.selectedMyTrip['rating'] ==
@@ -560,58 +635,10 @@ class DetailTripView extends DetailTripViewModel {
                                               state.selectedMyTrip['status'] ==
                                                   "CANCELED" ||
                                               state.selectedMyTrip['status'] ==
-                                                  "MISSED" ||
-                                              (state.selectedMyTrip[
-                                                          'status'] ==
-                                                      "ACTIVE" &&
-                                                  state.selectedMyTrip[
-                                                          'details'] !=
-                                                      null &&
-                                                  state.selectedMyTrip[
-                                                          'details'] !=
-                                                      null &&
-                                                  state.selectedMyTrip['details']
-                                                          ['status'] ==
-                                                      'ONGOING')
+                                                  "MISSED"
                                           ? SizedBox()
                                           : Column(
                                               children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      isCheckIn = !isCheckIn;
-                                                    });
-                                                    Get.off(SuccessPayment(
-                                                      title: 'Success Checkin',
-                                                      message:
-                                                          'Show your booking code to driver',
-                                                      code:
-                                                          'Booking Code : 0DJA123',
-                                                    ));
-                                                  },
-                                                  child: Ink(
-                                                    padding: EdgeInsets.all(18),
-                                                    decoration: BoxDecoration(
-                                                        color: ColorsCustom
-                                                            .newGreen,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    width: double.infinity,
-                                                    child: CustomText(
-                                                      "Check In",
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Colors.white,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 12,
-                                                ),
                                                 state.selectedMyTrip['trip']
                                                             ['type'] ==
                                                         'RETURN'
@@ -809,9 +836,9 @@ class DetailTripView extends DetailTripViewModel {
                 //     child: Container(
                 //         decoration: BoxDecoration(
                 //           borderRadius: BorderRadius.circular(20),
-                //           color: 0 < distance && distance < 700
-                //               ? ColorsCustom.primary
-                //               : Colors.grey,
+                // color: 0 < distance && distance < 700
+                //     ? ColorsCustom.primary
+                //     : Colors.grey,
                 //         ),
                 //         alignment: Alignment.center,
                 //         margin: EdgeInsets.all(20),

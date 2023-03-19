@@ -59,7 +59,7 @@ class LandingView extends LandingViewModel {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CustomButton(
-                        text: "${AppTranslations.of(context).text("tmmin")}",
+                        text: "${AppTranslations.of(context).text("login")}",
                         textColor: Colors.white,
                         bgColor: ColorsCustom.primary,
                         fontWeight: FontWeight.w600,
@@ -68,46 +68,44 @@ class LandingView extends LandingViewModel {
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => Sign(mode: "ldap"))),
+                                builder: (_) => Sign(mode: "basic"))),
                       ),
                       CustomButton(
-                        text: "${AppTranslations.of(context).text("login")}",
+                        text: "Sign Up",
                         bgColor: Colors.white,
                         textColor: ColorsCustom.primary,
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                         padding: EdgeInsets.symmetric(vertical: 14),
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => Sign(mode: "basic"))),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/SignUp'),
                       ),
                       SizedBox(height: screenSize.width * 0.03),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: CustomText(
-                              "${AppTranslations.of(context).text("not_a_member_yet")}",
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: GestureDetector(
-                              onTap: () =>
-                                  Navigator.pushNamed(context, '/SignUp'),
-                              child: CustomText(
-                                "${AppTranslations.of(context).text("get_an_account")}",
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Flexible(
+                      //       child: CustomText(
+                      //         "${AppTranslations.of(context).text("not_a_member_yet")}",
+                      //         color: Colors.white,
+                      //         fontSize: 15,
+                      //       ),
+                      //     ),
+                      //     SizedBox(width: 5),
+                      //     Flexible(
+                      // child: GestureDetector(
+                      //         onTap: () =>
+                      //             Navigator.pushNamed(context, '/SignUp'),
+                      //         child: CustomText(
+                      //           "${AppTranslations.of(context).text("get_an_account")}",
+                      //           color: Colors.white,
+                      //           fontSize: 15,
+                      //           fontWeight: FontWeight.w600,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(height: screenSize.width * 0.05),
                     ],
                   ),

@@ -87,10 +87,7 @@ class _CardListState extends State<CardList> {
                   url: widget.urlPayment,
                   orderId: widget.orderIdPayment,
                 ))
-              : Get.to(DetailSubscription(
-                  pointA: 'terminal',
-                  pointB: 'kantor',
-                ))
+              : {}
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -264,7 +261,13 @@ class _CardListState extends State<CardList> {
                           fontSize: 18,
                         ),
                       ),
+                      SizedBox(
+                        width: 5,
+                      ),
                       SvgPicture.asset('assets/images/arrow-switch.svg'),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Expanded(
                         child: CustomText(
                           widget.pointB,
@@ -289,10 +292,16 @@ class _CardListState extends State<CardList> {
                           fontSize: 10,
                         ),
                       ),
+                      SizedBox(
+                        width: 5,
+                      ),
                       CustomText(
                         widget.differenceAB,
                         color: ColorsCustom.generalText,
                         fontSize: 10,
+                      ),
+                      SizedBox(
+                        width: 5,
                       ),
                       Expanded(
                         child: CustomText(
@@ -307,11 +316,13 @@ class _CardListState extends State<CardList> {
                   SizedBox(
                     height: 12,
                   ),
-                  CustomText(
-                    "View Detail",
-                    color: ColorsCustom.primary,
-                    fontSize: 14,
-                  ),
+                  widget.statusPayment == 'PENDING'
+                      ? CustomText(
+                          "View Detail",
+                          color: ColorsCustom.primary,
+                          fontSize: 14,
+                        )
+                      : SizedBox()
                 ],
               ),
             ),

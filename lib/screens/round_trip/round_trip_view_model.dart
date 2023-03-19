@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:redux/redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/ajk_action.dart';
 import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
+import 'package:tomas/screens/shuttle_detail_easyride/shuttle_details_easyride.dart';
 
 import 'package:tomas/screens/shuttle_details/shuttle_details.dart';
 import 'package:tomas/screens/subscribe_trip/screen/subscribe_trip.dart';
+import 'package:uuid/uuid.dart';
 import './round_trip.dart';
 
 abstract class RoundTripViewModel extends State<RoundTrip> {
@@ -43,6 +46,27 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
         );
   }
 
+  void setOrderID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var uuid = Uuid();
+    var v4 = await uuid.v4();
+    prefs.setString('ORDER_ID', v4);
+  }
+
+  Future<void> onBookEasyRide(Map value, Map val) async {
+    // print(value);
+    await setOrderID();
+    await store.dispatch(SetSelectedTrip(selectedTrip: value));
+    await store.dispatch(SetSelectedEasyRide(selectedEasyRide: val));
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ShuttleDetailsEasyRide()
+            // SubscribeTrip()
+            )
+        // DetailOrder())
+        );
+  }
+
   Future<void> getAllTripById(start_date, end_date) async {
     toggleLoading(true);
     try {
@@ -50,7 +74,6 @@ abstract class RoundTripViewModel extends State<RoundTrip> {
           id: store.state.ajkState.selectedRoute['route_id'],
           startDate: start_date,
           endDate: end_date);
-      print(res);
 
       List _data = res.data['data'] as List;
       List _temp = _data.where((element) => element['is_active']).toList();

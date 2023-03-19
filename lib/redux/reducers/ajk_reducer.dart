@@ -9,6 +9,8 @@ final ajkReducer = combineReducers<AjkState>([
 AjkState _setAjkState(AjkState state, dynamic action) {
   if (action is SetSelectedTrip) {
     return state.copyWith(selectedTrip: action.selectedTrip);
+  } else if (action is SetSelectedEasyRide) {
+    return state.copyWith(easyRide: action.selectedEasyRide);
   } else if (action is SetSelectedRoute) {
     return state.copyWith(selectedRoute: action.selectedRoute);
   } else if (action is SetRoutes) {
