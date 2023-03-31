@@ -56,7 +56,7 @@
   "balance_not_enough": "Your balance isn’t enough. Please top up first or try again with another payment method.",
   "no_internet":"Oops! No Internet Connection",
   "please_check":"Please check your Wi Fi connection or mobile data and try again.",
-  "no_location":"We need access to improve our service and find the nearest pick-up point around you.",
+  "no_location":"We need current location access to find pickup points, your current location from and the geofancing checkin feature. For that location access runs in background only when app is used. Please turn on location to access this app, Thankyou.",
   "choose_payment":"Choose Payment",
   "no_notification":"You don’t have any notifications.\nAll of your notifications will be shown here.",
   "no_plan_trip":"Oops! We couldn’t find any available\ntransport. Please check your route.",

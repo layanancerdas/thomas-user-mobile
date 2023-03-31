@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:redux/redux.dart';
+import 'package:tomas/helpers/utils.dart';
 import 'package:tomas/providers/providers.dart';
 import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
@@ -22,17 +23,15 @@ class _PendingSectionState extends State<PendingSection> {
 
   Future<void> onLoading() async {
     try {
-      dynamic res = await Providers.getAllBooking(
-          status: "PENDING",
-          limit: store.state.userState.limitPendingTrip + 10,
+      dynamic res = await Providers.getPendingBooking(
+          limit: store.state.userState.limitPendingTrip + 25,
           offset: store.state.userState.pendingTrip.length);
-
-      if (res.data['data'].length > 0 &&
+      if (res.data['data']['data'].length > 0 &&
           (res.data['code'] == '00' || res.data['code'] == 'SUCCESS')) {
         await store.dispatch(SetPendingTrip(pendingTrip: [
           ...store.state.userState.pendingTrip,
-          ...res.data['data']
-        ], limitPendingTrip: store.state.userState.limitPendingTrip + 10));
+          ...res.data['data']['data']
+        ], limitPendingTrip: store.state.userState.limitPendingTrip + 25));
         refreshController.loadComplete();
       } else {
         refreshController.loadNoData();
@@ -45,13 +44,15 @@ class _PendingSectionState extends State<PendingSection> {
 
   Future<void> onRefresh() async {
     try {
-      dynamic res = await Providers.getAllBooking(
-          status: "PENDING", limit: 10, offset: 0);
-
-      if (res.data['data'].length > 0 &&
+      dynamic res = await Providers.getPendingBooking(
+          limit: store.state.userState.limitPendingTrip + 25,
+          offset: store.state.userState.pendingTrip.length);
+      if (res.data['data']['data'].length > 0 &&
           (res.data['code'] == '00' || res.data['code'] == 'SUCCESS')) {
-        await store.dispatch(SetPendingTrip(
-            pendingTrip: res.data['data'], limitPendingTrip: 10));
+        await store.dispatch(SetPendingTrip(pendingTrip: [
+          ...store.state.userState.pendingTrip,
+          ...res.data['data']['data']
+        ], limitPendingTrip: store.state.userState.limitPendingTrip + 25));
         refreshController.refreshCompleted();
       } else {
         refreshController.refreshToIdle();
@@ -91,49 +92,43 @@ class _PendingSectionState extends State<PendingSection> {
                       padding: EdgeInsets.only(top: 16, bottom: 16),
                       itemCount: state.pendingTrip.length,
                       itemBuilder: (ctx, i) {
-                        return CardTrips(
-                          dateB: DateTime.parse(state.pendingTrip[i]['trip']
-                                  ['trip_group']['end_date'] +
-                              " " +
-                              state.pendingTrip[i]['trip']['trip_group']
-                                  ['departure_time']),
-                          dateA: DateTime.parse(state.pendingTrip[i]['trip']
-                                      ['trip_group']['start_date'] +
-                                  " " +
-                                  state.pendingTrip[i]['trip']['trip_group']
-                                      ['departure_time'])
+                        return
+                            // Text('test');
+                            CardTrips(
+                          dataEasyRide: state.pendingTrip[i],
+                          page: 'pending',
+                          orderId: state.pendingTrip[i]['merchand_order_id'],
+                          idEasyRide: state.pendingTrip[i]['id'],
+                          linkPayment: state.pendingTrip[i]['payment_url'],
+                          dateB: DateTime.fromMillisecondsSinceEpoch(int.parse(
+                              state.pendingTrip[i]['departure_time'])),
+                          dateA: DateTime.fromMillisecondsSinceEpoch(int.parse(
+                                  state.pendingTrip[i]['departure_time']))
                               .add(Duration(
-                                  minutes: state.pendingTrip[i]['pickup_point']
-                                      ['time_to_dest'])),
-                          timeA: DateTime.parse(state.pendingTrip[i]['trip']
-                                  ['trip_group']['start_date'] +
-                              " " +
-                              state.pendingTrip[i]['trip']['trip_group']
-                                  ['departure_time']),
-                          timeB: DateTime.parse(state.pendingTrip[i]['trip']
-                                  ['trip_group']['end_date'] +
-                              " " +
-                              state.pendingTrip[i]['trip']['trip_group']
-                                  ['return_time']),
+                                  minutes: int.parse(
+                                      state.pendingTrip[i]['time_to_dest']))),
+                          timeA: DateTime.fromMillisecondsSinceEpoch(int.parse(
+                              state.pendingTrip[i]['departure_time'])),
+                          timeB: DateTime.fromMillisecondsSinceEpoch(int.parse(
+                                  state.pendingTrip[i]['departure_time']))
+                              .add(Duration(
+                                  minutes: int.parse(
+                                      state.pendingTrip[i]['time_to_dest']))),
                           title: "AJK " +
-                              (state.pendingTrip[i]['trip']['type'] == 'RETURN'
+                              (state.pendingTrip[i]['type'] == 'RETURN'
                                   ? "Return"
                                   : "Departure"),
-                          pointA: state.pendingTrip[i]['trip']['type'] ==
-                                  'RETURN'
-                              ? state.pendingTrip[i]['trip']['trip_group']
-                                  ['route']['destination_name']
-                              : state.pendingTrip[i]['pickup_point']['name'],
-                          pointB:
-                              state.pendingTrip[i]['trip']['type'] == 'RETURN'
-                                  ? state.pendingTrip[i]['pickup_point']['name']
-                                  : state.pendingTrip[i]['trip']['trip_group']
-                                      ['route']['destination_name'],
+                          pointA: state.pendingTrip[i]['type'] == 'RETURN'
+                              ? state.pendingTrip[i]['destination_name']
+                              : state.pendingTrip[i]['pickup_point_name'],
+                          pointB: state.pendingTrip[i]['type'] == 'RETURN'
+                              ? state.pendingTrip[i]['pickup_point_name']
+                              : state.pendingTrip[i]['destination_name'],
                           type: "Waiting for Payment",
                           data: state.pendingTrip[i],
-                          id: state.pendingTrip[i]['booking_id'],
+                          id: state.pendingTrip[i]['id'],
                           differenceAB:
-                              "${state.pendingTrip[i]['pickup_point']['time_to_dest'] ~/ 60}h ${state.pendingTrip[i]['pickup_point']['time_to_dest'] % 60}m",
+                              "${int.parse(state.pendingTrip[i]['time_to_dest']) ~/ 60}h ${int.parse(state.pendingTrip[i]['time_to_dest']) % 60}m",
                         );
                       },
                     )

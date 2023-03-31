@@ -15,7 +15,7 @@ class UpcomingTrip extends StatelessWidget {
     return StoreConnector<AppState, UserState>(
         converter: (store) => store.state.userState,
         builder: (context, state) {
-          return state.activeTrip.length > 0 || state.pendingTrip.length > 0
+          return state.activeTrip.length > 0
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

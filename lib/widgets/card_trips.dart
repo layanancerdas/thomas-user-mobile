@@ -13,11 +13,14 @@ import 'package:tomas/redux/actions/user_action.dart';
 import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/screens/before_mytrip/screen/before_mytrip.dart';
 import 'package:tomas/screens/lifecycle_manager/lifecycle_manager.dart';
+import 'package:tomas/screens/payment_webview/screen/payment_webview.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/localization/app_translations.dart';
 
 class CardTrips extends StatefulWidget {
   final String id, title, type, pointA, pointB, differenceAB;
+  String page, linkPayment, idEasyRide, orderId;
+  Map dataEasyRide;
   final DateTime dateA, dateB, timeA, timeB;
   final bool home;
   final Map data;
@@ -27,6 +30,11 @@ class CardTrips extends StatefulWidget {
       this.type,
       this.pointA,
       this.pointB,
+      this.dataEasyRide,
+      this.page,
+      this.linkPayment,
+      this.idEasyRide,
+      this.orderId,
       this.dateA,
       this.dateB,
       this.home: false,
@@ -145,12 +153,25 @@ class _CardTripsState extends State<CardTrips> {
 
   Future<void> onClick() async {
     store.dispatch(SetIsLoading(isLoading: true));
-    await getBookingByGroupId();
-    if (responseStatus == 'SUCCESS') {
-      Navigator.pushNamed(context, "/DetailTrip");
-    } else {}
 
-    store.dispatch(SetIsLoading(isLoading: false));
+    if (widget.page == 'pending') {
+      Get.to(
+        PaymentWebView(
+          url: widget.linkPayment,
+          orderId: widget.orderId,
+          idEasyRide: widget.idEasyRide,
+          dataEasyRide: widget.dataEasyRide,
+          page: 'easyride',
+        ),
+      );
+      store.dispatch(SetIsLoading(isLoading: false));
+    } else {
+      await getBookingByGroupId();
+      if (responseStatus == 'SUCCESS') {
+        Navigator.pushNamed(context, "/DetailTrip");
+        store.dispatch(SetIsLoading(isLoading: false));
+      } else {}
+    }
   }
 
   @override

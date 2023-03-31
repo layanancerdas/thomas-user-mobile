@@ -60,6 +60,7 @@ class _ModalNoLocationState extends State<ModalNoLocation> {
                 CustomText(
                   "${AppTranslations.of(context).text("no_location")}",
                   fontWeight: FontWeight.w400,
+                  textAlign: TextAlign.justify,
                   fontSize: 14,
                   color: ColorsCustom.black,
                   // textAlign: TextAlign.center,

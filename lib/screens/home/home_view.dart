@@ -268,8 +268,8 @@ class HomeView extends HomeViewModel {
                                         topLeft: Radius.circular(25),
                                         topRight: Radius.circular(25))),
                                 child: RefreshIndicator(
-                                  onRefresh: () {
-                                    initData();
+                                  onRefresh: () async {
+                                    await initData();
                                     return Future<void>.delayed(
                                         const Duration(seconds: 0));
                                   },
@@ -301,7 +301,7 @@ class HomeView extends HomeViewModel {
                                                     Expanded(
                                                         child: ButtonMenu(
                                                       logo: 'school_bus.svg',
-                                                      name: "AJK",
+                                                      name: "ESS",
                                                       color: ColorsCustom
                                                           .primaryVeryLow,
                                                       onClick: () => !state

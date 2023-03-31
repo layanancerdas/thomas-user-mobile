@@ -268,7 +268,9 @@ class CardBooking extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => MapFullscreen(
-                                          coordinates: coordinatesA,
+                                          coordinates: isReturn
+                                              ? coordinatesB
+                                              : coordinatesA,
                                           city:
                                               "${Utils.capitalizeFirstofEach(isReturn ? pointB : pointA)}",
                                           address:
@@ -304,7 +306,9 @@ class CardBooking extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => MapFullscreen(
-                                          coordinates: coordinatesB,
+                                          coordinates: isReturn
+                                              ? coordinatesA
+                                              : coordinatesB,
                                           city:
                                               "${Utils.capitalizeFirstofEach(isReturn ? pointA : pointB)}",
                                           address:

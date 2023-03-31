@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:tomas/localization/app_translations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:tomas/screens/home/home.dart';
 import 'package:tomas/screens/lifecycle_manager/lifecycle_manager.dart';
 import 'package:tomas/screens/payment/payment.dart';
 import 'package:tomas/screens/payment_confirmation/payment_confirmation.dart';
+import 'package:tomas/screens/success_payment/screen/success_payment.dart';
 import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/widgets/custom_toast.dart';
 import './detail_trip.dart';
@@ -30,7 +32,7 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
   NumberFormat timeFormat = new NumberFormat("00");
   bool onBottom = false;
   Map dataPayment = {};
-
+  String name = '';
   List tripHistory = [];
 
   bool isLoading = false;
@@ -41,7 +43,7 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
   double distance = 0;
   String status = "";
   String countdown = "00:00:00";
-
+  Timer timer;
   void toggleIsLoading(bool value) {
     if (mounted)
       setState(() {
@@ -266,7 +268,6 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
               style: TextButton.styleFrom(),
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pop(context);
                 onCancelBooking();
               },
               child: CustomText(
@@ -330,8 +331,9 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       dynamic res = await Providers.cancelBooking(
         bookingId: store.state.userState.selectedMyTrip['booking_id'],
       );
+      print(res.data);
       if (res.data['code'] == "SUCCESS") {
-        await LifecycleManager.of(context).getBookingData();
+        // await LifecycleManager.of(context).getBookingData();
         await getBookingByGroupId();
         Navigator.pushNamedAndRemoveUntil(
             context, '/Home', (Route<dynamic> route) => false);
@@ -343,8 +345,22 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
     }
   }
 
-  Future<void> onCheckIn() async {
-    print(store.state.userState.selectedMyTrip['booking_id']);
+  Future<void> getUserDetail() async {
+    try {
+      dynamic res = await Providers.getUserDetail();
+      // print(res);
+      print(res.data);
+      if (res.data['code'].toString() == 'SUCCESS') {
+        name = res.data['data']['name'];
+      }
+    } catch (e) {
+      print("user detail");
+      print(e);
+    }
+  }
+
+  Future<void> onCheckIn(bookingCode) async {
+    String dateNow = DateFormat('dd MMMM yyyy HH:mm').format(DateTime.now());
     try {
       dynamic res = await Providers.confirmAttendance(
         bookingId: store.state.userState.selectedMyTrip['booking_id'],
@@ -353,6 +369,11 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
       if (res.data['code'] == "SUCCESS") {
         print('berhasil check in');
         await getBookingRefresh();
+        Get.off(SuccessPayment(
+          title: 'Success Checkin',
+          message: 'Show your booking code & time to driver',
+          code: 'Booking Code : ${bookingCode} \n ${dateNow} \n ${name}',
+        ));
         print('berhasil refresh');
       }
     } catch (e) {
@@ -448,37 +469,24 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (_) {
-      if (mounted) {
-        getCountdown();
-        getStatusText();
-      }
-    });
-    Timer.periodic(Duration(seconds: 2), (_) {
-      if (mounted) {
-        getCurrentLocation();
-        distance =
-            Geolocator.distanceBetween(latPickUp, longPickUp, latNow, longNow);
-        // print(
-        //     Geolocator.distanceBetween(latPickUp, longPickUp, latNow, longNow));
-        // print(distance);
-      }
-    });
-
-    // Timer.periodic(Duration(seconds: 5), (_) {
-    //   // getBookingByGroupId();
-    //   LifecycleManager.of(context).getBookingData();
-    // });
-
-    // Timer.periodic(Duration(seconds: 3), (_) {
-    //   getTripOrderId();
-    // });
+    if (mounted) {
+      timer = Timer.periodic(Duration(seconds: 2), (_) {
+        if (mounted) {
+          getCurrentLocation();
+          distance = Geolocator.distanceBetween(
+              latPickUp, longPickUp, latNow, longNow);
+          // print(
+          //     Geolocator.distanceBetween(latPickUp, longPickUp, latNow, longNow));
+          // print(distance);
+        }
+      });
+    }
 
     scrollController.addListener(() => scrollListener());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
       getCountdown();
-
+      getUserDetail();
       getBookingByGroupId();
       // getTripOrderId();
       getStatusText();
@@ -489,5 +497,11 @@ abstract class DetailTripViewModel extends State<DetailTrip> {
         getBookingFromNotif();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

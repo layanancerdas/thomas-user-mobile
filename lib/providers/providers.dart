@@ -232,6 +232,22 @@ class Providers {
             }));
   }
 
+  static Future getUserSubsByPickupId({routeId, pickupPointId}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jwtToken = prefs.getString("jwtToken");
+    return Dio().get('$BASE_API/ajk/user/subscription',
+        queryParameters: {
+          'route_id': routeId,
+          'pickup_point_id': pickupPointId,
+        },
+        options: Options(
+            headers: {'authorization': basicAuth, 'token': jwtToken},
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 1000;
+            }));
+  }
+
   static Future bookPackage({String tripGroupId, String pickupPointId}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwtToken = prefs.getString("jwtToken");
@@ -265,8 +281,8 @@ class Providers {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwtToken = prefs.getString("jwtToken");
 
-    return Dio().put('$BASE_API/ajk/booking/cancel',
-        data: {'booking_id': bookingId, 'pay_amount': 0},
+    return Dio().put('$BASE_API/ajk/booking',
+        data: {'booking_id': bookingId, 'status': "CANCELED"},
         options: Options(
             headers: {'authorization': basicAuth, 'token': jwtToken},
             followRedirects: false,
@@ -297,6 +313,24 @@ class Providers {
     return Dio().get('$BASE_API/ajk/booking',
         queryParameters: {
           "status": status,
+          "limit": limit,
+          "offset": offset,
+        },
+        options: Options(
+            headers: {'authorization': basicAuth, 'token': jwtToken},
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 1000;
+            }));
+  }
+
+  static Future getPendingBooking({int limit, int offset}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jwtToken = prefs.getString("jwtToken");
+
+    return Dio().get('$BASE_API/ajk/easy_ride',
+        queryParameters: {
+          "status": 'PENDING',
           "limit": limit,
           "offset": offset,
         },
@@ -516,6 +550,7 @@ class Providers {
     return Dio().get('$BASE_API/notification/notifications',
         queryParameters: {
           'user_id': userData['user_id'],
+          'actor': 'USER',
           "limit": limit ?? 10,
           "offset": offset ?? 0,
         },

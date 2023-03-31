@@ -10,7 +10,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:loading/indicator/ball_spin_fade_loader_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:redux/redux.dart';
 import 'package:tomas/helpers/colors_custom.dart';
+import 'package:tomas/redux/app_state.dart';
 import 'package:tomas/screens/home/home.dart';
 import 'package:tomas/screens/payment_webview/controller/payment_webview_controller.dart';
 import 'package:tomas/screens/success_payment/screen/success_payment.dart';
@@ -18,8 +20,15 @@ import 'package:tomas/widgets/custom_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PaymentWebView extends StatefulWidget {
-  final String url, orderId, page;
-  const PaymentWebView({Key key, this.url, this.orderId, this.page})
+  final String url, orderId, page, idEasyRide;
+  final Map dataEasyRide;
+  const PaymentWebView(
+      {Key key,
+      this.url,
+      this.orderId,
+      this.page,
+      this.idEasyRide,
+      this.dataEasyRide})
       : super(key: key);
 
   @override
@@ -61,14 +70,15 @@ class _PaymentWebViewState extends State<PaymentWebView> {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (controller.status == "00") {
         widget.page == 'easyride'
-            ? Get.off(SuccessPayment(
-                title: 'Success Payment',
-                message: 'Your payment is successful',
-              ))
+            ? controller.updateStatusEasyRide(widget.idEasyRide, 'SUCCESS',
+                widget.dataEasyRide['departure_time'])
             : controller.updateStatusPay(widget.orderId, 'SUCCESS');
         timer.cancel();
       } else if (controller.status == "02") {
-        controller.updateStatusPay(widget.orderId, 'FAILED');
+        widget.page == 'easyride'
+            ? controller.updateStatusEasyRide(widget.idEasyRide, 'FAILED',
+                widget.dataEasyRide['departure_time'])
+            : controller.updateStatusPay(widget.orderId, 'FAILED');
         timer.cancel();
       }
 

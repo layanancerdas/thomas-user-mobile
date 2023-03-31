@@ -18,10 +18,36 @@ import 'package:tomas/widgets/custom_text.dart';
 import 'package:tomas/widgets/no_result_search_ajk.dart';
 import './round_trip_view_model.dart';
 import 'package:tomas/localization/app_translations.dart';
+import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 
 class RoundTripView extends RoundTripViewModel {
   @override
   DateTime nowYear = DateTime.now().add(Duration(days: 365));
+  Future<void> _selectMonthDate(BuildContext context) async {
+    final DateTime picked = await showMonthPicker(
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: ColorsCustom.primary,
+              colorScheme: ColorScheme.light(primary: ColorsCustom.primary),
+              // buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child,
+          );
+        },
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: nowYear);
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+      getAllTripById(selectedDate, selectedDate.add(Duration(days: 365)));
+      getActiveSubs();
+    }
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         builder: (BuildContext context, Widget child) {
@@ -43,6 +69,7 @@ class RoundTripView extends RoundTripViewModel {
         selectedDate = picked;
       });
       getAllTripById(selectedDate, selectedDate.add(Duration(days: 365)));
+      getActiveSubs();
     }
   }
 
@@ -156,7 +183,7 @@ class RoundTripView extends RoundTripViewModel {
                 margin: EdgeInsets.symmetric(horizontal: 12),
                 child: InkWell(
                   onTap: () {
-                    _selectDate(context);
+                    _selectMonthDate(context);
                   },
                   child: Ink(
                     decoration: BoxDecoration(
@@ -192,7 +219,7 @@ class RoundTripView extends RoundTripViewModel {
                             CustomText(
                               // "",
                               // "${state.resolveDate['start_date']}",
-                              DateFormat('dd MMMM yyyy').format(selectedDate),
+                              DateFormat('MMMM yyyy').format(selectedDate),
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
@@ -224,20 +251,37 @@ class RoundTripView extends RoundTripViewModel {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomText(
-                      subscribe
-                          ? 'Subscribe is active'
-                          : 'Subscribe is not active',
-                      color: subscribe
-                          ? ColorsCustom.newGreen
-                          : ColorsCustom.primary,
-                      fontSize: 14,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          subscribe
+                              ? 'Subscribe is active'
+                              : 'Subscribe is not active',
+                          color: subscribe
+                              ? ColorsCustom.newGreen
+                              : ColorsCustom.primary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        subscribe
+                            ? CustomText(
+                                '${DateFormat('dd MMMM yyyy').format(startDate)} - ${DateFormat('dd MMMM yyyy').format(endDate)}',
+                                color: subscribe
+                                    ? ColorsCustom.newGreen
+                                    : ColorsCustom.primary,
+                                fontSize: 12,
+                              )
+                            : SizedBox()
+                      ],
                     ),
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          subscribe = !subscribe;
-                        });
+                      onTap: () async {
+                        if (!store
+                            .state.userState.userDetail['permitted_ajk']) {
+                          permitCheckAndRequest();
+                        }
+
                         Get.to(SubscribeTrip(
                             idRoute: state.selectedRoute['route_id'],
                             pickupPointId:
@@ -416,7 +460,9 @@ class RoundTripView extends RoundTripViewModel {
                                               ['departure_time']))
                                   ? SizedBox()
                                   : CardEasyRide(
-                                      subscribe: true,
+                                      tripId: trips[i]['trips'][index]
+                                          ['trip_id'],
+                                      subscribe: subscribe,
                                       color: 'blue',
                                       locationA: trips[i]['trips'][index]
                                                   ['type'] ==
@@ -451,6 +497,9 @@ class RoundTripView extends RoundTripViewModel {
 
                                       week:
                                           "${Utils.formatterDate.format(DateTime.fromMillisecondsSinceEpoch(trips[i]['trips'][index]['departure_time']))}",
+                                      seatAvailable: trips[i]['trips'][index]
+                                              ['seat_available']
+                                          .toString(),
 
                                       data: trips[i],
                                       dataEasyRide: trips[i]['trips'][index],

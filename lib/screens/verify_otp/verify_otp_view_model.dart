@@ -175,6 +175,7 @@ abstract class VerifyOtpViewModel extends State<VerifyOtp> {
     if (mounted && timer != null) {
       timer.cancel();
     }
+    timer.cancel();
     super.dispose();
   }
 }

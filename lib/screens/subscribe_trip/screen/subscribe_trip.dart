@@ -34,7 +34,6 @@ class _SubscribeTripState extends State<SubscribeTrip> {
   @override
   void initState() {
     // TODO: implement initState
-    print(widget.pickupPointId);
     controller.getSubscribeByRoutesId(widget.idRoute, widget.pickupPointId);
     super.initState();
   }

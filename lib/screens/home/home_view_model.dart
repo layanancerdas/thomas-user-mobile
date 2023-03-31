@@ -23,6 +23,8 @@ import './home.dart';
 abstract class HomeViewModel extends State<Home> {
   Store<AppState> store;
   StreamSubscription<Position> positionStream;
+  Timer timer;
+  Timer timer2;
   List<Map> children = [
     {
       "name": "Home",
@@ -135,9 +137,13 @@ abstract class HomeViewModel extends State<Home> {
       if (permission == LocationPermission.deniedForever) {
         await showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             builder: (BuildContext context) {
-              return ModalNoLocation(
-                mode: 'permission',
+              return FractionallySizedBox(
+                heightFactor: 0.6,
+                child: ModalNoLocation(
+                  mode: 'permission',
+                ),
               );
             });
         //   return Future.error(
@@ -151,9 +157,13 @@ abstract class HomeViewModel extends State<Home> {
         //   }
         await showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             builder: (BuildContext context) {
-              return ModalNoLocation(
-                mode: 'permission',
+              return FractionallySizedBox(
+                heightFactor: 0.6,
+                child: ModalNoLocation(
+                  mode: 'permission',
+                ),
               );
             });
       }
@@ -234,6 +244,7 @@ abstract class HomeViewModel extends State<Home> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       dynamic res = await Providers.getNotifByUserId(
           limit: store.state.generalState.limitNotif, offset: 0);
+      print(res.data);
       if (!store.state.generalState.disableNavbar) {
         List _temp = res.data['data']
             .where((e) => e['is_active'].toString() == 'true')
@@ -332,10 +343,8 @@ abstract class HomeViewModel extends State<Home> {
 
   Future<void> getBookingData() async {
     try {
-      dynamic resPending = await Providers.getAllBooking(
-          status: "PENDING",
-          limit: store.state.userState.limitPendingTrip,
-          offset: 0);
+      dynamic resPending = await Providers.getPendingBooking(
+          limit: store.state.userState.limitPendingTrip, offset: 0);
       dynamic resActive = await Providers.getAllBooking(
           status: "ACTIVE",
           limit: store.state.userState.limitActiveTrip,
@@ -350,7 +359,7 @@ abstract class HomeViewModel extends State<Home> {
           offset: 0);
 
       store.dispatch(SetMyTrip(
-        pendingTrip: resPending.data['data'],
+        pendingTrip: resPending.data['data']['data'],
         activeTrip: resActive.data['data'],
         completedTrip: resCompleted.data['data'],
         canceledTrip: resCanceled.data['data'],
@@ -403,12 +412,14 @@ abstract class HomeViewModel extends State<Home> {
     currentIndex = widget.index;
     listenForPermissionStatus();
     initData();
-    Timer.periodic(Duration(seconds: 1), (_) {
-      checkNotif();
-    });
-    Timer.periodic(Duration(seconds: 10), (_) {
-      getCurrentLocation();
-    });
+    if (mounted) {
+      timer = new Timer.periodic(Duration(seconds: 1), (_) {
+        checkNotif();
+      });
+      timer2 = Timer.periodic(Duration(seconds: 10), (_) {
+        getCurrentLocation();
+      });
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(milliseconds: 200), () => widget.tab = null);
@@ -422,6 +433,8 @@ abstract class HomeViewModel extends State<Home> {
 
   @override
   void dispose() {
+    timer.cancel();
+    timer2.cancel();
     super.dispose();
     if (positionStream != null) {
       positionStream.cancel();

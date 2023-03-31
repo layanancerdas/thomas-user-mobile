@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 import 'package:tomas/helpers/colors_custom.dart';
 import 'package:tomas/screens/home/home.dart';
 import 'package:tomas/screens/my_trips/my_trips.dart';
+import 'package:tomas/screens/round_trip/round_trip.dart';
 import 'package:tomas/widgets/custom_text.dart';
 
 class SuccessPayment extends StatelessWidget {
-  final String title, message, code;
-  const SuccessPayment({Key key, this.title, this.message, this.code})
+  final String title, message, code, page;
+  const SuccessPayment(
+      {Key key, this.title, this.message, this.code, this.page})
       : super(key: key);
 
   @override
@@ -69,6 +71,7 @@ class SuccessPayment extends StatelessWidget {
                               code,
                               color: ColorsCustom.black,
                               fontWeight: FontWeight.w600,
+                              textAlign: TextAlign.center,
                               fontSize: 16,
                             ),
 
@@ -82,7 +85,9 @@ class SuccessPayment extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: InkWell(
-                  onTap: () => Get.off(Home()),
+                  onTap: () => page == 'subscribe'
+                      ? Get.off(RoundTrip())
+                      : Get.off(Home()),
                   child: Container(
                     padding: EdgeInsets.all(12),
                     width: double.infinity,

@@ -106,7 +106,8 @@ class _ListSubcriptionState extends State<ListSubcription> {
                         dataPickup = e;
                       }
                     });
-                    return dataList[i]['subs'][0]['pay']['status'] != 'FAILED'
+                    return dataList[i]['subs'][0]['pay'][0]['status'] !=
+                            'FAILED'
                         ? CardList(
                             startDate: dataList[i]['start_date'],
                             endDate: dataList[i]['end_date'],
@@ -115,11 +116,11 @@ class _ListSubcriptionState extends State<ListSubcription> {
                                 ' Month',
                             name: dataList[i]['subs'][0]['name'],
                             statusPayment: dataList[i]['subs'] != null
-                                ? dataList[i]['subs'][0]['pay']['status']
+                                ? dataList[i]['subs'][0]['pay'][0]['status']
                                 : '-',
-                            urlPayment: dataList[i]['subs'][0]['pay']
+                            urlPayment: dataList[i]['subs'][0]['pay'][0]
                                 ['payment_url'],
-                            orderIdPayment: dataList[i]['subs'][0]['pay']
+                            orderIdPayment: dataList[i]['subs'][0]['pay'][0]
                                 ['merchand_order_id'],
                             pointA: dataPickup['name'] == null
                                 ? ''

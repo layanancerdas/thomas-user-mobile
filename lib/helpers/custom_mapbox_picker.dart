@@ -109,7 +109,7 @@ class _CustomMapBoxLocationPickerState extends State<CustomMapBoxLocationPicker>
   double _lat;
   double _lng;
   MapController _mapController;
-
+  Timer timer;
   List<Marker> _markers;
 
   bool isLoading = true;
@@ -117,6 +117,7 @@ class _CustomMapBoxLocationPickerState extends State<CustomMapBoxLocationPicker>
 
   @override
   void dispose() {
+    timer.cancel();
     super.dispose();
   }
 
@@ -142,8 +143,10 @@ class _CustomMapBoxLocationPickerState extends State<CustomMapBoxLocationPicker>
     //             : widget.customMarkerIcon),
     //   )
     // ];
-
-    Timer.periodic(Duration(milliseconds: 200), (_) => getShowCurrent());
+    if (mounted) {
+      timer = new Timer.periodic(
+          Duration(milliseconds: 200), (_) => getShowCurrent());
+    }
 
     super.initState();
   }

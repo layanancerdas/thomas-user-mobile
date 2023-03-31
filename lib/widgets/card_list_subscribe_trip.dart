@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -41,19 +42,66 @@ class CardListSubscribeTrip extends StatefulWidget {
 class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
   String responseStatus = '';
   bool isLoading = true;
+  bool nextMonth = false;
   DateTime dateNow = DateTime.now();
 
   DateTime dateSubscribe, startDate, endDate;
+  void warnDialog(errorText) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: CustomText(
+            'Attention',
+            color: ColorsCustom.black,
+          ),
+          content: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
+                errorText,
+                color: ColorsCustom.generalText,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(),
+              onPressed: () {
+                Get.back();
+                Get.to(PaymentConfirmation());
+              },
+              child: CustomText(
+                'Oke',
+                color: ColorsCustom.blueSystem,
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: CustomText(
+                'Cancel',
+                color: ColorsCustom.blueSystem,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-  // void toggleIsLoading(bool value) {
-  //   setState(() {
-  //     isLoading = value;
-  //   });
-  // }
   void setDateSubscribe() {
-    DateTime dateNowEnd = DateTime(dateNow.year, dateNow.month + 1, -2);
+    DateTime dateNowEnd = DateTime(dateNow.year, dateNow.month + 1, -1);
     if (dateNow.isAfter(dateNowEnd)) {
-      dateSubscribe = DateTime(dateNow.year, dateNow.month + 2, 1);
+      dateSubscribe = DateTime(dateNow.year, dateNow.month + 1, 1);
+      // setState(() {
+      //   nextMonth = true;
+      // });
     } else {
       dateSubscribe = DateTime(dateNow.year, dateNow.month + 1, 1);
     }
@@ -119,15 +167,7 @@ class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
             BoxShadow(
                 blurRadius: 24, offset: Offset(0, 4), color: Colors.black12)
           ]),
-      child:
-          // TextButton(
-          //   style: TextButton.styleFrom(
-          //       shape: RoundedRectangleBorder(),
-          //       // highlightColor: ColorsCustom.black.withOpacity(0.01),
-          //       padding: EdgeInsets.all(0)),
-          //   onPressed: () => {Get.to(RoundTrip())},
-          //   child:
-          Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -330,7 +370,11 @@ class _CardListSubscribeTripState extends State<CardListSubscribeTrip> {
                         await setOrderName();
                         await setSubsId();
                         await setStartEndDate();
-                        Get.to(PaymentConfirmation());
+                        nextMonth
+                            ? warnDialog(
+                                'Anda akan subcribe mulai dari ${DateFormat('MMMM yyyy').format(DateTime(dateNow.year, dateNow.month + 1, 1))}')
+                            : warnDialog(
+                                'Anda akan subcribe mulai dari ${DateFormat('MMMM yyyy').format(DateTime(dateNow.year, dateNow.month + 1, 1))}');
                       },
                       child: Container(
                         decoration: BoxDecoration(

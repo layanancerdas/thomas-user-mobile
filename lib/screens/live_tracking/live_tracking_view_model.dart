@@ -135,10 +135,10 @@ abstract class LiveTrackingViewModel extends State<LiveTracking> {
   void initState() {
     super.initState();
     // initialize();
-    Timer.periodic(Duration(seconds: 5), (timer) {
-      // getUserLocation();
-      // if (mounted) getBookingByGroupId();
-    });
+    // Timer.periodic(Duration(seconds: 5), (timer) {
+    //   // getUserLocation();
+    //   // if (mounted) getBookingByGroupId();
+    // });
     onInitDB("no");
     listenDB();
 

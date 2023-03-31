@@ -22,7 +22,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class ShuttleDetailsView extends ShuttleDetailsViewModel {
   @override
-  CalendarFormat _calendarFormat = CalendarFormat.week;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   // var listDate = [DateTime.utc(2023, 3, 10), DateTime.utc(2023, 3, 04)];
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -220,13 +220,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                         headerStyle: HeaderStyle(
                             titleTextStyle: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w600),
-                            formatButtonTextStyle:
-                                TextStyle(color: Colors.white, fontSize: 14),
-                            formatButtonPadding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
-                            formatButtonDecoration: BoxDecoration(
-                                color: ColorsCustom.primary,
-                                borderRadius: BorderRadius.circular(20))),
+                            formatButtonVisible: false),
                         calendarStyle: CalendarStyle(
                             selectedDecoration: (BoxDecoration(
                                 color: ColorsCustom.primary,
@@ -239,9 +233,7 @@ class ShuttleDetailsView extends ShuttleDetailsViewModel {
                         lastDay: includedDate[includedDate.length - 1],
                         focusedDay: includedDate[0],
                         calendarFormat: _calendarFormat,
-                        onFormatChanged: (format) => setState(() {
-                          _calendarFormat = format;
-                        }),
+
                         selectedDayPredicate: (day) =>
                             includedDate.contains(day),
                         // shouldFillViewport: true,

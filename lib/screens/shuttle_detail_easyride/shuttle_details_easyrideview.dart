@@ -27,6 +27,7 @@ class ShuttleDetailsEasyRideView extends ShuttleDetailsViewEasyRideModel {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(

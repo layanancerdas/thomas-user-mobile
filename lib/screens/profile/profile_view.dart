@@ -93,40 +93,40 @@ class ProfileView extends ProfileViewModel {
                                         fontSize: 16,
                                       ),
                                       SizedBox(height: 8),
-                                      GestureDetector(
-                                        onTap: () => onDetailBalance(),
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/images/money.svg',
-                                              width: 24,
-                                            ),
-                                            SizedBox(width: 8),
-                                            RichText(
-                                              text: new TextSpan(
-                                                text: 'Balance: ',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w300,
-                                                    fontSize: 14,
-                                                    color: ColorsCustom.black,
-                                                    fontFamily: 'Poppins'),
-                                                children: <TextSpan>[
-                                                  new TextSpan(
-                                                      text: 'Rp' +
-                                                          Utils.currencyFormat
-                                                              .format(state
-                                                                  .transactionState
-                                                                  .balances),
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      )),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
+                                      // GestureDetector(
+                                      //   onTap: () => onDetailBalance(),
+                                      //   child: Row(
+                                      //     children: [
+                                      //       SvgPicture.asset(
+                                      //         'assets/images/money.svg',
+                                      //         width: 24,
+                                      //       ),
+                                      //       SizedBox(width: 8),
+                                      //       RichText(
+                                      //         text: new TextSpan(
+                                      //           text: 'Balance: ',
+                                      //           style: TextStyle(
+                                      //               fontWeight: FontWeight.w300,
+                                      //               fontSize: 14,
+                                      //               color: ColorsCustom.black,
+                                      //               fontFamily: 'Poppins'),
+                                      //           children: <TextSpan>[
+                                      //             new TextSpan(
+                                      //                 text: 'Rp' +
+                                      //                     Utils.currencyFormat
+                                      //                         .format(state
+                                      //                             .transactionState
+                                      //                             .balances),
+                                      //                 style: TextStyle(
+                                      //                   fontWeight:
+                                      //                       FontWeight.w400,
+                                      //                 )),
+                                      //           ],
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // )
                                     ],
                                   )),
                                   SizedBox(

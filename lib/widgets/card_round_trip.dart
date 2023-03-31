@@ -67,7 +67,7 @@ class CardRoundtrip extends StatelessWidget {
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
         ),
-        onPressed: () => onBook(data),
+        onPressed: () => subscribe ? onBook(data) : {},
         child: Column(
           children: [
             Padding(
@@ -467,7 +467,7 @@ class CardRoundtrip extends StatelessWidget {
                           //materialTapTargetSize:
                           //materialTapTargetSize.shrinkWrap,
 
-                          onPressed: () => onBook(data),
+                          onPressed: () => subscribe ? onBook(data) : {},
 
                           child: Center(
                             child: CustomText(

@@ -42,8 +42,8 @@ class _CardPriceDetailsState extends State<CardPriceDetails> {
                     child: StoreConnector<AppState, GeneralState>(
                         converter: (store) => store.state.generalState,
                         builder: (context, stateGeneral) {
-                          print(stateUser.selectedMyTrip['pickup_point']
-                              ['price']);
+                          // print(stateUser.selectedMyTrip['pickup_point']
+                          //     ['price']);
                           return Column(
                             children: [
                               Row(

@@ -35,10 +35,6 @@ class DetailTripView extends DetailTripViewModel {
     return StoreConnector<AppState, UserState>(
         converter: (store) => store.state.userState,
         builder: (context, state) {
-          // print(distance);
-          // print(state.selectedMyTrip['status']);
-          // print(state)
-          // print(state.selectedMyTrip['attended']);
           return Scaffold(
             appBar: AppBar(
               leading: TextButton(
@@ -75,105 +71,6 @@ class DetailTripView extends DetailTripViewModel {
                             padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
                             controller: scrollController,
                             children: [
-                              // CardActiveCheckIn(
-                              //   status: status,
-                              //   color: getColorTypeText(),
-                              //   dateDeparture: Utils.formatterDate.format(
-                              //       DateTime.fromMillisecondsSinceEpoch(
-                              //           state.selectedMyTrip['trip']
-                              //               ['departure_time'])),
-                              //   difference:
-                              //       "${state.selectedMyTrip['pickup_point']['time_to_dest'] ~/ 60}h ${state.selectedMyTrip['pickup_point']['time_to_dest'] % 60}m",
-                              //   addressArrival: state.selectedMyTrip['trip']
-                              //           ['trip_group']['route']
-                              //       ['destination_address'],
-                              //   addressDeparture:
-                              //       state.selectedMyTrip['pickup_point']
-                              //               ['address'] ??
-                              //           "-",
-                              //   placeArrival: state.selectedMyTrip['trip']
-                              //       ['trip_group']['route']['destination_name'],
-                              //   placeDeparture: state
-                              //       .selectedMyTrip['pickup_point']['name'],
-                              //   timeArrival: Utils.formatterTime.format(
-                              //       DateTime.parse(state.selectedMyTrip['trip']
-                              //                   ['trip_group']['start_date'] +
-                              //               " " +
-                              //               state.selectedMyTrip['trip']
-                              //                   ['trip_group']['return_time'])
-                              //           .add(Duration(
-                              //               minutes: state
-                              //                       .selectedMyTrip['pickup_point']
-                              //                   ['time_to_dest']))),
-                              //   timeDeparture: Utils.formatterTime.format(
-                              //       DateTime.parse(state.selectedMyTrip['trip']
-                              //               ['trip_group']['start_date'] +
-                              //           " " +
-                              //           state.selectedMyTrip['trip']
-                              //               ['trip_group']['return_time'])),
-                              //   statusPayment: state.selectedMyTrip['status'],
-                              //   tapMapScreenDeparture: () {
-                              //     Get.to(
-                              //       MapFullscreen(
-                              //         coordinates: LatLng(
-                              //           state.selectedMyTrip['pickup_point']
-                              //               ['latitude'],
-                              //           state.selectedMyTrip['pickup_point']
-                              //               ['longitude'],
-                              //         ),
-                              //         city:
-                              //             "${Utils.capitalizeFirstofEach(state.selectedMyTrip['pickup_point']['name'])}",
-                              //         address: "${Utils.capitalizeFirstofEach(
-                              //           state.selectedMyTrip['pickup_point']
-                              //                   ['address'] ??
-                              //               "-",
-                              //         )}",
-                              //       ),
-                              //     );
-                              //   },
-                              //   tapMapScreenArrival: () {
-                              //     Get.to(MapFullscreen(
-                              //       coordinates: LatLng(
-                              //           state.selectedMyTrip['trip']
-                              //                   ['trip_group']['route']
-                              //               ['destination_latitude'],
-                              //           state.selectedMyTrip['trip']
-                              //                   ['trip_group']['route']
-                              //               ['destination_longitude']),
-                              //       city:
-                              //           "${Utils.capitalizeFirstofEach(state.selectedMyTrip['trip']['trip_group']['route']['destination_name'])}",
-                              //       address: "${Utils.capitalizeFirstofEach(
-                              //         state.selectedMyTrip['trip']['trip_group']
-                              //                     ['route']
-                              //                 ['destination_address'] ??
-                              //             "-",
-                              //       )}",
-                              //     ));
-                              //   },
-                              //   details: state.selectedMyTrip['details'],
-                              // ),
-                              // // Row(
-                              // //   mainAxisAlignment:
-                              // //       MainAxisAlignment.spaceBetween,
-                              // //   children: [
-                              // //     CustomText(
-                              // //       "Your Position :",
-                              // //       fontSize: 14,
-                              // //       fontWeight: FontWeight.w300,
-                              // //       height: 2.1,
-                              // //       color: ColorsCustom.black,
-                              // //     ),
-                              // //     CustomText(
-                              // //       distance.toStringAsFixed(0) +
-                              // //           ' Meter From Pickup Point',
-                              // //       fontSize: 14,
-                              // //       fontWeight: FontWeight.w600,
-                              // //       height: 2.1,
-                              // //       color: ColorsCustom.primary,
-                              // //     ),
-                              // //   ],
-                              // // ),
-                              // SizedBox(height: 2),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -455,24 +352,24 @@ class DetailTripView extends DetailTripViewModel {
                                       ],
                                     )
                                   : SizedBox(),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 8, top: 4),
-                                child: CustomText(
-                                  "${AppTranslations.of(context).text("payment_info")}",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  height: 2.1,
-                                  color: ColorsCustom.black,
-                                ),
-                              ),
-                              PaymentInfo(
-                                  hideReceipt: state.selectedMyTrip['status'] ==
-                                          "PENDING" ||
-                                      (state.selectedMyTrip['status'] !=
-                                              "CANCELED" &&
-                                          state.selectedMyTrip['invoice'] !=
-                                              null)),
+                              // Padding(
+                              //   padding:
+                              //       const EdgeInsets.only(bottom: 8, top: 4),
+                              //   child: CustomText(
+                              //     "${AppTranslations.of(context).text("payment_info")}",
+                              //     fontSize: 14,
+                              //     fontWeight: FontWeight.w600,
+                              //     height: 2.1,
+                              //     color: ColorsCustom.black,
+                              //   ),
+                              // ),
+                              // PaymentInfo(
+                              //     hideReceipt: state.selectedMyTrip['status'] ==
+                              //             "PENDING" ||
+                              //         (state.selectedMyTrip['status'] !=
+                              //                 "CANCELED" &&
+                              //             state.selectedMyTrip['invoice'] !=
+                              //                 null)),
                               Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   decoration: BoxDecoration(
@@ -569,35 +466,41 @@ class DetailTripView extends DetailTripViewModel {
                                         )
                                       : InkWell(
                                           onTap: () {
-                                            onCheckIn();
-                                            // Get.off(SuccessPayment(
-                                            //   title: 'Success Checkin',
-                                            //   message:
-                                            //       'Show your booking code to driver',
-                                            //   code: 'Booking Code : 0DJA123',
-                                            // ));
+                                            0 < distance &&
+                                                    DateTime.now().isAfter(state
+                                                                    .selectedMyTrip['trip']
+                                                                ['type'] ==
+                                                            'RETURN'
+                                                        ? DateTime.fromMillisecondsSinceEpoch(state.selectedMyTrip['trip']['departure_time'])
+                                                            .subtract(Duration(
+                                                                minutes: 30))
+                                                        : DateTime.fromMillisecondsSinceEpoch(
+                                                                state.selectedMyTrip['trip']
+                                                                    ['departure_time'])
+                                                            .subtract(Duration(minutes: 30))) &&
+                                                    distance < 300
+                                                ? onCheckIn(state.selectedMyTrip['booking_code'])
+                                                : {};
                                           },
                                           child: Ink(
                                             padding: EdgeInsets.all(18),
                                             decoration: BoxDecoration(
-                                                color: 0 < distance
-                                                    // &&
-                                                    //         DateTime.now().isAfter(state.selectedMyTrip['trip']
-                                                    //                     [
-                                                    //                     'type'] ==
-                                                    //                 'RETURN'
-                                                    //             ? DateTime.fromMillisecondsSinceEpoch(state.selectedMyTrip['trip']['departure_time']).subtract(Duration(
-                                                    //                 minutes:
-                                                    //                     30))
-                                                    //             : DateTime.fromMillisecondsSinceEpoch(state.selectedMyTrip['trip']['departure_time'])
-                                                    //                 .subtract(
-                                                    //                     Duration(minutes: 30)))
-                                                    //  &&
-                                                    //         distance < 700
+                                                color: 0 < distance &&
+                                                        DateTime.now().isAfter(state.selectedMyTrip['trip']
+                                                                    ['type'] ==
+                                                                'RETURN'
+                                                            ? DateTime.fromMillisecondsSinceEpoch(state.selectedMyTrip['trip']['departure_time'])
+                                                                .subtract(
+                                                                    Duration(
+                                                                        minutes:
+                                                                            30))
+                                                            : DateTime.fromMillisecondsSinceEpoch(
+                                                                    state.selectedMyTrip['trip']['departure_time'])
+                                                                .subtract(Duration(minutes: 30))) &&
+                                                        distance < 300
                                                     ? ColorsCustom.newGreen
                                                     : Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                                borderRadius: BorderRadius.circular(10)),
                                             width: double.infinity,
                                             child: CustomText(
                                               "Check In",
@@ -675,30 +578,6 @@ class DetailTripView extends DetailTripViewModel {
                                                           ),
                                                         ),
                                                       ),
-                                                // OutlinedButton(
-                                                //   style:
-                                                //       OutlinedButton.styleFrom(
-                                                //     padding:
-                                                //         EdgeInsets.symmetric(
-                                                //             vertical: 14),
-                                                //     shape:
-                                                //         RoundedRectangleBorder(
-                                                //             borderRadius:
-                                                //                 BorderRadius
-                                                //                     .circular(
-                                                //                         16)),
-                                                //     // borderSide: BorderSide(
-                                                //     //     color: ColorsCustom.primary)
-                                                //   ),
-                                                //   onPressed: () =>
-                                                //       onConfirmation(),
-                                                //   child: CustomText(
-                                                //     "${AppTranslations.of(context).text("canceled_this_booking")}",
-                                                //     color: ColorsCustom.primary,
-                                                //     fontWeight: FontWeight.w600,
-                                                //     fontSize: 16,
-                                                //   ),
-                                                // ),
                                               ],
                                             )
                             ],
@@ -706,109 +585,6 @@ class DetailTripView extends DetailTripViewModel {
                         ],
                       )),
                 ),
-                // state.selectedMyTrip['status'] == "PENDING" ||
-                //         (state.selectedMyTrip['status'] == "ACTIVE" &&
-                //             state.selectedMyTrip['details'] != null &&
-                //             state.selectedMyTrip['details']['status'] ==
-                //                 'ONGOING')
-                //     ? Positioned(
-                //         bottom: 0,
-                //         right: 0,
-                //         left: 0,
-                //         child: AnimatedContainer(
-                //           duration: Duration(milliseconds: 100),
-                //           height: onBottom &&
-                //                   state.selectedMyTrip['status'] == "PENDING"
-                //               ? 175
-                //               : 110,
-                //           padding: EdgeInsets.fromLTRB(0, 16, 0, 32),
-                //           decoration: BoxDecoration(
-                //               color: Colors.white,
-                //               borderRadius: BorderRadius.only(
-                //                 topLeft: Radius.circular(16),
-                //                 topRight: Radius.circular(16),
-                //               ),
-                //               boxShadow: onBottom &&
-                //                       state.selectedMyTrip['status'] ==
-                //                           "PENDING"
-                //                   ? []
-                //                   : [
-                //                       BoxShadow(
-                //                           offset: Offset(4, 0),
-                //                           blurRadius: 12,
-                //                           spreadRadius: 0,
-                //                           color: Colors.black.withOpacity(0.15))
-                //                     ]),
-                //           child: Column(
-                //             children: [
-                //               onBottom &&
-                //                       state.selectedMyTrip['status'] ==
-                //                           "PENDING"
-                //                   ? state.selectedMyTrip['status'] ==
-                //                               "COMPLETED" ||
-                //                           state.selectedMyTrip['status'] ==
-                //                               "CANCELED" ||
-                //                           state.selectedMyTrip['status'] ==
-                //                               "MISSED"
-                //                       ? SizedBox()
-                //                       : Container(
-                //                           width: double.infinity,
-                //                           margin: EdgeInsets.only(top: 8),
-                //                           padding: EdgeInsets.symmetric(
-                //                               horizontal: 16),
-                //                           child: OutlinedButton(
-                //                             style: OutlinedButton.styleFrom(
-                //                               padding: EdgeInsets.symmetric(
-                //                                   vertical: 14),
-                //                               shape: RoundedRectangleBorder(
-                //                                   borderRadius:
-                //                                       BorderRadius.circular(
-                //                                           16)),
-                //                               // borderSide: BorderSide(
-                //                               //     color: ColorsCustom.primary),
-                //                             ),
-                //                             onPressed: () => onConfirmation(),
-                //                             child: CustomText(
-                //                               "${AppTranslations.of(context).text("canceled_this_booking")}",
-                //                               color: ColorsCustom.primary,
-                //                               fontWeight: FontWeight.w600,
-                //                               fontSize: 16,
-                //                             ),
-                //                           ),
-                //                         )
-                //                   : SizedBox(),
-                //               onBottom &&
-                //                       state.selectedMyTrip['status'] ==
-                //                           "PENDING"
-                //                   ? state.selectedMyTrip['status'] ==
-                //                               "COMPLETED" ||
-                //                           state.selectedMyTrip['status'] ==
-                //                               "CANCELED" ||
-                //                           state.selectedMyTrip['status'] ==
-                //                               "MISSED"
-                //                       ? SizedBox(height: 5)
-                //                       : SizedBox()
-                //                   : SizedBox(),
-                //               CustomButton(
-                //                 text: state.selectedMyTrip['status'] ==
-                //                         "PENDING"
-                //                     ? "${AppTranslations.of(context).text("pay")}"
-                //                     : "${AppTranslations.of(context).text("live_tracking")}",
-                //                 textColor: Colors.white,
-                //                 bgColor: ColorsCustom.primary,
-                //                 fontWeight: FontWeight.w600,
-                //                 fontSize: 16,
-                //                 padding: EdgeInsets.symmetric(vertical: 14),
-                //                 onPressed: () =>
-                //                     state.selectedMyTrip['status'] == "PENDING"
-                //                         ? onPaymentInstructionsClick()
-                //                         : Navigator.pushNamed(
-                //                             context, '/LiveTracking'),
-                //               ),
-                //             ],
-                //           ),
-                //         ))
-                //     : SizedBox(),
                 StoreConnector<AppState, GeneralState>(
                     converter: (store) => store.state.generalState,
                     builder: (context, stateGeneral) {
@@ -829,25 +605,6 @@ class DetailTripView extends DetailTripViewModel {
                             )
                           : SizedBox();
                     }),
-                //button check in
-                // Positioned(
-                //     bottom: 0,
-                //     right: 0,
-                //     child: Container(
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(20),
-                // color: 0 < distance && distance < 700
-                //     ? ColorsCustom.primary
-                //     : Colors.grey,
-                //         ),
-                //         alignment: Alignment.center,
-                //         margin: EdgeInsets.all(20),
-                //         padding: EdgeInsets.all(25),
-                //         child: Text(
-                //           'Check In',
-                //           style: TextStyle(color: Colors.white),
-                //         ))
-                //     )
               ],
             ),
           );

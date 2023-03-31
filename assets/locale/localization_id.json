@@ -56,7 +56,7 @@
  "balance_not_enough": "Saldo Anda tidak cukup. Silakan isi ulang dulu atau coba lagi dengan metode pembayaran lain.",
  "no_internet":"Ups! Tidak Ada Koneksi Internet",
  "please_check":"Silakan periksa koneksi Wi Fi atau data seluler Anda dan coba lagi.",
- "no_location":"Kami membutuhkan akses untuk meningkatkan layanan kami dan menemukan titik penjemputan terdekat di sekitar Anda.",
+ "no_location":"Kami membutuhkan akses lokasi terkini untuk mencari pickup point, lokasi terkini anda berasal dan fitur checkin geofancing. Untuk itu akses lokasi berjalan dilatar belakang hanya saat aplikasi digunakan. Harap nyalakan lokasi untuk mengakses aplikasi ini, Terima kasih.",
  "choose_payment":"Pilih Pembayaran",
  "no_notification":"Anda tidak memiliki notifikasi apa pun.\nSemua notifikasi Anda akan ditampilkan di sini.",
  "no_plan_trip":"Ups! Kami tidak dapat menemukan\ntransportasi yang tersedia. Harap periksa rute Anda.",

@@ -43,9 +43,43 @@ class PaymentWebVIewController extends GetxController {
       Get.off(SuccessPayment(
         title: 'Success Payment',
         message: 'Your payment is successful',
+        page: 'subscribe',
       ));
     } else if (response.data['code'] == 'SUCCESS' &&
         statusPayment == 'FAILED') {
+      toggleLoading(false);
+      Get.off(FailedPayment());
+    } else {
+      toggleLoading(false);
+    }
+  }
+
+  Future<void> updateStatusEasyRide(id, status, departureTime) async {
+    toggleLoading(true);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jwtToken = prefs.getString("jwtToken");
+    Dio dio = Dio();
+    var url = BASE_API + "/ajk/easy_ride";
+    var params = {"id": id, "status": status, 'departure_time': departureTime};
+    final response = await dio.put(
+      url,
+      data: jsonEncode(params),
+      options: Options(
+        headers: {'authorization': Providers.basicAuth, 'token': jwtToken},
+        followRedirects: false,
+        validateStatus: (status) {
+          return status <= 500;
+        },
+      ),
+    );
+    print(response.data);
+    if (response.data['code'] == 'SUCCESS' && status == 'SUCCESS') {
+      toggleLoading(false);
+      Get.off(SuccessPayment(
+        title: 'Success Payment',
+        message: 'Your payment is successful',
+      ));
+    } else if (response.data['code'] == 'SUCCESS' && status == 'FAILED') {
       toggleLoading(false);
       Get.off(FailedPayment());
     } else {

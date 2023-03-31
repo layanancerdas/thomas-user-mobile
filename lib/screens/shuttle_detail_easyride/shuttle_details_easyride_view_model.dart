@@ -37,6 +37,7 @@ abstract class ShuttleDetailsViewEasyRideModel
   String email = '';
   String linkPayment = '';
   String order_id = '';
+  String idTrip = '';
   void toggleLoading(bool value) {
     if (mounted) {
       setState(() {
@@ -57,6 +58,12 @@ abstract class ShuttleDetailsViewEasyRideModel
     SharedPreferences prefs = await SharedPreferences.getInstance();
     order_id = prefs.getString('ORDER_ID');
     print(order_id);
+  }
+
+  void getTripId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    idTrip = prefs.getString('ID_TRIP');
+    print('ini id trip' + idTrip);
   }
 
   Future<void> onBooking() async {
@@ -264,6 +271,61 @@ abstract class ShuttleDetailsViewEasyRideModel
     store.dispatch(SetSelectedMyTrip(selectedMyTrip: {}, getSelectedTrip: []));
   }
 
+  Future<void> postAjkEasyRide(paymentMethod, urlPayment, paymentName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jwtToken = prefs.getString("jwtToken");
+    Dio dio = Dio();
+    var url = BASE_API + "/ajk/easy_ride";
+    var params = {
+      "status": "PENDING",
+      "date": store.state.ajkState.easyRide['departure_time'],
+      "trip_id": store.state.ajkState.easyRide['trip_id'],
+      "pickup_point_id":
+          store.state.ajkState.selectedPickUpPoint['pickup_point_id'],
+      "merchandOrderId": order_id,
+      "paymentAmount":
+          store.state.ajkState.selectedPickUpPoint['price'].toString(),
+      "paymentMethod": paymentMethod,
+      "paymentMethodName": paymentName,
+      "productDetails": store.state.ajkState.selectedTrip['trip_group_name'],
+      "customerVaName": name,
+      "payment_url": urlPayment,
+      "departure_time": store.state.ajkState.easyRide['departure_time'],
+      "destination_name":
+          store.state.ajkState.selectedRoute['destination_name'],
+      "type": store.state.ajkState.easyRide['type'],
+      "pickup_point_name": store.state.ajkState.selectedPickUpPoint['name'],
+      "time_to_dest": store.state.ajkState.selectedPickUpPoint['time_to_dest']
+    };
+    final response = await dio.post(
+      url,
+      data: jsonEncode(params),
+      options: Options(
+        headers: {'authorization': Providers.basicAuth, 'token': jwtToken},
+        followRedirects: false,
+        validateStatus: (status) {
+          return status <= 500;
+        },
+      ),
+    );
+    if (response.data['code'] == 'SUCCESS') {
+      toggleLoading(false);
+      Get.off(
+        PaymentWebView(
+          url: linkPayment,
+          orderId: order_id,
+          idEasyRide: response.data['data']['id'],
+          dataEasyRide: store.state.ajkState.easyRide,
+          page: 'easyride',
+        ),
+      );
+    } else {
+      toggleLoading(false);
+      errorDialog(response.data['message']);
+      print(response.data);
+    }
+  }
+
   Future<void> onPayClick() async {
     toggleLoading(true);
     var signature = md5
@@ -300,11 +362,9 @@ abstract class ShuttleDetailsViewEasyRideModel
     );
     if (response.data['statusCode'] == "00") {
       linkPayment = response.data['paymentUrl'];
-      Get.off(PaymentWebView(
-        url: linkPayment,
-        orderId: order_id,
-        page: 'easyride',
-      ));
+      // Get.off(PaymentWebView(url: linkPayment, orderId: order_id));
+      postAjkEasyRide(dataPayment['paymentMethod'], linkPayment,
+          dataPayment['paymentName']);
     } else {
       print('gagal');
       print(response.data);
@@ -312,11 +372,52 @@ abstract class ShuttleDetailsViewEasyRideModel
     }
   }
 
+  void errorDialog(errorText) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: CustomText(
+            AppTranslations.of(context).currentLanguage == 'id'
+                ? "Failed"
+                : 'Gagal',
+            color: ColorsCustom.black,
+          ),
+          content: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
+                errorText,
+                color: ColorsCustom.generalText,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: CustomText(
+                'Oke',
+                color: ColorsCustom.blueSystem,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     getPaymentMethod();
     getOrderID();
+    getTripId();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
 

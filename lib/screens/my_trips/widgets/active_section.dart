@@ -192,7 +192,7 @@ class _ActiveSectionState extends State<ActiveSection> {
                           physics: ClampingScrollPhysics(),
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 16, bottom: 16),
-                          itemCount: state.activeTrip.length - 1,
+                          itemCount: state.activeTrip.length,
                           itemBuilder: (ctx, i) {
                             return selectedDate.isAfter(
                                     DateTime.fromMillisecondsSinceEpoch(

@@ -372,17 +372,22 @@ abstract class ShuttleDetailsViewModel extends State<ShuttleDetails> {
     toggleLoading(true);
     Timer.periodic(Duration(seconds: 1), (timer) {
       for (var i = 0; i < days.length; i++) {
-        if (store.state.ajkState.selectedTrip['excluded_dates']
-            .contains(days[i])) {
-          if (i == days.length - 1) {
-            toggleLoading(false);
-            timer.cancel();
-          }
-        } else {
+        if (store.state.ajkState.selectedTrip['excluded_dates'] == null) {
+          toggleLoading(false);
           includedDate.add(DateTime.parse(days[i] + ' 00:00:00.000Z'));
-          if (i == days.length - 1) {
-            toggleLoading(false);
-            timer.cancel();
+        } else {
+          if (store.state.ajkState.selectedTrip['excluded_dates']
+              .contains(days[i])) {
+            if (i == days.length - 1) {
+              toggleLoading(false);
+              timer.cancel();
+            }
+          } else {
+            includedDate.add(DateTime.parse(days[i] + ' 00:00:00.000Z'));
+            if (i == days.length - 1) {
+              toggleLoading(false);
+              timer.cancel();
+            }
           }
         }
       }

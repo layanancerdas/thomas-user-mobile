@@ -9,6 +9,7 @@ import 'package:tomas/localization/app_translations.dart';
 
 class CardEasyRide extends StatelessWidget {
   final String name,
+      tripId,
       price,
       timeA,
       timeB,
@@ -21,6 +22,7 @@ class CardEasyRide extends StatelessWidget {
       locationB,
       locationC,
       locationD,
+      seatAvailable,
       color,
       week;
   final Map data, dataEasyRide;
@@ -28,7 +30,8 @@ class CardEasyRide extends StatelessWidget {
   final onBook;
 
   CardEasyRide(
-      {this.name,
+      {this.tripId,
+      this.name,
       this.price,
       this.timeA,
       this.timeB,
@@ -45,6 +48,7 @@ class CardEasyRide extends StatelessWidget {
       this.dataEasyRide,
       this.locationC,
       this.locationD,
+      this.seatAvailable,
       this.week,
       this.subscribe});
 
@@ -68,7 +72,9 @@ class CardEasyRide extends StatelessWidget {
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
         ),
-        onPressed: () => onBook(data, dataEasyRide),
+        onPressed: () => int.parse(seatAvailable) > 0 && subscribe == false
+            ? onBook(data, dataEasyRide, tripId)
+            : {},
         child: Column(
           children: [
             Padding(
@@ -291,14 +297,22 @@ class CardEasyRide extends StatelessWidget {
               // color: Colors.red,
               padding: const EdgeInsets.only(left: 24, right: 16),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  CustomText(
+                    "Seat Available : ${seatAvailable}",
+                    fontWeight: FontWeight.w500,
+                    color: ColorsCustom.black,
+                    overflow: true,
+                    fontSize: 12,
+                  ),
                   StoreConnector<AppState, UserState>(
                       converter: (store) => store.state.userState,
                       builder: (context, stateUser) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: subscribe
+                            backgroundColor: int.parse(seatAvailable) > 0 &&
+                                    subscribe == false
                                 ? ColorsCustom.primary
                                 : ColorsCustom.newGrey,
                             shape: RoundedRectangleBorder(
@@ -310,7 +324,10 @@ class CardEasyRide extends StatelessWidget {
                           //materialTapTargetSize:
                           //materialTapTargetSize.shrinkWrap,
 
-                          onPressed: () => onBook(data, dataEasyRide),
+                          onPressed: () =>
+                              int.parse(seatAvailable) > 0 && subscribe == false
+                                  ? onBook(data, dataEasyRide, tripId)
+                                  : {},
 
                           child: Center(
                             child: CustomText(

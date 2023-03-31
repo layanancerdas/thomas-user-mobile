@@ -59,7 +59,7 @@ class SignUpView extends SignUpViewModel {
                         ? ErrorForm(error: errorNip)
                         : SizedBox(height: 33),
                     FormText(
-                      hint: "NIP",
+                      hint: "Nomor Registrasi",
                       controller: nipController,
                       errorMessage:
                           nipController.text.length > 0 ? errorNip : "",
@@ -96,43 +96,6 @@ class SignUpView extends SignUpViewModel {
                             phoneNumberController.text.length <= 0
                         ? ErrorForm(error: errorPhoneNumber)
                         : SizedBox(height: 33),
-                    // Container(
-                    //   width: screenSize.width,
-                    //   child: Row(
-                    //     crossAxisAlignment: CrossAxisAlignment.end,
-                    //     children: [
-                    //       Container(
-                    //         width: 50,
-                    //         height: 45,
-                    //         decoration: BoxDecoration(
-                    //             border: Border(
-                    //                 bottom: BorderSide(
-                    //                     width: 1,
-                    //                     color: Colors.grey.withOpacity(0.2)))),
-                    //         child: CountryCodePicker(
-                    //           onChanged: (value) {
-                    //             setState(() {
-                    //               countryCode = value.dialCode;
-                    //             });
-                    //           },
-                    //           // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                    //           initialSelection: 'ID',
-                    //           favorite: ['+62', 'ID'],
-                    //           showFlag: false,
-                    //           // optional. Shows only country name and flag
-                    //           showCountryOnly: false,
-                    //           // optional. Shows only country name and flag when popup is closed.
-                    //           showOnlyCountryWhenClosed: false,
-                    //           // optional. aligns the flag and the Text left
-                    //           alignLeft: false,
-                    //           textStyle:
-                    //               TextStyle(fontSize: 16, fontFamily: "Poppins"),
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.only(bottom: 1),
-                    // child:
                     FormText(
                       controller: phoneNumberController,
                       hint:
@@ -236,7 +199,7 @@ class SignUpView extends SignUpViewModel {
                               Row(
                                 children: [
                                   Radio(
-                                      value: 'RED_SHIFT',
+                                      value: 'SHIFT_RED',
                                       groupValue: selectedShift,
                                       onChanged: (val) {
                                         setState(() {
@@ -264,7 +227,6 @@ class SignUpView extends SignUpViewModel {
                         ],
                       ),
                     ),
-
                     SizedBox(height: 20),
                   ],
                 ),

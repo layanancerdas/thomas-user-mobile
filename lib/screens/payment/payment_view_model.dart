@@ -88,21 +88,21 @@ abstract class PaymentViewModel extends State<Payment> {
     // }
   }
 
-  void toggleBandwith() {
-    const oneSec = const Duration(seconds: 1);
-    timer = new Timer.periodic(oneSec, (Timer timer) {
-      if (mounted) {
-        setState(() {
-          if (saveBandwith < 1) {
-            saveBandwith = 20;
-            loadDataMax = 3;
-          } else {
-            saveBandwith--;
-          }
-        });
-      }
-    });
-  }
+  // void toggleBandwith() {
+  //   const oneSec = const Duration(seconds: 1);
+  //   timer = new Timer.periodic(oneSec, (Timer timer) {
+  //     if (mounted) {
+  //       setState(() {
+  //         if (saveBandwith < 1) {
+  //           saveBandwith = 20;
+  //           loadDataMax = 3;
+  //         } else {
+  //           saveBandwith--;
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   void showToast(String msg, {int duration, int gravity}) {
     Toast.show(
@@ -363,12 +363,12 @@ abstract class PaymentViewModel extends State<Payment> {
   void initState() {
     mode = widget.mode;
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (_) {
-      if (mounted) {
-        // checkPaid();
-        getCountdown();
-      }
-    });
+    // Timer.periodic(Duration(seconds: 1), (_) {
+    //   if (mounted) {
+    //     // checkPaid();
+    //     getCountdown();
+    //   }
+    // });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
